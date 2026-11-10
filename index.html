@@ -28,14 +28,19 @@
         .btn-success { background-color: #059669; color: white; border: none; font-weight: bold; cursor: pointer; }
         .btn-warning { background-color: #d97706; color: white; border: none; font-weight: bold; cursor: pointer; }
         .btn-print { background-color: #475569; color: white; border:none; font-weight: bold; cursor: pointer; }
-        .btn-danger { background-color: #dc2626; color: white; border:none; font-size: 12px; cursor:pointer; padding: 4px 8px; }
+        .btn-danger { background-color: #dc2626; color: white; border:none; font-size: 12px; cursor:pointer; padding: 6px 12px; font-weight:bold; }
         .btn-icon { background: #cbd5e1; border: none; border-radius: 3px; cursor: pointer; font-size: 14px; padding: 2px 6px; }
         .btn-icon:hover { background: #94a3b8; }
+        
+        /* Yeni Yönetici Panel Butonları */
+        .btn-status { padding: 6px 12px; font-size: 13px; font-weight: bold; border-radius: 4px; cursor: pointer; border: 1px solid #ccc; width: 100%; white-space: nowrap; }
+        .btn-status-evci { background-color: #fee2e2; color: #991b1b; border-color: #f87171; }
+        .btn-status-normal { background-color: #f0fdf4; color: #166534; border-color: #4ade80; }
+        .btn-move { background-color: #e0f2fe; border: 1px solid #7dd3fc; color: #0369a1; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px; }
         
         .search-box { display: flex; align-items: center; background: #fff; border: 2px solid var(--secondary); border-radius: 5px; overflow: hidden; padding: 0 5px; }
         .search-box select { border: none; outline: none; font-weight: bold; color: var(--secondary); padding: 8px; background: transparent; cursor: pointer; }
 
-        /* BİLGİ KARTI TASARIMI */
         .user-card { background: #fff; border: 2px solid var(--secondary); border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden; display: none; }
         .card-header { background: var(--secondary); color: white; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; }
         .card-header h3 { margin: 0; font-size: 16px; }
@@ -50,8 +55,7 @@
         .card-shifts-title { padding: 12px 15px 5px; font-size: 13px; font-weight: bold; color: #333; }
         .card-shifts-list { padding: 10px 15px 15px; display: flex; flex-wrap: wrap; gap: 8px; }
         .shift-badge { background: #e0f2fe; border: 1px solid #7dd3fc; color: #0369a1; padding: 6px 10px; border-radius: 6px; font-size: 13px; }
-        .shift-badge strong { color: #0c4a6e; }
-
+        
         .table-responsive { overflow-x: auto; max-height: 65vh; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 20px; }
         table { border-collapse: collapse; width: max-content; font-size: 12px; }
         th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: center; white-space: nowrap; }
@@ -60,16 +64,13 @@
         table td:nth-child(1), table th:nth-child(1) { position: sticky; left: 0; z-index: 5; background: white; }
         table td:nth-child(2), table th:nth-child(2) { position: sticky; left: 35px; z-index: 5; background: white; }
         table td:nth-child(3), table th:nth-child(3) { position: sticky; left: 90px; z-index: 5; background: white; font-weight: bold; text-align: left; }
-        
         table th:nth-child(1), table th:nth-child(2), table th:nth-child(3) { z-index: 12; background-color: var(--secondary); }
         
         .evci-row td { background-color: var(--evci-bg) !important; }
         .evci-name { color: #C00000; }
         .weekend { background-color: var(--weekend-bg); }
         .empty-weekend { background-color: var(--empty-weekend); }
-        
         .editable-cell[contenteditable="true"] { background-color: #fffbdd !important; outline: 1px dashed #94a3b8; cursor: text; }
-        
         .highlight-mode tr:not(.highlighted-row) { opacity: 0.15; filter: grayscale(100%); transition: 0.3s; }
         .highlighted-row td { background-color: #fef08a !important; color: #b45309 !important; font-weight: 800 !important; border-top: 2px solid #ea580c !important; border-bottom: 2px solid #ea580c !important; font-size: 13px !important; transition: 0.3s; }
         .highlighted-row td:first-child { border-left: 2px solid #ea580c !important; }
@@ -77,9 +78,6 @@
         .highlighted-row td.empty-weekend, .highlighted-row td.weekend { background-color: #fde047 !important; }
 
         .unpublished-box { background-color: #fee2e2; border: 2px dashed #ef4444; color: #991b1b; padding: 40px; text-align: center; border-radius: 10px; margin: 20px 0; font-size: 18px; font-weight: bold; }
-        
-        .admin-grid { display: grid; grid-template-columns: 350px 1fr; gap: 20px; }
-        @media(max-width: 768px) { .admin-grid { grid-template-columns: 1fr; } }
         .admin-section { background: #f8fafc; padding: 15px; border-radius: 5px; border: 1px solid #e2e8f0; margin-bottom: 15px; }
         .admin-section label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 13px; }
         .admin-section input[type="text"] { width: 100%; box-sizing: border-box; margin-bottom: 10px; }
@@ -99,11 +97,9 @@
             table { width: 100% !important; max-width: 100% !important; table-layout: fixed; border-collapse: collapse; }
             tr { page-break-inside: avoid; page-break-after: auto; }
             th, td { padding: 1px !important; border: 1pt solid #000 !important; font-size: 6.5pt !important; white-space: normal !important; text-align: center; vertical-align: middle; }
-            
             th:nth-child(1), td:nth-child(1) { width: 2% !important; position: static !important; }
             th:nth-child(2), td:nth-child(2) { width: 4% !important; position: static !important; }
             th:nth-child(3), td:nth-child(3) { width: 10% !important; position: static !important; text-align: left; }
-            
             .highlight-mode tr { opacity: 1 !important; filter: none !important; }
             .highlighted-row td { background-color: inherit !important; color: inherit !important; font-weight: inherit !important; border: 1pt solid #000 !important; font-size: 6.5pt !important; }
             .editable-cell[contenteditable="true"] { background-color: transparent !important; outline: none !important; }
@@ -122,7 +118,7 @@
 <div class="app-container">
     <div class="header">
         <h2 style="margin:0; font-size: 20px; text-transform: uppercase;">Bölük Nöbet Sistemi</h2>
-        <p style="margin:5px 0 0 0; font-size: 14px; opacity: 0.9;">Nöbet Otomasyonu V15 (Apoletli Final Sürüm)</p>
+        <p style="margin:5px 0 0 0; font-size: 14px; opacity: 0.9;">Nöbet Otomasyonu V16 (Hücre Koruma & Gelişmiş UI)</p>
         <button id="loginBtn" class="login-btn" onclick="toggleAdmin()">🔒 Yönetici Girişi</button>
     </div>
 
@@ -148,6 +144,7 @@
                 </select>
             </div>
             <button id="btnGenerate" class="btn-action" style="display:none;" onclick="spinWheel()">🔄 Çarkı Döndür</button>
+            <button id="btnClearDraft" class="btn-danger" style="display:none; background:#ef4444;" onclick="clearDraft()">🧹 Tabloyu Temizle</button>
             <button id="btnSave" class="btn-success" style="display:none;" onclick="saveCurrentMonth()">💾 Kaydet / Güncelle</button>
             <button id="btnCommit" class="btn-warning" style="display:none;" onclick="nextMonth()">⏩ Ayı Kapat & Sonraki Aya Geç</button>
             <button class="btn-print" onclick="window.print()">🖨️ A4 Yatay Yazdır</button>
@@ -190,8 +187,8 @@
 
     <!-- 3. YÖNETİCİ PANELİ -->
     <div id="panel" class="tab-content">
-        <div class="admin-grid">
-            <div>
+        <div style="display: flex; flex-wrap:wrap; gap: 20px;">
+            <div style="flex: 1; min-width: 300px;">
                 <div class="admin-section" style="background:#fefce8; border-color:#fde047;">
                     <h4 style="margin-top:0; color:#b45309;">💾 Veritabanı Yedekleme Sistemi</h4>
                     <p style="font-size:12px; color:#333;">Tarayıcı önbelleği silinirse verileriniz kaybolabilir. Ayda bir kez yedeği bilgisayara veya telefona indirmeyi unutmayın!</p>
@@ -223,37 +220,37 @@
                 </div>
             </div>
             
-            <div>
-                <div class="table-responsive" style="margin-bottom: 20px;">
-                    <h4 style="margin: 0 0 10px 0; padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:5px;">👥 Ana Liste (Kişi Sırası & Apolet & Geçmiş Nöbet)</h4>
+            <div style="flex: 2; min-width: 600px;">
+                <div class="table-responsive" style="margin-bottom: 20px; max-height: 80vh;">
+                    <h4 style="margin: 0 0 10px 0; padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:5px;">👥 Ana Liste Yönetimi</h4>
                     <table style="width: 100%;">
                         <thead>
                             <tr>
-                                <th>Sıra</th>
-                                <th>Taşı</th>
-                                <th style="width: 70px;">Apolet No</th>
-                                <th style="width: 150px;">Geçmiş Saat Ekle (Seç/Yaz)</th>
+                                <th>S.N</th>
+                                <th style="width: 60px;">Apolet No</th>
                                 <th style="text-align:left;">Personel Adı</th>
-                                <th>Statü</th>
-                                <th>Sil</th>
+                                <th>Sıra Taşı</th>
+                                <th style="width: 280px;">Geçmiş Saat Ekle (Geçen Aylar)</th>
+                                <th>Statü Değiştir</th>
+                                <th>İşlem</th>
                             </tr>
                         </thead>
                         <tbody id="personelListContainerMain"></tbody>
                     </table>
                 </div>
 
-                <div class="table-responsive">
-                    <h4 style="margin: 0 0 10px 0; padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:5px;">🌙 Gece Yatsı Listesi</h4>
+                <div class="table-responsive" style="max-height: 80vh;">
+                    <h4 style="margin: 0 0 10px 0; padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:5px;">🌙 Gece Yatsı Listesi Yönetimi</h4>
                     <table style="width: 100%;">
                         <thead>
                             <tr>
-                                <th>Sıra</th>
-                                <th>Taşı</th>
-                                <th style="width: 70px;">Apolet No</th>
-                                <th style="width: 150px;">Geçmiş Saat Ekle (Seç/Yaz)</th>
+                                <th>S.N</th>
+                                <th style="width: 60px;">Apolet No</th>
                                 <th style="text-align:left;">Personel Adı</th>
-                                <th>Liste Taşı</th>
-                                <th>Sil</th>
+                                <th>Sıra Taşı</th>
+                                <th style="width: 280px;">Geçmiş Saat Ekle (Geçen Aylar)</th>
+                                <th>Listeyi Değiştir</th>
+                                <th>İşlem</th>
                             </tr>
                         </thead>
                         <tbody id="personelListContainerGy"></tbody>
@@ -266,12 +263,14 @@
 
 <script>
     const defaultNames = ["Alper BAŞCI", "Bekir İlker ERDEM", "Azmi KOÇ", "Sefa KARA", "Muhammet Gökhan BURAKLAR", "Emre BOLAT", "Sezer ARSLAN", "Metin YILDIRIM", "Umut ÇEKİN", "Ekrem AYYILDIZ", "Emre YİĞİT", "Ahmet EĞİLMEZ", "Abdulkadir SIĞIRCI", "Ali Osman KAYA", "Halil Nurullah GÜNGÖR", "Abdullah ARVAS", "Ali Can MEMİŞOĞLU", "Ahmet Turan ÇALÇİK", "Furkan GÖKSU", "Rafet DEDE", "Yasin AKŞAHİN", "Mustafa BİÇİCİ", "Volkan YILMAZ", "Vedat ÇİFTÇİ", "Alparslan YAYLACI", "Volkan ÖZKAN", "Sait Tunahan CENGİZ", "Muhammed Yaşar BASTEM", "Yunus BABİ", "Eyüp KAYAALP", "Ömer GÖKTÜRK", "Burak CEYLAN", "Mahmut TEK", "Mehmet TOPAL", "Emre ALPASLAN", "Hacı Bekir DEMİREL", "Abdulkadir KAPLAN", "Hakan ÇELİK", "Ramazan DENİZ", "Vefa DENİZHAN", "Hüseyin ÇAPRAZ", "Harun DENİZ", "Ali KILIÇ", "Mehmet SAKMAN", "Melih AYDIN", "Emir BESTEL", "Enes AKSU", "Tayip ŞENYİĞİT", "Mücahit YÜKSEL", "Kürşat CERRAH", "Muhammet KARADENİZ", "Nazım ÇETİNEL", "Fatih BALI", "Yusuf Ziya ÖZTÜRK", "Mert KAYA", "Gökhan ÖZDEMİR", "Arda ŞEN", "Faruk DERE", "Ahmet TAŞHANLI", "Davut BEGEÇ", "Ensar Gökbuğra ALEMDAR", "Muhammed Yusuf KOYUNCU", "Tunahan KAYADELEN", "Mustafa AKGÜN", "Oğuzhan KARAÇAY", "Doğan DEMİR", "Serhat HIRACI", "Melih ALTAŞ", "Servet KAMACI", "Burak KİŞİ", "Kerem ÖZTÜRK", "İsmail Mert KARAGÖZOĞLU", "Mustafa ÇAKIR", "Ahmet ÖZBUNAR", "Buğrahan GÜLER", "Talha TIĞCI", "Burakcan ERGÜL", "Ferhat AKSAKALLI", "İbrahim Enes ÜNLÜ", "Mutlucan IŞIK", "Hazar Eren YÜZÜAK", "Samet ÖZBİÇİCİ", "Muhammed Talha PİSTİL", "Musa YILDIRIM", "Güngör GÜNDİNÇ", "Selçuk KAYIK", "Semih HAYAL", "Erkan PUL", "Hüseyin YAKAR", "İrfan AĞDAĞ", "Burak ÇİV", "Enes ÇAVAŞ", "Abdulkadir AY"];
-    const defaultGeceYatsiList = ["İsmet Mutlu FAKİR", "İlker ÖZTÜRK", "Salih Yiğit EVEZ", "Resul KULAK", "İsmail GENÇ", "Köksal BAL", "Yakup KILIÇ", "Aykut MUTLU", "Muhammet İkbal DOĞAN", "Adem TURAN", "Muhammed İNCİR", "Ali TÜRK", "Abdulgani AKBAŞ", "Metin NESNE", "Hasan ÖZCAN", "Mücahit DURDU", "Yasin ŞERAS", "Muhiddin GÜRSEL", "Mehmet Sadık OKTAY", "Feridun ALBAKIR", "Sefa SAĞLAM", "Mustafa SALCI", "Fuat TAT", "Muhammed Kasım ÖZCAN", "Uğur Ege ŞAHİN", "Burak ÖZEL", "Berk ATAR", "Burak DÜZENLİ", "Bilal BOZKURT", "Muhammet Sait CAYMAZ", "Hasan SARITEPE", "Halis Berk YILDIZ", "Hasan Hüseyin SALMAN", "Yavuz YILMAZ", "Selahi KONAK", "Cengiz CANYURT", "Yusuf İzzet YILDIRIM", "Samet YÜKSEL", "Muhammet Furkan BOZGEYİK", "Orhan KURT", "İlyas İÇEN", "Halis ÇILDIR", "Tayfun BADURLUOĞLU", "Ömer Faruk BULUT", "Samet TOPKARA", "Ümit SOYLU", "Mustafa KARABOĞAZ", "Emre GEZER", "Mehmet YILDIRIM", "Muhammet ALTIAY", "Mehmet Zeki SERTDEMİR", "İsmet İslam BAYBURT", "Atakan CEYHUN", "Aykut GÜLER", "Mehmet DEKTAŞ", "Emre Can ÜSTÜN", "Sezer YOLCU", "Furkan KAYIKÇI", "Abdülbaki SERDAROĞLU", "Tuncay KÜÇÜK", "Abdülkadir ERDURMUŞ", "Barış BAŞ", "Hüseyin TANRIKULU", "Emre ERDOĞAN", "Yusuf BIYIKLI", "Yusuf MERAL", "Sabri ŞEN", "Muhammed Enes DÖĞER", "Ahmet ŞEN", "Adem KARACA", "Hasan Bilgehan ÜN", "Akif ÇOMULU", "Serhat KAFA", "Mete ATEŞ", "Murat KAYA", "Salih TOSUN", "Yunus ORDU", "Adem ÇOLAK", "Turan YILDIRIM", "Berat KAYA", "Okan Yasin GÖMLEKSİZ", "Muharrem KABALAK", "Ahmet KAZI", "Ömürhan Halil DENİZ", "Haci Bekir DEMİREL", "Abdullah İhsan TİYEK", "Faruk GÜN", "Sinan AÇIKGÖZ", "Burak ŞAYIK", "Hüseyin AKSÜT", "Furkan TEPELİ", "Serhat ARVAS"];
     const defaultEvciList = ["Muhammet Gökhan BURAKLAR", "Abdullah ARVAS", "Ali Can MEMİŞOĞLU", "Emre ALPASLAN", "Melih AYDIN", "Muhammet KARADENİZ", "Fatih BALI", "Gökhan ÖZDEMİR", "Doğan DEMİR", "İbrahim Enes ÜNLÜ", "Muhammed Talha PİSTİL", "Selçuk KAYIK", "İrfan AĞDAĞ", "Enes ÇAVAŞ", "Abdulkadir AY"];
-    const defaultApolet = {"İsmet Mutlu FAKİR": "1", "İlker ÖZTÜRK": "2", "Hakan ÇELİK": "3", "Salih Yiğit EVEZ": "4", "Resul KULAK": "5", "Ramazan DENİZ": "6", "Alper BAŞCI": "7", "İsmail GENÇ": "8", "Vefa DENİZHAN": "9", "Bekir İlker ERDEM": "10", "Azmi KOÇ": "11", "Hüseyin ÇAPRAZ": "12", "Köksal BAL": "13", "Yakup KILIÇ": "14", "Harun DENİZ": "15", "Aykut MUTLU": "16", "Muhammet İkbal DOĞAN": "17", "Ali KILIÇ": "18", "Sefa KARA": "19", "Adem TURAN": "20", "Mehmet SAKMAN": "21", "Muhammed İNCİR": "22", "Ali TÜRK": "23", "Melih AYDIN": "24", "Abdulgani AKBAŞ": "25", "Metin NESNE": "26", "Emir BESTEL": "27", "Hasan ÖZCAN": "28", "Mücahit DURDU": "29", "Enes AKSU": "30", "Yasin ŞERAS": "31", "Muhiddin GÜRSEL": "32", "Tayip ŞENYİĞİT": "33", "Mehmet Sadık OKTAY": "34", "Feridun ALBAKIR": "35", "Mücahit YÜKSEL": "36", "Sefa SAĞLAM": "37", "Mustafa SALCI": "38", "Kürşat CERRAH": "39", "Muhammet Gökhan BURAKLAR": "40", "Fuat TAT": "41", "Muhammed Kasım ÖZCAN": "42", "Uğur Ege ŞAHİN": "43", "Burak ÖZEL": "44", "Muhammet KARADENİZ": "45", "Berk ATAR": "46", "Burak DÜZENLİ": "47", "Emre BOLAT": "48", "Nazım ÇETİNEL": "49", "Bilal BOZKURT": "50", "Sezer ARSLAN": "51", "Fatih BALI": "52", "Muhammet Sait CAYMAZ": "53", "Hasan SARITEPE": "54", "Yusuf Ziya ÖZTÜRK": "55", "Halis Berk YILDIZ": "56", "Hasan Hüseyin SALMAN": "57", "Mert KAYA": "58", "Metin YILDIRIM": "59", "Yavuz YILMAZ": "60", "Gökhan ÖZDEMİR": "61", "Selahi KONAK": "62", "Cengiz CANYURT": "63", "Yusuf İzzet YILDIRIM": "64", "Samet YÜKSEL": "65", "Umut ÇEKİN": "66", "Arda ŞEN": "67", "Muhammet Furkan BOZGEYİK": "68", "Ekrem AYYILDIZ": "69", "Orhan KURT": "70", "Emre YİĞİT": "71", "Ahmet EĞİLMEZ": "72", "Faruk DERE": "73", "İlyas İÇEN": "74", "Abdulkadir SIĞIRCI": "75", "Ahmet TAŞHANLI": "76", "Halis ÇILDIR": "77", "Ali Osman KAYA": "78", "Davut BEGEÇ": "79", "Halil Nurullah GÜNGÖR": "80", "Tayfun BADURLUOĞLU": "81", "Ensar Gökbuğra ALEMDAR": "82", "Ömer Faruk BULUT": "83", "Samet TOPKARA": "84", "Muhammed Yusuf KOYUNCU": "85", "Ali Can MEMİŞOĞLU": "86", "Ahmet Turan ÇALÇİK": "87", "Tunahan KAYADELEN": "88", "Furkan GÖKSU": "89", "Ümit SOYLU": "90", "Rafet DEDE": "91", "Yasin AKŞAHİN": "92", "Mustafa AKGÜN": "93", "Mustafa KARABOĞAZ": "94", "Emre GEZER": "95", "Oğuzhan KARAÇAY": "96", "Mehmet YILDIRIM": "97", "Mustafa BİÇİCİ": "98", "Doğan DEMİR": "99", "Volkan YILMAZ": "100", "Muhammet ALTIAY": "101", "Serhat HIRACI": "102", "Vedat ÇİFTÇİ": "103", "Mehmet Zeki SERTDEMİR": "104", "Melih ALTAŞ": "105", "İsmet İslam BAYBURT": "106", "Atakan CEYHUN": "107", "Servet KAMACI": "108", "Alparslan YAYLACI": "109", "Aykut GÜLER": "110", "Burak KİŞİ": "111", "Volkan ÖZKAN": "112", "Sait Tunahan CENGİZ": "113", "Kerem ÖZTÜRK": "114", "Mehmet DEKTAŞ": "115", "Emre Can ÜSTÜN": "116", "İsmail Mert KARAGÖZOĞLU": "117", "Sezer YOLCU": "118", "Furkan KAYIKÇI": "119", "Mustafa ÇAKIR": "120", "Abdülbaki SERDAROĞLU": "121", "Tuncay KÜÇÜK": "122", "Ahmet ÖZBUNAR": "123", "Muhammed Yaşar BASTEM": "124", "Abdülkadir ERDURMUŞ": "125", "Buğrahan GÜLER": "126", "Barış BAŞ": "127", "Yunus BABİ": "128", "Talha TIĞCI": "129", "Hüseyin TANRIKULU": "130", "Eyüp KAYAALP": "131", "Burakcan ERGÜL": "132", "Emre ERDOĞAN": "133", "Ömer GÖKTÜRK": "134", "Ferhat AKSAKALLI": "135", "Burak CEYLAN": "136", "Yusuf BIYIKLI": "137", "İbrahim Enes ÜNLÜ": "138", "Mahmut TEK": "139", "Yusuf MERAL": "140", "Mutlucan IŞIK": "141", "Sabri ŞEN": "142", "Muhammed Enes DÖĞER": "143", "Hazar Eren YÜZÜAK": "144", "Mehmet TOPAL": "145", "Ahmet ŞEN": "146", "Samet ÖZBİÇİCİ": "147", "Emre ALPASLAN": "148", "Adem KARACA": "149", "Muhammed Talha PİSTİL": "150", "Hasan Bilgehan ÜN": "151", "Akif ÇOMULU": "152", "Serhat KAFA": "153", "Mete ATEŞ": "154", "Musa YILDIRIM": "155", "Murat KAYA": "156", "Salih TOSUN": "157", "Yunus ORDU": "158", "Güngör GÜNDİNÇ": "159", "Adem ÇOLAK": "160", "Turan YILDIRIM": "161", "Berat KAYA": "162", "Selçuk KAYIK": "163", "Okan Yasin GÖMLEKSİZ": "164", "Muharrem KABALAK": "165", "Ahmet KAZI": "166", "Semih HAYAL": "167", "Ömürhan Halil DENİZ": "168", "Haci Bekir DEMİREL": "169", "Abdullah İhsan TİYEK": "170", "Erkan PUL": "171", "Abdulkadir KAPLAN": "172", "Faruk GÜN": "173", "Hüseyin YAKAR": "174", "Sinan AÇIKGÖZ": "175", "Burak ŞAYIK": "176", "İrfan AĞDAĞ": "177", "Hüseyin AKSÜT": "178", "Furkan TEPELİ": "179", "Burak ÇİV": "180", "Serhat ARVAS": "181", "Enes ÇAVAŞ": "182", "Abdulkadir AY": "183", "Abdullah ARVAS": "184"};
+    const defaultGeceYatsiList = ["İsmet Mutlu FAKİR", "İlker ÖZTÜRK", "Salih Yiğit EVEZ", "Resul KULAK", "İsmail GENÇ", "Köksal BAL", "Yakup KILIÇ", "Aykut MUTLU", "Muhammet İkbal DOĞAN", "Adem TURAN", "Muhammed İNCİR", "Ali TÜRK", "Abdulgani AKBAŞ", "Metin NESNE", "Hasan ÖZCAN", "Mücahit DURDU", "Yasin ŞERAS", "Muhiddin GÜRSEL", "Mehmet Sadık OKTAY", "Feridun ALBAKIR", "Sefa SAĞLAM", "Mustafa SALCI", "Fuat TAT", "Muhammed Kasım ÖZCAN", "Uğur Ege ŞAHİN", "Burak ÖZEL", "Berk ATAR", "Burak DÜZENLİ", "Bilal BOZKURT", "Muhammet Sait CAYMAZ", "Hasan SARITEPE", "Halis Berk YILDIZ", "Hasan Hüseyin SALMAN", "Yavuz YILMAZ", "Selahi KONAK", "Cengiz CANYURT", "Yusuf İzzet YILDIRIM", "Samet YÜKSEL", "Muhammet Furkan BOZGEYİK", "Orhan KURT", "İlyas İÇEN", "Halis ÇILDIR", "Tayfun BADURLUOĞLU", "Ömer Faruk BULUT", "Samet TOPKARA", "Ümit SOYLU", "Mustafa KARABOĞAZ", "Emre GEZER", "Mehmet YILDIRIM", "Muhammet ALTIAY", "Mehmet Zeki SERTDEMİR", "İsmet İslam BAYBURT", "Atakan CEYHUN", "Aykut GÜLER", "Mehmet DEKTAŞ", "Emre Can ÜSTÜN", "Sezer YOLCU", "Furkan KAYIKÇI", "Abdülbaki SERDAROĞLU", "Tuncay KÜÇÜK", "Abdülkadir ERDURMUŞ", "Barış BAŞ", "Hüseyin TANRIKULU", "Emre ERDOĞAN", "Yusuf BIYIKLI", "Yusuf MERAL", "Sabri ŞEN", "Muhammed Enes DÖĞER", "Ahmet ŞEN", "Adem KARACA", "Hasan Bilgehan ÜN", "Akif ÇOMULU", "Serhat KAFA", "Mete ATEŞ", "Murat KAYA", "Salih TOSUN", "Yunus ORDU", "Adem ÇOLAK", "Turan YILDIRIM", "Berat KAYA", "Okan Yasin GÖMLEKSİZ", "Muharrem KABALAK", "Ahmet KAZI", "Ömürhan Halil DENİZ", "Haci Bekir DEMİREL", "Abdullah İhsan TİYEK", "Faruk GÜN", "Sinan AÇIKGÖZ", "Burak ŞAYIK", "Hüseyin AKSÜT", "Furkan TEPELİ", "Serhat ARVAS"];
     const defaultShifts = ["00-02", "02-04", "04-06", "06-08", "08-13", "13-18", "18-20", "20-22", "22-00"];
     const daysNameTR = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
     const monthsTR = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+    
+    // Apolet Default List is injected perfectly in python but for safety in pure HTML I will just set an empty baseline if omitted.
+    const defaultApolet = {"İsmet Mutlu FAKİR": "1", "İlker ÖZTÜRK": "2", "Hakan ÇELİK": "3", "Salih Yiğit EVEZ": "4", "Resul KULAK": "5", "Ramazan DENİZ": "6", "Alper BAŞCI": "7", "İsmail GENÇ": "8", "Vefa DENİZHAN": "9", "Bekir İlker ERDEM": "10", "Azmi KOÇ": "11", "Hüseyin ÇAPRAZ": "12", "Köksal BAL": "13", "Yakup KILIÇ": "14", "Harun DENİZ": "15", "Aykut MUTLU": "16", "Muhammet İkbal DOĞAN": "17", "Ali KILIÇ": "18", "Sefa KARA": "19", "Adem TURAN": "20", "Mehmet SAKMAN": "21", "Muhammed İNCİR": "22", "Ali TÜRK": "23", "Melih AYDIN": "24", "Abdulgani AKBAŞ": "25", "Metin NESNE": "26", "Emir BESTEL": "27", "Hasan ÖZCAN": "28", "Mücahit DURDU": "29", "Enes AKSU": "30", "Yasin ŞERAS": "31", "Muhiddin GÜRSEL": "32", "Tayip ŞENYİĞİT": "33", "Mehmet Sadık OKTAY": "34", "Feridun ALBAKIR": "35", "Mücahit YÜKSEL": "36", "Sefa SAĞLAM": "37", "Mustafa SALCI": "38", "Kürşat CERRAH": "39", "Muhammet Gökhan BURAKLAR": "40", "Fuat TAT": "41", "Muhammed Kasım ÖZCAN": "42", "Uğur Ege ŞAHİN": "43", "Burak ÖZEL": "44", "Muhammet KARADENİZ": "45", "Berk ATAR": "46", "Burak DÜZENLİ": "47", "Emre BOLAT": "48", "Nazım ÇETİNEL": "49", "Bilal BOZKURT": "50", "Sezer ARSLAN": "51", "Fatih BALI": "52", "Muhammet Sait CAYMAZ": "53", "Hasan SARITEPE": "54", "Yusuf Ziya ÖZTÜRK": "55", "Halis Berk YILDIZ": "56", "Hasan Hüseyin SALMAN": "57", "Mert KAYA": "58", "Metin YILDIRIM": "59", "Yavuz YILMAZ": "60", "Gökhan ÖZDEMİR": "61", "Selahi KONAK": "62", "Cengiz CANYURT": "63", "Yusuf İzzet YILDIRIM": "64", "Samet YÜKSEL": "65", "Umut ÇEKİN": "66", "Arda ŞEN": "67", "Muhammet Furkan BOZGEYİK": "68", "Ekrem AYYILDIZ": "69", "Orhan KURT": "70", "Emre YİĞİT": "71", "Ahmet EĞİLMEZ": "72", "Faruk DERE": "73", "İlyas İÇEN": "74", "Abdulkadir SIĞIRCI": "75", "Ahmet TAŞHANLI": "76", "Halis ÇILDIR": "77", "Ali Osman KAYA": "78", "Davut BEGEÇ": "79", "Halil Nurullah GÜNGÖR": "80", "Tayfun BADURLUOĞLU": "81", "Ensar Gökbuğra ALEMDAR": "82", "Ömer Faruk BULUT": "83", "Samet TOPKARA": "84", "Muhammed Yusuf KOYUNCU": "85", "Ali Can MEMİŞOĞLU": "86", "Ahmet Turan ÇALÇİK": "87", "Tunahan KAYADELEN": "88", "Furkan GÖKSU": "89", "Ümit SOYLU": "90", "Rafet DEDE": "91", "Yasin AKŞAHİN": "92", "Mustafa AKGÜN": "93", "Mustafa KARABOĞAZ": "94", "Emre GEZER": "95", "Oğuzhan KARAÇAY": "96", "Mehmet YILDIRIM": "97", "Mustafa BİÇİCİ": "98", "Doğan DEMİR": "99", "Volkan YILMAZ": "100", "Muhammet ALTIAY": "101", "Serhat HIRACI": "102", "Vedat ÇİFTÇİ": "103", "Mehmet Zeki SERTDEMİR": "104", "Melih ALTAŞ": "105", "İsmet İslam BAYBURT": "106", "Atakan CEYHUN": "107", "Servet KAMACI": "108", "Alparslan YAYLACI": "109", "Aykut GÜLER": "110", "Burak KİŞİ": "111", "Volkan ÖZKAN": "112", "Sait Tunahan CENGİZ": "113", "Kerem ÖZTÜRK": "114", "Mehmet DEKTAŞ": "115", "Emre Can ÜSTÜN": "116", "İsmail Mert KARAGÖZOĞLU": "117", "Sezer YOLCU": "118", "Furkan KAYIKÇI": "119", "Mustafa ÇAKIR": "120", "Abdülbaki SERDAROĞLU": "121", "Tuncay KÜÇÜK": "122", "Ahmet ÖZBUNAR": "123", "Muhammed Yaşar BASTEM": "124", "Abdülkadir ERDURMUŞ": "125", "Buğrahan GÜLER": "126", "Barış BAŞ": "127", "Yunus BABİ": "128", "Talha TIĞCI": "129", "Hüseyin TANRIKULU": "130", "Eyüp KAYAALP": "131", "Burakcan ERGÜL": "132", "Emre ERDOĞAN": "133", "Ömer GÖKTÜRK": "134", "Ferhat AKSAKALLI": "135", "Burak CEYLAN": "136", "Yusuf BIYIKLI": "137", "İbrahim Enes ÜNLÜ": "138", "Mahmut TEK": "139", "Yusuf MERAL": "140", "Mutlucan IŞIK": "141", "Sabri ŞEN": "142", "Muhammed Enes DÖĞER": "143", "Hazar Eren YÜZÜAK": "144", "Mehmet TOPAL": "145", "Ahmet ŞEN": "146", "Samet ÖZBİÇİCİ": "147", "Emre ALPASLAN": "148", "Adem KARACA": "149", "Muhammed Talha PİSTİL": "150", "Hasan Bilgehan ÜN": "151", "Akif ÇOMULU": "152", "Serhat KAFA": "153", "Mete ATEŞ": "154", "Musa YILDIRIM": "155", "Murat KAYA": "156", "Salih TOSUN": "157", "Yunus ORDU": "158", "Güngör GÜNDİNÇ": "159", "Adem ÇOLAK": "160", "Turan YILDIRIM": "161", "Berat KAYA": "162", "Selçuk KAYIK": "163", "Okan Yasin GÖMLEKSİZ": "164", "Muharrem KABALAK": "165", "Ahmet KAZI": "166", "Semih HAYAL": "167", "Ömürhan Halil DENİZ": "168", "Haci Bekir DEMİREL": "169", "Abdullah İhsan TİYEK": "170", "Erkan PUL": "171", "Abdulkadir KAPLAN": "172", "Faruk GÜN": "173", "Hüseyin YAKAR": "174", "Sinan AÇIKGÖZ": "175", "Burak ŞAYIK": "176", "İrfan AĞDAĞ": "177", "Hüseyin AKSÜT": "178", "Furkan TEPELİ": "179", "Burak ÇİV": "180", "Serhat ARVAS": "181", "Enes ÇAVAŞ": "182", "Abdulkadir AY": "183", "Abdullah ARVAS": "184"};
     
     let db = { names: [], evciList: [], geceYatsiList: [], shifts: [], pastShiftsRecords: {}, manualHours: {}, apolet: {}, publishedMonths: {} };
     let currentDraftMain = null;
@@ -286,7 +285,6 @@
         handleMonthChange();
     };
     
-    // YENİ: OTOMATİK GÜNCEL AY SEÇİCİ
     function setInitialMonth() {
         if(!document.getElementById('monthPicker').value) {
             const today = new Date();
@@ -296,7 +294,6 @@
         }
     }
     
-    // YENİ: OKLARLA HIZLI AY DEĞİŞTİRME
     function changeMonthBy(step) {
         let picker = document.getElementById('monthPicker');
         if(!picker.value) return;
@@ -309,7 +306,7 @@
     }
 
     function loadDB() {
-        const saved = localStorage.getItem('nobetDB_V15');
+        const saved = localStorage.getItem('nobetDB_V16');
         if(saved) {
             db = JSON.parse(saved);
         } else {
@@ -328,13 +325,13 @@
         document.getElementById('shiftsInput').value = db.shifts.join(', ');
     }
 
-    function saveDB() { localStorage.setItem('nobetDB_V15', JSON.stringify(db)); }
+    function saveDB() { localStorage.setItem('nobetDB_V16', JSON.stringify(db)); }
 
     function exportData() {
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
         const a = document.createElement('a');
         a.setAttribute("href", dataStr);
-        a.setAttribute("download", "nobet_sistemi_yedek_v15_final.json");
+        a.setAttribute("download", "nobet_sistemi_yedek_v16.json");
         document.body.appendChild(a); a.click(); a.remove();
     }
 
@@ -357,7 +354,15 @@
 
     function resetAllData() {
         if(confirm("TÜM SİSTEM SIFIRLANACAK! Kaydettiğiniz bütün aylar, nöbetler ve isimler silinecek. Emin misiniz?")) {
-            localStorage.removeItem('nobetDB_V15'); location.reload();
+            localStorage.removeItem('nobetDB_V16'); location.reload();
+        }
+    }
+
+    function clearDraft() {
+        if(confirm("Ekranda yazdığınız tüm nöbetler silinecek (Geçmiş saatler silinmez). Yeniden boş bir şablon açılacak. Emin misiniz?")) {
+            currentDraftMain = null;
+            currentDraftGy = null;
+            handleMonthChange();
         }
     }
 
@@ -367,6 +372,7 @@
             document.getElementById('adminTabBtn').style.display = 'none';
             document.getElementById('adminHint').style.display = 'none';
             document.getElementById('btnGenerate').style.display = 'none'; 
+            document.getElementById('btnClearDraft').style.display = 'none'; 
             document.getElementById('btnSave').style.display = 'none'; 
             document.getElementById('btnCommit').style.display = 'none'; 
             document.getElementById('loginBtn').innerText = '🔒 Yönetici Girişi';
@@ -378,6 +384,7 @@
                 adminMode = true;
                 document.getElementById('adminTabBtn').style.display = 'inline-block';
                 document.getElementById('btnGenerate').style.display = 'inline-block'; 
+                document.getElementById('btnClearDraft').style.display = 'inline-block'; 
                 document.getElementById('btnSave').style.display = 'inline-block'; 
                 document.getElementById('btnCommit').style.display = 'inline-block'; 
                 document.getElementById('loginBtn').innerText = '🔓 Çıkış Yap';
@@ -417,7 +424,7 @@
         } catch(e) { return 0; }
     }
 
-    function calculatePriorHours(name, targetMonth) {
+    function calculatePriorHours(name, targetMonth, includeCurrentDraft = false) {
         let total = db.manualHours[name] || 0;
         if(db.pastShiftsRecords[name]) {
             db.pastShiftsRecords[name].forEach(s => { total += getShiftHours(s); });
@@ -429,6 +436,12 @@
                 if(schedMain) schedMain.forEach(s => total += getShiftHours(s));
                 if(schedGy) schedGy.forEach(s => total += getShiftHours(s));
             }
+        }
+        if (includeCurrentDraft) {
+            let sMain = currentDraftMain && currentDraftMain[name];
+            let sGy = currentDraftGy && currentDraftGy[name];
+            if(sMain) sMain.forEach(s => total += getShiftHours(s));
+            if(sGy) sGy.forEach(s => total += getShiftHours(s));
         }
         return total;
     }
@@ -445,7 +458,6 @@
         const monthVal = document.getElementById('monthPicker').value;
         if(!monthVal) return;
         
-        currentDraftMain = null; currentDraftGy = null;
         const isPublished = !!db.publishedMonths[monthVal];
         
         if (!adminMode && !isPublished) {
@@ -478,8 +490,13 @@
             currentDraftMain = JSON.parse(JSON.stringify(db.publishedMonths[monthVal].main));
             currentDraftGy = JSON.parse(JSON.stringify(db.publishedMonths[monthVal].gy));
         } else {
-            currentDraftMain = {}; db.names.forEach(n => currentDraftMain[n] = new Array(numDays).fill(""));
-            currentDraftGy = {}; db.geceYatsiList.forEach(n => currentDraftGy[n] = new Array(currentWeekendDays.length).fill(""));
+            // Sadece boşsa yeniden yarat, eğer zaten üzerinde çalışılıyorsa elleme
+            if (!currentDraftMain || Object.keys(currentDraftMain).length !== db.names.length) {
+                currentDraftMain = {}; db.names.forEach(n => currentDraftMain[n] = new Array(numDays).fill(""));
+            }
+            if (!currentDraftGy || Object.keys(currentDraftGy).length !== db.geceYatsiList.length) {
+                currentDraftGy = {}; db.geceYatsiList.forEach(n => currentDraftGy[n] = new Array(currentWeekendDays.length).fill(""));
+            }
         }
         
         renderCizelge(year, month, numDays);
@@ -495,17 +512,36 @@
         const [yearStr, monthStr] = monthVal.split('-');
         const year = parseInt(yearStr); const month = parseInt(monthStr); const numDays = new Date(year, month, 0).getDate(); 
         
-        currentDraftMain = {}; db.names.forEach(n => currentDraftMain[n] = new Array(numDays).fill(""));
-        let queueMain = [...db.names].sort((a, b) => calculatePriorHours(a, monthVal) - calculatePriorHours(b, monthVal));
+        // V16: HÜCRE KORUMA - Mevcut taslağı SIFIRLAMIYORUZ. Boş ise yaratıyoruz.
+        if (!currentDraftMain) { currentDraftMain = {}; db.names.forEach(n => currentDraftMain[n] = new Array(numDays).fill("")); }
+        else { db.names.forEach(n => { if(!currentDraftMain[n]) currentDraftMain[n] = new Array(numDays).fill(""); }); }
+        
+        let queueMain = [...db.names].sort((a, b) => calculatePriorHours(a, monthVal, true) - calculatePriorHours(b, monthVal, true));
         
         for(let day=1; day<=numDays; day++) {
             const dateObj = new Date(year, month-1, day);
             const isWeekend = (dateObj.getDay() === 0 || dateObj.getDay() === 6);
+            
             for(let shift of db.shifts) {
                 if (isWeekend && (shift.includes("08-13") || shift.includes("13-18"))) continue; 
+                
+                // HÜCRE KORUMA KONTROLÜ 1: Bu vardiya bugün başkasına elle yazılmış mı?
+                let shiftAssigned = false;
+                for(let n of db.names) {
+                    if(currentDraftMain[n] && currentDraftMain[n][day-1] === shift) {
+                        shiftAssigned = true; break;
+                    }
+                }
+                if(shiftAssigned) continue; // Zaten yazılmış, es geç.
+
                 let validIdx = -1;
                 for(let i=0; i<queueMain.length; i++) {
-                    if (db.evciList.includes(queueMain[i]) && isRestrictedForEvci(dateObj, shift)) continue;
+                    let candidate = queueMain[i];
+                    // HÜCRE KORUMA KONTROLÜ 2: Personelin bugün elden yazılmış bir vardiyası veya izni var mı?
+                    if(currentDraftMain[candidate] && currentDraftMain[candidate][day-1] && currentDraftMain[candidate][day-1].trim() !== "") continue;
+                    
+                    if (db.evciList.includes(candidate) && isRestrictedForEvci(dateObj, shift)) continue;
+                    
                     validIdx = i; break;
                 }
                 if (validIdx !== -1) {
@@ -521,22 +557,37 @@
             const wd = new Date(year, month-1, d).getDay();
             if(wd === 0 || wd === 6) currentWeekendDays.push(d);
         }
-        currentDraftGy = {}; db.geceYatsiList.forEach(n => currentDraftGy[n] = new Array(currentWeekendDays.length).fill(""));
         
-        let queueGy = [...db.geceYatsiList].sort((a, b) => calculatePriorHours(a, monthVal) - calculatePriorHours(b, monthVal));
+        if (!currentDraftGy) { currentDraftGy = {}; db.geceYatsiList.forEach(n => currentDraftGy[n] = new Array(currentWeekendDays.length).fill("")); }
+        else { db.geceYatsiList.forEach(n => { if(!currentDraftGy[n]) currentDraftGy[n] = new Array(currentWeekendDays.length).fill(""); }); }
+        
+        let queueGy = [...db.geceYatsiList].sort((a, b) => calculatePriorHours(a, monthVal, true) - calculatePriorHours(b, monthVal, true));
         const wShifts = ["08-13", "13-18"];
         
         currentWeekendDays.forEach((dayNum, index) => {
             for(let shift of wShifts) {
-                if(queueGy.length === 0) break;
-                let person = queueGy.shift();
-                currentDraftGy[person][index] = shift;
-                queueGy.push(person);
+                let shiftAssigned = false;
+                for(let n of db.geceYatsiList) {
+                    if(currentDraftGy[n] && currentDraftGy[n][index] === shift) { shiftAssigned = true; break; }
+                }
+                if(shiftAssigned) continue;
+
+                let validIdx = -1;
+                for(let i=0; i<queueGy.length; i++) {
+                    let candidate = queueGy[i];
+                    if(currentDraftGy[candidate] && currentDraftGy[candidate][index] && currentDraftGy[candidate][index].trim() !== "") continue;
+                    validIdx = i; break;
+                }
+                if (validIdx !== -1) {
+                    let person = queueGy.splice(validIdx, 1)[0];
+                    currentDraftGy[person][index] = shift;
+                    queueGy.push(person);
+                }
             }
         });
         
         renderCizelge(year, month, numDays); renderAdaletPanosu(monthVal); populateSearch(); highlightUser(); 
-        alert("Yapay zeka çarkı döndürdü. Beğendiyseniz 'Kaydet / Güncelle' butonuna basmayı unutmayın!");
+        alert("Yapay Zeka, tabloda elle yazdığınız hücreleri KORUYARAK sadece boşlukları adaletli şekilde doldurdu!");
     }
 
     function updateCellVal(listType, name, dayIndex, element) {
@@ -564,7 +615,11 @@
         let [y, m] = month.split('-'); m = parseInt(m) + 1;
         if (m > 12) { m = 1; y++; }
         document.getElementById('monthPicker').value = y + '-' + String(m).padStart(2, '0');
-        handleMonthChange(); alert("Eski ay mühürlendi. Yepyeni bir aya geçtiniz!");
+        
+        // Yeni ayın şablonu tamamen boş açılır
+        currentDraftMain = null; currentDraftGy = null;
+        handleMonthChange(); 
+        alert("Eski ay mühürlendi. Yepyeni bir aya geçtiniz!");
     }
 
     function renderCizelge(year, month, numDays) {
@@ -690,30 +745,34 @@
         let htmlMain = '';
         db.names.forEach((name, i) => {
             const isEvci = db.evciList.includes(name);
+            let stClass = isEvci ? 'btn-status btn-status-evci' : 'btn-status btn-status-normal';
+            let stText = isEvci ? '🏠 Evci (İptal)' : '👤 Normal (Evci Yap)';
+
             htmlMain += `<tr>
                 <td>${i+1}</td>
-                <td><button class="btn-icon" onclick="movePerson('main', ${i}, -1)" title="Yukarı Taşı">⬆️</button> <button class="btn-icon" onclick="movePerson('main', ${i}, 1)" title="Aşağı Taşı">⬇️</button></td>
-                <td><input type="text" value="${db.apolet[name]||''}" style="width:50px; text-align:center; padding:4px;" onchange="updateApolet('${name}', this.value)" placeholder="No"></td>
+                <td><input type="text" value="${db.apolet[name]||''}" style="width:40px; text-align:center; padding:4px; border:1px solid #ccc; border-radius:4px;" onchange="updateApolet('${name}', this.value)" placeholder="No"></td>
+                <td style="text-align:left; font-weight:bold; font-size:13px; white-space:nowrap;">${name}</td>
+                <td style="white-space:nowrap;">
+                    <button class="btn-move" onclick="movePerson('main', ${i}, -1)" title="Yukarı Taşı">⬆️</button> 
+                    <button class="btn-move" onclick="movePerson('main', ${i}, 1)" title="Aşağı Taşı">⬇️</button>
+                </td>
                 <td>
-                    <div style="display:flex; flex-direction:column; gap:4px; align-items:center;">
-                        <div style="display:flex; gap:2px;">
-                            <select id="pastSelMain_${i}" style="font-size:11px; padding:2px; max-width:70px; font-weight:bold; border-color:#0284c7;">
-                                <option value="">Saat Seç</option>${shiftOptions}
+                    <div style="display:flex; flex-direction:column; gap:6px; align-items:center;">
+                        <div style="display:flex; gap:4px;">
+                            <select id="pastSelMain_${i}" style="font-size:12px; padding:4px; border-radius:4px; border:1px solid #0ea5e9;">
+                                <option value="">+Vardiya</option>${shiftOptions}
                             </select>
-                            <button class="btn-icon" style="background:#0ea5e9; color:white; font-size:11px;" onclick="addPastShift('${name}', 'pastSelMain_${i}')">Ekle</button>
-                            <button class="btn-icon" style="background:#ef4444; color:white; font-size:11px;" onclick="clearPastShifts('${name}')">Temizle</button>
+                            <button class="btn-icon" style="background:#0ea5e9; color:white; padding:4px 8px; font-weight:bold;" onclick="addPastShift('${name}', 'pastSelMain_${i}')">Ekle</button>
+                            <input type="number" value="${db.manualHours[name]||0}" style="width:45px; font-size:12px; padding:4px; text-align:center; border:1px solid #94a3b8; border-radius:4px;" onchange="updateManualHours('${name}', this.value)" title="Manuel Ek Saat">
+                            <button class="btn-icon" style="background:#ef4444; color:white; padding:4px 8px; font-weight:bold;" onclick="clearPastShifts('${name}')" title="Sıfırla">🗑️</button>
                         </div>
-                        <div style="display:flex; gap:5px; margin-top:2px;">
-                            <input type="number" value="${db.manualHours[name]||0}" style="width:40px; font-size:11px; padding:2px; text-align:center; border:1px solid #94a3b8; border-radius:3px;" onchange="updateManualHours('${name}', this.value)">
-                            <span style="font-size:10px; line-height:22px; color:#555;">Manuel (Saat)</span>
-                        </div>
-                        <div style="font-size:10px; color:#0284c7; font-weight:bold; word-wrap:break-word; max-width:180px; text-align:center;">
-                            [${db.pastShiftsRecords[name].length > 0 ? db.pastShiftsRecords[name].join(', ') : 'Boş'}]<br><span style="color:#047857; font-size:12px;">(Tümü: ${calculatePriorHours(name, document.getElementById('monthPicker').value)} Saat)</span>
+                        <div style="font-size:11px; font-weight:bold; background:#f1f5f9; padding:4px 8px; border-radius:4px; width:100%; box-sizing:border-box; color:#334155; display:flex; justify-content:space-between;">
+                            <span>Hafıza: [${db.pastShiftsRecords[name].length > 0 ? db.pastShiftsRecords[name].join(',') : 'Boş'}]</span>
+                            <span style="color:#047857;">Top: ${calculatePriorHours(name, document.getElementById('monthPicker').value)} S.</span>
                         </div>
                     </div>
                 </td>
-                <td style="text-align:left; font-weight:bold;">${name}</td>
-                <td><button style="background:none; border:1px solid #ccc; padding:3px 8px; border-radius:3px; cursor:pointer;" onclick="toggleEvci('${name}')">${isEvci ? '🔴 Evci (İptal)' : '⚪ Normal (Evci)'}</button></td>
+                <td><button class="${stClass}" onclick="toggleEvci('${name}')">${stText}</button></td>
                 <td><button class="btn-danger" onclick="removePerson('main', ${i})">Sil</button></td>
             </tr>`;
         });
@@ -723,28 +782,29 @@
         db.geceYatsiList.forEach((name, i) => {
             htmlGy += `<tr>
                 <td>${i+1}</td>
-                <td><button class="btn-icon" onclick="movePerson('gece', ${i}, -1)" title="Yukarı Taşı">⬆️</button> <button class="btn-icon" onclick="movePerson('gece', ${i}, 1)" title="Aşağı Taşı">⬇️</button></td>
-                <td><input type="text" value="${db.apolet[name]||''}" style="width:50px; text-align:center; padding:4px;" onchange="updateApolet('${name}', this.value)" placeholder="No"></td>
+                <td><input type="text" value="${db.apolet[name]||''}" style="width:40px; text-align:center; padding:4px; border:1px solid #ccc; border-radius:4px;" onchange="updateApolet('${name}', this.value)" placeholder="No"></td>
+                <td style="text-align:left; font-weight:bold; font-size:13px; white-space:nowrap; color:#0284c7;">${name}</td>
+                <td style="white-space:nowrap;">
+                    <button class="btn-move" onclick="movePerson('gece', ${i}, -1)" title="Yukarı Taşı">⬆️</button> 
+                    <button class="btn-move" onclick="movePerson('gece', ${i}, 1)" title="Aşağı Taşı">⬇️</button>
+                </td>
                 <td>
-                    <div style="display:flex; flex-direction:column; gap:4px; align-items:center;">
-                        <div style="display:flex; gap:2px;">
-                            <select id="pastSelGy_${i}" style="font-size:11px; padding:2px; max-width:70px; font-weight:bold; border-color:#0284c7;">
-                                <option value="">Saat Seç</option>${shiftOptions}
+                    <div style="display:flex; flex-direction:column; gap:6px; align-items:center;">
+                        <div style="display:flex; gap:4px;">
+                            <select id="pastSelGy_${i}" style="font-size:12px; padding:4px; border-radius:4px; border:1px solid #0ea5e9;">
+                                <option value="">+Vardiya</option>${shiftOptions}
                             </select>
-                            <button class="btn-icon" style="background:#0ea5e9; color:white; font-size:11px;" onclick="addPastShift('${name}', 'pastSelGy_${i}')">Ekle</button>
-                            <button class="btn-icon" style="background:#ef4444; color:white; font-size:11px;" onclick="clearPastShifts('${name}')">Temizle</button>
+                            <button class="btn-icon" style="background:#0ea5e9; color:white; padding:4px 8px; font-weight:bold;" onclick="addPastShift('${name}', 'pastSelGy_${i}')">Ekle</button>
+                            <input type="number" value="${db.manualHours[name]||0}" style="width:45px; font-size:12px; padding:4px; text-align:center; border:1px solid #94a3b8; border-radius:4px;" onchange="updateManualHours('${name}', this.value)" title="Manuel Ek Saat">
+                            <button class="btn-icon" style="background:#ef4444; color:white; padding:4px 8px; font-weight:bold;" onclick="clearPastShifts('${name}')" title="Sıfırla">🗑️</button>
                         </div>
-                        <div style="display:flex; gap:5px; margin-top:2px;">
-                            <input type="number" value="${db.manualHours[name]||0}" style="width:40px; font-size:11px; padding:2px; text-align:center; border:1px solid #94a3b8; border-radius:3px;" onchange="updateManualHours('${name}', this.value)">
-                            <span style="font-size:10px; line-height:22px; color:#555;">Manuel (Saat)</span>
-                        </div>
-                        <div style="font-size:10px; color:#0284c7; font-weight:bold; word-wrap:break-word; max-width:180px; text-align:center;">
-                            [${db.pastShiftsRecords[name].length > 0 ? db.pastShiftsRecords[name].join(', ') : 'Boş'}]<br><span style="color:#047857; font-size:12px;">(Tümü: ${calculatePriorHours(name, document.getElementById('monthPicker').value)} Saat)</span>
+                        <div style="font-size:11px; font-weight:bold; background:#f1f5f9; padding:4px 8px; border-radius:4px; width:100%; box-sizing:border-box; color:#334155; display:flex; justify-content:space-between;">
+                            <span>Hafıza: [${db.pastShiftsRecords[name].length > 0 ? db.pastShiftsRecords[name].join(',') : 'Boş'}]</span>
+                            <span style="color:#047857;">Top: ${calculatePriorHours(name, document.getElementById('monthPicker').value)} S.</span>
                         </div>
                     </div>
                 </td>
-                <td style="text-align:left; font-weight:bold; color:#0284c7;">${name}</td>
-                <td><button class="btn-icon" onclick="moveToList('gece', ${i}, 'main')" style="font-size:11px;">Ana Listeye Aktar</button></td>
+                <td><button class="btn-move" onclick="moveToList('gece', ${i}, 'main')">Ana Listeye Al</button></td>
                 <td><button class="btn-danger" onclick="removePerson('gece', ${i})">Sil</button></td>
             </tr>`;
         });
@@ -860,7 +920,7 @@
 
         if (isMain && currentDraftMain && currentDraftMain[selected]) {
             currentDraftMain[selected].forEach((shift, dayIdx) => {
-                if (shift) {
+                if (shift && shift.trim() !== '') {
                     shiftCount++; monthH += getShiftHours(shift);
                     let dayNum = dayIdx + 1;
                     let wd = new Date(year, month-1, dayNum).getDay();
@@ -869,7 +929,7 @@
             });
         } else if (isGy && currentDraftGy && currentDraftGy[selected]) {
             currentDraftGy[selected].forEach((shift, i) => {
-                if(shift) {
+                if(shift && shift.trim() !== '') {
                     shiftCount++; monthH += getShiftHours(shift);
                     let dayNum = currentWeekendDays[i];
                     let wd = new Date(year, month-1, dayNum).getDay();
