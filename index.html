@@ -2,19 +2,20 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- MOBİLDE OTOMATİK MASAÜSTÜ (TAM TABLO) GÖRÜNÜMÜ SAĞLAR -->
+    <meta name="viewport" content="width=1450, user-scalable=yes">
     <title>Bölük Nöbet Sistemi</title>
     <style>
         :root { --primary: #002060; --secondary: #1F4E78; --bg: #f5f7fa; --evci-bg: #e5e7eb; --weekend-bg: #dbeafe; --empty-weekend: #fed7aa; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: var(--bg); color: #333; user-select: none; }
-        .app-container { padding: 10px; max-width: 100%; overflow-x: hidden; padding-bottom: 80px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: var(--bg); color: #333; user-select: none; min-width: 1450px; }
+        .app-container { padding: 12px; width: 100%; box-sizing: border-box; padding-bottom: 140px; }
         
         .header { background-color: var(--primary); color: white; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); position: relative; }
-        .login-btn { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.5); padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: bold; transition: 0.2s; }
+        .login-btn { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.5); padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; transition: 0.2s; }
         .login-btn:hover { background: rgba(255,255,255,0.3); }
         
-        .tabs { display: flex; gap: 5px; margin-bottom: 15px; flex-wrap: wrap; justify-content: center; }
-        .tab-btn { padding: 10px 20px; background-color: #cbd5e1; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: #333; transition: 0.3s; }
+        .tabs { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; justify-content: center; }
+        .tab-btn { padding: 12px 24px; background-color: #cbd5e1; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px; color: #333; transition: 0.3s; }
         .tab-btn.active { background-color: var(--secondary); color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         #adminTabBtn { display: none; background-color: #8b0000; color: white; }
         #adminTabBtn.active { background-color: #a50000; }
@@ -22,67 +23,68 @@
         .tab-content { display: none; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .tab-content.active { display: block; }
         
-        .toolbar { display: flex; gap: 10px; margin-bottom: 15px; align-items: center; flex-wrap: wrap; justify-content: center; background: #e2e8f0; padding: 10px; border-radius: 5px; }
-        input, select, button { padding: 8px 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px; font-family: inherit; }
+        .toolbar { display: flex; gap: 10px; margin-bottom: 15px; align-items: center; flex-wrap: wrap; justify-content: center; background: #e2e8f0; padding: 12px; border-radius: 6px; }
+        input, select, button { padding: 9px 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; font-family: inherit; }
         .btn-action { background-color: var(--secondary); color: white; border: none; font-weight: bold; cursor: pointer; }
         .btn-success { background-color: #059669; color: white; border: none; font-weight: bold; cursor: pointer; }
         .btn-warning { background-color: #d97706; color: white; border: none; font-weight: bold; cursor: pointer; }
         .btn-print { background-color: #475569; color: white; border:none; font-weight: bold; cursor: pointer; }
-        .btn-danger { background-color: #dc2626; color: white; border:none; font-size: 12px; cursor:pointer; padding: 6px 12px; font-weight:bold; }
-        .btn-icon { background: #cbd5e1; border: none; border-radius: 3px; cursor: pointer; font-size: 14px; padding: 4px 8px; }
+        .btn-danger { background-color: #dc2626; color: white; border:none; font-size: 13px; cursor:pointer; padding: 8px 14px; font-weight:bold; }
+        .btn-icon { background: #cbd5e1; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; padding: 6px 10px; }
         .btn-icon:hover { background: #94a3b8; }
         
         /* Yönetici Panel Butonları */
         .btn-status { padding: 6px 12px; font-size: 13px; font-weight: bold; border-radius: 4px; cursor: pointer; border: 1px solid #ccc; width: 100%; white-space: nowrap; }
         .btn-status-evci { background-color: #fee2e2; color: #991b1b; border-color: #f87171; }
         .btn-status-normal { background-color: #f0fdf4; color: #166534; border-color: #4ade80; }
-        .btn-move { background-color: #e0f2fe; border: 1px solid #7dd3fc; color: #0369a1; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px; }
+        .btn-move { background-color: #e0f2fe; border: 1px solid #7dd3fc; color: #0369a1; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px; }
         
-        .search-box { display: flex; align-items: center; background: #fff; border: 2px solid var(--secondary); border-radius: 5px; overflow: hidden; padding: 0 5px; }
+        .search-box { display: flex; align-items: center; background: #fff; border: 2px solid var(--secondary); border-radius: 6px; overflow: hidden; padding: 0 5px; }
         .search-box select { border: none; outline: none; font-weight: bold; color: var(--secondary); padding: 8px; background: transparent; cursor: pointer; }
 
         /* ÖN YÜZ (MODAL) BİLGİ KARTI TASARIMI */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(3px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 15px; box-sizing: border-box; }
-        .user-card { background: #fff; border: 2px solid var(--secondary); border-radius: 12px; width: 100%; max-width: 600px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); overflow: hidden; animation: modalPop 0.2s ease-out; }
+        .user-card { background: #fff; border: 2px solid var(--secondary); border-radius: 12px; width: 100%; max-width: 650px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); overflow: hidden; animation: modalPop 0.2s ease-out; }
         @keyframes modalPop { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .card-header { background: var(--primary); color: white; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; }
-        .card-header h3 { margin: 0; font-size: 17px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-        .card-close-btn { background: #dc2626; color: white; border: none; width: 32px; height: 32px; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-        .card-close-btn:hover { background: #b91c1c; transform: scale(1.05); }
-        .card-badge { background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .card-header { background: var(--primary); color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .card-header h3 { margin: 0; font-size: 18px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .card-close-btn { background: #dc2626; color: white; border: none; width: 36px; height: 36px; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .card-badge { background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 4px; font-size: 13px; font-weight: bold; }
         .card-stats { display: grid; grid-template-columns: repeat(3, 1fr); background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
-        .card-stats > div { padding: 12px 8px; text-align: center; border-right: 1px solid #e2e8f0; }
+        .card-stats > div { padding: 14px 10px; text-align: center; border-right: 1px solid #e2e8f0; }
         .card-stats > div:last-child { border-right: none; }
-        .card-stats span { display: block; font-size: 11px; color: #64748b; text-transform: uppercase; margin-bottom: 4px; font-weight:bold; }
-        .card-stats strong { font-size: 15px; color: var(--primary); }
+        .card-stats span { display: block; font-size: 12px; color: #64748b; text-transform: uppercase; margin-bottom: 4px; font-weight:bold; }
+        .card-stats strong { font-size: 17px; color: var(--primary); }
         .card-stats .total { background: #d1fae5; }
-        .card-stats .total strong { color: #047857; font-size:16px; }
-        .card-shifts-title { padding: 14px 18px 6px; font-size: 13px; font-weight: bold; color: #333; }
-        .card-shifts-list { padding: 8px 18px 18px; display: flex; flex-wrap: wrap; gap: 8px; max-height: 260px; overflow-y: auto; }
-        .shift-badge { background: #e0f2fe; border: 1px solid #7dd3fc; color: #0369a1; padding: 6px 10px; border-radius: 6px; font-size: 13px; }
+        .card-stats .total strong { color: #047857; font-size:18px; }
+        .card-shifts-title { padding: 14px 20px 6px; font-size: 14px; font-weight: bold; color: #333; }
+        .card-shifts-list { padding: 8px 20px 20px; display: flex; flex-wrap: wrap; gap: 8px; max-height: 300px; overflow-y: auto; }
+        .shift-badge { background: #e0f2fe; border: 1px solid #7dd3fc; color: #0369a1; padding: 8px 12px; border-radius: 6px; font-size: 14px; }
         .shift-badge.night { background: #ede9fe; border-color: #c4b5fd; color: #5b21b6; }
-        .card-footer { padding: 12px 18px; background: #f1f5f9; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px; }
+        .card-footer { padding: 12px 20px; background: #f1f5f9; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px; }
 
-        /* TOPLU HÜCRE SEÇİM ÇUBUĞU */
-        .bulk-toolbar { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); background: #0f172a; color: white; padding: 10px 18px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.35); z-index: 950; display: none; align-items: center; gap: 10px; flex-wrap: wrap; border: 2px solid #38bdf8; }
-        .bulk-toolbar select, .bulk-toolbar input { padding: 6px 10px; font-size: 13px; border-radius: 5px; border: none; }
-        .selected-cell { background-color: #bae6fd !important; outline: 2px solid #0284c7 !important; color: #0c4a6e !important; font-weight: bold; }
+        /* MOBİL VE MASAÜSTÜ DOKUNMATİK SEÇİM ÇUBUĞU */
+        .bulk-toolbar { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); background: #0f172a; color: white; padding: 14px 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 950; display: none; flex-direction: column; gap: 10px; border: 2px solid #38bdf8; min-width: 750px; max-width: 95vw; }
+        .bulk-top-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+        .bulk-quick-btns { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+        .quick-shift-btn { background: #1e293b; color: #38bdf8; border: 1px solid #38bdf8; padding: 8px 12px; border-radius: 6px; font-weight: bold; font-size: 14px; cursor: pointer; }
+        .quick-shift-btn:active, .quick-shift-btn:hover { background: #38bdf8; color: #0f172a; }
+        .selected-cell { background-color: #38bdf8 !important; outline: 2px solid #0284c7 !important; color: #000 !important; font-weight: 900 !important; }
+        .range-anchor-cell { outline: 3px dashed #f59e0b !important; background-color: #fef08a !important; }
 
-        .table-responsive { overflow-x: auto; max-height: 68vh; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 20px; }
-        table { border-collapse: collapse; width: max-content; font-size: 12px; }
-        th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: center; white-space: nowrap; }
+        /* TAM TABLO GÖRÜNÜMÜ (İç Kaydırma Kaldırıldı, Tam Ekran Açılır) */
+        .table-responsive { width: 100%; overflow: visible; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 20px; }
+        table { border-collapse: collapse; width: 100%; font-size: 12px; }
+        th, td { border: 1px solid #ccc; padding: 7px 6px; text-align: center; white-space: nowrap; }
         th { background-color: var(--secondary); color: white; position: sticky; top: 0; z-index: 10; }
-        
-        table td:nth-child(1), table th:nth-child(1) { position: sticky; left: 0; z-index: 5; background: white; }
-        table td:nth-child(2), table th:nth-child(2) { position: sticky; left: 35px; z-index: 5; background: white; }
-        table td:nth-child(3), table th:nth-child(3) { position: sticky; left: 90px; z-index: 5; background: white; font-weight: bold; text-align: left; }
-        table th:nth-child(1), table th:nth-child(2), table th:nth-child(3) { z-index: 12; background-color: var(--secondary); }
         
         .evci-row td { background-color: var(--evci-bg) !important; }
         .evci-name { color: #C00000; }
         .weekend { background-color: var(--weekend-bg); }
         .empty-weekend { background-color: var(--empty-weekend); }
-        .editable-cell[contenteditable="true"] { background-color: #fffbdd; outline: 1px dashed #94a3b8; cursor: cell; }
+        .touch-selectable { cursor: pointer; }
+        .editable-cell[contenteditable="true"] { background-color: #fffbdd; outline: 1px dashed #94a3b8; cursor: text; }
+        
         .highlight-mode tr:not(.highlighted-row) { opacity: 0.15; filter: grayscale(100%); transition: 0.3s; }
         .highlighted-row td { background-color: #fef08a !important; color: #b45309 !important; font-weight: 800 !important; border-top: 2px solid #ea580c !important; border-bottom: 2px solid #ea580c !important; font-size: 13px !important; transition: 0.3s; }
         .highlighted-row td:first-child { border-left: 2px solid #ea580c !important; }
@@ -102,7 +104,7 @@
 
         @media print {
             @page { size: A4 landscape; margin: 5mm; }
-            body { background: white; margin: 0; padding: 0; }
+            body { background: white; margin: 0; padding: 0; min-width: auto; }
             .app-container { padding: 0; }
             .header, .tabs, .toolbar, #panel, .login-btn, .admin-hint, .search-box, .modal-overlay, .bulk-toolbar { display: none !important; }
             .tab-content.active { display: block !important; padding: 0; box-shadow: none; }
@@ -131,8 +133,8 @@
 
 <div class="app-container">
     <div class="header">
-        <h2 style="margin:0; font-size: 20px; text-transform: uppercase;">Bölük Nöbet Sistemi</h2>
-        <p style="margin:5px 0 0 0; font-size: 14px; opacity: 0.9;">Nöbet Otomasyonu V17</p>
+        <h2 style="margin:0; font-size: 22px; text-transform: uppercase;">Bölük Nöbet Sistemi</h2>
+        <p style="margin:5px 0 0 0; font-size: 14px; opacity: 0.9;">Nöbet Otomasyonu V18 (Mobil Tam Ekran & Dokunmatik Seçim)</p>
         <button id="loginBtn" class="login-btn" onclick="toggleAdmin()">🔒 Yönetici Girişi</button>
     </div>
 
@@ -147,16 +149,20 @@
         <div id="userCardContainer" class="user-card"></div>
     </div>
 
-    <!-- YÖNETİCİ TOPLU HÜCRE SEÇİM VE DÜZENLEME ÇUBUĞU -->
+    <!-- DOKUNMATİK HIZLI SEÇİM VE DOLDURMA ÇUBUĞU -->
     <div id="bulkToolbar" class="bulk-toolbar">
-        <span id="bulkCountText" style="font-weight:bold; color:#38bdf8; font-size:13px;">0 Hücre Seçildi</span>
-        <select id="bulkPresetSelect" onchange="if(this.value) document.getElementById('bulkCustomInput').value=this.value;">
-            <option value="">Hızlı Değer Seç...</option>
-        </select>
-        <input type="text" id="bulkCustomInput" placeholder="Vardiya veya İzinli/Raporlu yaz..." style="width:170px;">
-        <button class="btn-success" style="padding:6px 12px; font-size:13px;" onclick="applyBulkValue()">✅ Seçililere Uygula</button>
-        <button class="btn-danger" style="padding:6px 12px; font-size:13px;" onclick="clearSelectedCells()">🗑️ Seçilileri Sil (Del)</button>
-        <button class="btn-icon" style="background:#475569; color:white; padding:6px 10px;" onclick="clearCellSelection()">✖ İptal</button>
+        <div class="bulk-top-row">
+            <span id="bulkCountText" style="font-weight:bold; color:#38bdf8; font-size:15px;">0 Kutucuk Seçildi</span>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <input type="text" id="bulkCustomInput" placeholder="Özel yazı veya saat..." style="width:160px; padding:7px 10px; font-size:14px;">
+                <button class="btn-success" style="padding:8px 14px; font-size:14px;" onclick="applyBulkValue()">✅ Yazıyı Uygula</button>
+                <button class="btn-danger" style="padding:8px 14px; font-size:14px;" onclick="clearSelectedCells()">🗑️ Seçilileri Sil</button>
+                <button class="btn-icon" style="background:#475569; color:white; padding:8px 12px; font-size:14px;" onclick="clearCellSelection()">✖ Seçimi Kapat</button>
+            </div>
+        </div>
+        <div class="bulk-quick-btns" id="bulkQuickBtns">
+            <!-- Vardiya butonları buraya dinamik yüklenir -->
+        </div>
     </div>
 
     <!-- 1. ÇİZELGE TABI -->
@@ -175,14 +181,19 @@
                 </select>
                 <button id="clearHighlightBtn" class="btn-icon" style="display:none; background:#ef4444; color:white; margin-left:4px;" onclick="closeUserCard(true)" title="Seçimi Temizle">✖</button>
             </div>
+
+            <!-- MOBİL DOKUNMATİK SEÇİM BUTONLARI -->
+            <button id="btnTouchMode" class="btn-action" style="display:none; background:#0284c7;" onclick="toggleTouchSelectMode()">👆 Dokunarak Seç: AÇIK</button>
+            <button id="btnRangeMode" class="btn-action" style="display:none; background:#64748b;" onclick="toggleRangeSelectMode()">📏 Aralık Seç: KAPALI</button>
+
             <button id="btnGenerate" class="btn-action" style="display:none;" onclick="spinWheel()">🔄 Çarkı Döndür</button>
             <button id="btnClearDraft" class="btn-danger" style="display:none; background:#ef4444;" onclick="clearDraft()">🧹 Tabloyu Temizle</button>
             <button id="btnSave" class="btn-success" style="display:none;" onclick="saveCurrentMonth()">💾 Kaydet / Güncelle</button>
             <button id="btnCommit" class="btn-warning" style="display:none;" onclick="nextMonth()">⏩ Ayı Kapat & Sonraki Aya Geç</button>
             <button class="btn-print" onclick="window.print()">🖨️ A4 Yatay Yazdır</button>
         </div>
-        <p class="admin-hint" id="adminHint" style="display:none; text-align:center; color:#059669; font-weight:bold; font-size:13px; margin:5px 0;">
-            ✏️ YÖNETİCİ: Fareyle basılı tutup sürükleyerek birden fazla hücreyi topluca seçebilir, silebilir veya doldurabilirsiniz. İşlem bitince "Kaydet / Güncelle" butonuna basın!
+        <p class="admin-hint" id="adminHint" style="display:none; text-align:center; color:#059669; font-weight:bold; font-size:14px; margin:6px 0;">
+            📱 MOBİL YÖNETİCİ MODU: Tablodaki kutucuklara parmağınızla dokunarak tek tek seçebilir veya "📏 Aralık Seç" butonunu açıp ilk ve son güne dokunarak (Örn: 1 Kasım -> 10 Kasım) topluca seçebilirsiniz!
         </p>
         
         <div id="unpublishedWarning" class="unpublished-box" style="display: none;">
@@ -265,7 +276,7 @@
             </div>
             
             <div style="flex: 2; min-width: 600px;">
-                <div class="table-responsive" style="margin-bottom: 20px; max-height: 80vh;">
+                <div class="table-responsive" style="margin-bottom: 20px;">
                     <h4 style="margin: 0 0 10px 0; padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:5px;">👥 Ana Liste Yönetimi</h4>
                     <table style="width: 100%;">
                         <thead>
@@ -283,7 +294,7 @@
                     </table>
                 </div>
 
-                <div class="table-responsive" style="max-height: 80vh;">
+                <div class="table-responsive">
                     <h4 style="margin: 0 0 10px 0; padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:5px;">🌙 Gece Yatsı Listesi Yönetimi</h4>
                     <table style="width: 100%;">
                         <thead>
@@ -317,7 +328,6 @@
     
     let db = { names: [], evciList: [], geceYatsiList: [], shifts: [], pastShiftsRecords: {}, manualHours: {}, apolet: {}, publishedMonths: {} };
     
-    // Her ayın taslağını ayrı tutarak 30-31 gün geçişlerindeki 'undefined' hatasını önler
     let draftMemory = {}; 
     let currentDraftMain = null;
     let currentDraftGy = null;
@@ -325,7 +335,10 @@
     let currentMonthInfo = {};
     let adminMode = false;
 
-    // Toplu Hücre Seçimi Değişkenleri
+    // Mobil Dokunmatik & Fare Seçim Değişkenleri
+    let touchSelectMode = true; // Yönetici modunda varsayılan olarak dokunarak kutucuk seçme açık
+    let rangeSelectMode = false; // İki kutucuk arasını blok olarak seçme
+    let rangeAnchorCell = null;
     let isDraggingCells = false;
     let dragStartCell = null;
     let selectedCellsSet = new Set();
@@ -379,27 +392,29 @@
             if(db.apolet[n] === undefined || db.apolet[n] === "") db.apolet[n] = defaultApolet[n] || "";
         });
         document.getElementById('shiftsInput').value = db.shifts.join(', ');
-        populateBulkPresetSelect();
+        populateQuickShiftButtons();
     }
 
     function saveDB() { localStorage.setItem('nobetDB_V16', JSON.stringify(db)); }
 
-    function populateBulkPresetSelect() {
-        const sel = document.getElementById('bulkPresetSelect');
-        if(!sel) return;
-        let html = '<option value="">Hızlı Değer Seç...</option>';
-        db.shifts.forEach(s => { html += `<option value="${s}">Vardiya: ${s}</option>`; });
-        html += '<option value="İzinli">Durum: İzinli</option>';
-        html += '<option value="Raporlu">Durum: Raporlu</option>';
-        html += '<option value="Görevli">Durum: Görevli</option>';
-        sel.innerHTML = html;
+    function populateQuickShiftButtons() {
+        const container = document.getElementById('bulkQuickBtns');
+        if(!container) return;
+        let html = '<span style="font-size:13px; color:#94a3b8; margin-right:4px;">Tek Dokunuşla Ata:</span>';
+        db.shifts.forEach(s => {
+            html += `<button class="quick-shift-btn" onclick="applyQuickShift('${s}')">${s}</button>`;
+        });
+        html += `<button class="quick-shift-btn" style="border-color:#fbbf24; color:#fbbf24;" onclick="applyQuickShift('İzinli')">İzinli</button>`;
+        html += `<button class="quick-shift-btn" style="border-color:#f87171; color:#f87171;" onclick="applyQuickShift('Raporlu')">Raporlu</button>`;
+        html += `<button class="quick-shift-btn" style="border-color:#a78bfa; color:#a78bfa;" onclick="applyQuickShift('Görevli')">Görevli</button>`;
+        container.innerHTML = html;
     }
 
     function exportData() {
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
         const a = document.createElement('a');
         a.setAttribute("href", dataStr);
-        a.setAttribute("download", "nobet_sistemi_yedek_v17.json");
+        a.setAttribute("download", "nobet_sistemi_yedek_v18.json");
         document.body.appendChild(a); a.click(); a.remove();
     }
 
@@ -426,7 +441,6 @@
         }
     }
 
-    // DÜZELTME: Mühürlenmiş / Kaydedilmiş ayı da tamamen sıfırlayabilme
     function clearDraft() {
         const monthVal = document.getElementById('monthPicker').value;
         if(!monthVal) return;
@@ -451,6 +465,8 @@
             clearCellSelection();
             document.getElementById('adminTabBtn').style.display = 'none';
             document.getElementById('adminHint').style.display = 'none';
+            document.getElementById('btnTouchMode').style.display = 'none';
+            document.getElementById('btnRangeMode').style.display = 'none';
             document.getElementById('btnGenerate').style.display = 'none'; 
             document.getElementById('btnClearDraft').style.display = 'none'; 
             document.getElementById('btnSave').style.display = 'none'; 
@@ -462,15 +478,52 @@
             const pass = prompt("Yönetici Şifresini Giriniz:");
             if(pass === "nöbetyazar16") {
                 adminMode = true;
+                touchSelectMode = true;
                 document.getElementById('adminTabBtn').style.display = 'inline-block';
+                document.getElementById('btnTouchMode').style.display = 'inline-block';
+                document.getElementById('btnRangeMode').style.display = 'inline-block';
                 document.getElementById('btnGenerate').style.display = 'inline-block'; 
                 document.getElementById('btnClearDraft').style.display = 'inline-block'; 
                 document.getElementById('btnSave').style.display = 'inline-block'; 
                 document.getElementById('btnCommit').style.display = 'inline-block'; 
                 document.getElementById('loginBtn').innerText = '🔓 Çıkış Yap';
                 document.getElementById('adminHint').style.display = 'block';
-                handleMonthChange(); openTab('panel');
+                handleMonthChange(); openTab('cizelge');
             } else if (pass !== null) { alert("Hatalı şifre!"); }
+        }
+    }
+
+    function toggleTouchSelectMode() {
+        touchSelectMode = !touchSelectMode;
+        const btn = document.getElementById('btnTouchMode');
+        const rBtn = document.getElementById('btnRangeMode');
+        if(touchSelectMode) {
+            btn.innerText = "👆 Dokunarak Seç: AÇIK";
+            btn.style.background = "#0284c7";
+            rBtn.style.display = "inline-block";
+        } else {
+            btn.innerText = "⌨️ Klavyeyle Direkt Yaz: AÇIK";
+            btn.style.background = "#7c3aed";
+            rBtn.style.display = "none";
+            clearCellSelection();
+        }
+        const { year, month, numDays } = currentMonthInfo;
+        renderCizelge(year, month, numDays);
+    }
+
+    function toggleRangeSelectMode() {
+        rangeSelectMode = !rangeSelectMode;
+        if(rangeAnchorCell) {
+            rangeAnchorCell.classList.remove('range-anchor-cell');
+            rangeAnchorCell = null;
+        }
+        const rBtn = document.getElementById('btnRangeMode');
+        if(rangeSelectMode) {
+            rBtn.innerText = "📏 Aralık Seç: AÇIK (1. ve 2. Kutuya Dokun)";
+            rBtn.style.background = "#d97706";
+        } else {
+            rBtn.innerText = "📏 Aralık Seç: KAPALI";
+            rBtn.style.background = "#64748b";
         }
     }
 
@@ -490,7 +543,6 @@
         if(tabId !== 'cizelge') clearCellSelection();
     }
 
-    // GECE NÖBETİ TESPİT FONKSİYONU (22-00, 00-02, 02-04, 04-06 = Gece)
     function isNightShift(shift) {
         if(!shift) return false;
         let parts = shift.split('-');
@@ -538,7 +590,6 @@
         return total;
     }
 
-    // Personelin geçmişte hangi nöbet saatini kaç kez tuttuğunu ve en son hangi nöbeti tuttuğunu analiz eder
     function getPersonShiftHistory(name, targetMonth, upToDayIndex = -1) {
         let counts = {};
         db.shifts.forEach(s => counts[s] = 0);
@@ -580,7 +631,6 @@
         return false;
     }
 
-    // DÜZELTME: Ay geçişlerinde dizi boyutu (30 vs 31 gün / Haftasonu sayısı) tam uyumlu hale getirildi
     function ensureDraftStructure(monthVal, numDays, wkCount) {
         if (db.publishedMonths[monthVal]) {
             currentDraftMain = JSON.parse(JSON.stringify(db.publishedMonths[monthVal].main));
@@ -649,10 +699,6 @@
         applyRowHighlightOnly();
     }
 
-    // YENİ AKILLI ÇARK ALGORİTMASI:
-    // 1) Hücre Koruma (Elle yazılanlara dokunmaz)
-    // 2) Bir Gece - Bir Gündüz Kuralı (Gece tutana sonraki nöbette Gündüz verir)
-    // 3) Aynı Nöbet Saatinin Tekrar Etmemesi (Geçmişte aynı saati tutanlara ceza puanı vererek farklı saat atar)
     function spinWheel() {
         const monthVal = document.getElementById('monthPicker').value;
         if(!monthVal) return;
@@ -678,7 +724,6 @@
             for(let shift of db.shifts) {
                 if (isWeekend && (shift.includes("08-13") || shift.includes("13-18"))) continue; 
                 
-                // HÜCRE KORUMA 1: Bu vardiya bugün başkasına elle yazılmış mı?
                 let shiftAssigned = false;
                 for(let n of db.names) {
                     if(currentDraftMain[n] && currentDraftMain[n][day-1] === shift) {
@@ -693,34 +738,27 @@
 
                 for(let i=0; i<queueMain.length; i++) {
                     let candidate = queueMain[i];
-                    // HÜCRE KORUMA 2: Bugün zaten nöbeti/izni var mı?
                     if(currentDraftMain[candidate] && currentDraftMain[candidate][day-1] && currentDraftMain[candidate][day-1].trim() !== "") continue;
-                    // Evci kısıtlaması
                     if (db.evciList.includes(candidate) && isRestrictedForEvci(dateObj, shift)) continue;
                     
-                    // Aday Puanlaması (Düşük puan = En uygun aday)
                     let totalHrs = calculatePriorHours(candidate, monthVal, true);
                     let hist = getPersonShiftHistory(candidate, monthVal, day - 2);
-                    let score = totalHrs * 100 + i; // Saat adaleti + sıra önceliği
+                    let score = totalHrs * 100 + i;
 
-                    // KURAL 1: Dün nöbet tuttuysa üst üste gün yazmamak için ceza puanı
                     if (day >= 2 && currentDraftMain[candidate][day-2] && getShiftHours(currentDraftMain[candidate][day-2]) > 0) {
                         score += 50000;
                     }
 
-                    // KURAL 2: Bir Gece - Bir Gündüz Kuralı
                     if (hist.lastShift) {
                         let lastWasNight = isNightShift(hist.lastShift);
                         if (lastWasNight === targetIsNight) {
-                            score += 15000; // Son nöbeti geceyse tekrar gece verme (veya gündüzse tekrar gündüz verme)
+                            score += 15000;
                         }
-                        // Son tuttuğu nöbet tam olarak aynı saat dilimiyse ekstra engelle
                         if (hist.lastShift === shift) {
                             score += 10000;
                         }
                     }
 
-                    // KURAL 3: Önceki aylarda veya bu ayda aynı nöbet saatini tutmuşsa farklı saat gelmesini sağla
                     let sameShiftCount = hist.counts[shift] || 0;
                     score += sameShiftCount * 800;
 
@@ -738,7 +776,6 @@
             }
         }
 
-        // Gece Yatsı (Haftasonu) Çarkı - Aynı vardiya tekrarını önleyerek dağıtır
         let queueGy = [...db.geceYatsiList].sort((a, b) => calculatePriorHours(a, monthVal, true) - calculatePriorHours(b, monthVal, true));
         const wShifts = ["08-13", "13-18"];
         
@@ -760,7 +797,6 @@
                     let totalHrs = calculatePriorHours(candidate, monthVal, true);
                     let score = totalHrs * 100 + i;
 
-                    // Önceki haftasonu nöbetiyle aynı saat olmasın (08-13 tuttuysa 13-18 gelsin)
                     let lastGyShift = null;
                     for(let prev=0; prev<index; prev++) {
                         if(currentDraftGy[candidate][prev]) lastGyShift = currentDraftGy[candidate][prev];
@@ -816,14 +852,14 @@
         alert("Eski ay mühürlendi. " + nextM + " ayına geçtiniz!");
     }
 
-    // ================= FARE İLE SÜRÜKLEYEREK TOPLU HÜCRE SEÇİMİ =================
+    // ================= MOBİL DOKUNARAK & FARE İLE SEÇİM SİSTEMİ =================
     function setupBulkSelectionListeners() {
         document.addEventListener('mouseup', () => { isDraggingCells = false; });
         document.addEventListener('keydown', (e) => {
-            if(!adminMode || selectedCellsSet.size < 2) return;
+            if(!adminMode || selectedCellsSet.size < 1) return;
             if(e.key === 'Delete' || e.key === 'Backspace') {
                 const activeTag = document.activeElement ? document.activeElement.tagName : '';
-                if(activeTag === 'INPUT' || activeTag === 'SELECT') return;
+                if(activeTag === 'INPUT' || activeTag === 'SELECT' || !touchSelectMode) return;
                 e.preventDefault();
                 clearSelectedCells();
             } else if(e.key === 'Escape') {
@@ -832,21 +868,57 @@
         });
     }
 
+    // Telefonda veya bilgisayarda kutucuğa dokunulduğunda (tıklandığında) çalışır
+    function onCellTap(e, td) {
+        if(!adminMode || !touchSelectMode) return;
+        e.preventDefault();
+
+        // Eğer "Aralık Seç" modu açıksa 1. kutu ile 2. kutu arasındaki tüm bloğu seçer
+        if(rangeSelectMode) {
+            if(!rangeAnchorCell || rangeAnchorCell.getAttribute('data-list') !== td.getAttribute('data-list')) {
+                if(rangeAnchorCell) rangeAnchorCell.classList.remove('range-anchor-cell');
+                rangeAnchorCell = td;
+                td.classList.add('range-anchor-cell');
+                selectCell(td);
+                updateBulkToolbar();
+                return;
+            } else {
+                const listType = td.getAttribute('data-list');
+                const r1 = parseInt(rangeAnchorCell.getAttribute('data-row'));
+                const c1 = parseInt(rangeAnchorCell.getAttribute('data-idx'));
+                const r2 = parseInt(td.getAttribute('data-row'));
+                const c2 = parseInt(td.getAttribute('data-idx'));
+                const minR = Math.min(r1, r2), maxR = Math.max(r1, r2);
+                const minC = Math.min(c1, c2), maxC = Math.max(c1, c2);
+
+                document.querySelectorAll(`td[data-list="${listType}"]`).forEach(cell => {
+                    const cr = parseInt(cell.getAttribute('data-row'));
+                    const cc = parseInt(cell.getAttribute('data-idx'));
+                    if(cr >= minR && cr <= maxR && cc >= minC && cc <= maxC) {
+                        selectCell(cell);
+                    }
+                });
+                rangeAnchorCell.classList.remove('range-anchor-cell');
+                rangeAnchorCell = null;
+                updateBulkToolbar();
+                return;
+            }
+        }
+
+        // Normal Dokunarak Seçim: Dokunulan kutuyu mavi seçer, tekrar dokunulursa seçimi kaldırır
+        toggleCellSelect(td);
+        updateBulkToolbar();
+    }
+
     function onCellMouseDown(e, td) {
-        if(!adminMode) return;
-        if(e.button !== 0) return; // Sadece sol tık
+        if(!adminMode || !touchSelectMode) return;
+        if(e.button !== 0) return;
         isDraggingCells = true;
         dragStartCell = td;
-        if(!e.ctrlKey && !e.metaKey) {
-            clearCellSelection();
-        } else {
-            toggleCellSelect(td);
-            updateBulkToolbar();
-        }
     }
 
     function onCellMouseEnter(e, td) {
-        if(!adminMode || !isDraggingCells) return;
+        if(!adminMode || !touchSelectMode || !isDraggingCells) return;
         if(dragStartCell && !selectedCellsSet.has(dragStartCell)) {
             selectCell(dragStartCell);
         }
@@ -873,6 +945,10 @@
     function clearCellSelection() {
         selectedCellsSet.forEach(td => td.classList.remove('selected-cell'));
         selectedCellsSet.clear();
+        if(rangeAnchorCell) {
+            rangeAnchorCell.classList.remove('range-anchor-cell');
+            rangeAnchorCell = null;
+        }
         dragStartCell = null;
         updateBulkToolbar();
     }
@@ -880,12 +956,18 @@
     function updateBulkToolbar() {
         const bar = document.getElementById('bulkToolbar');
         const countTxt = document.getElementById('bulkCountText');
-        if(adminMode && selectedCellsSet.size >= 2) {
+        // Mobilde 1 kutucuk bile seçilse alt çubuk hemen açılır!
+        if(adminMode && touchSelectMode && selectedCellsSet.size >= 1) {
             bar.style.display = 'flex';
-            countTxt.innerText = `${selectedCellsSet.size} Hücre Seçildi`;
+            countTxt.innerText = `${selectedCellsSet.size} Kutucuk Seçildi`;
         } else {
             bar.style.display = 'none';
         }
+    }
+
+    function applyQuickShift(val) {
+        document.getElementById('bulkCustomInput').value = val;
+        applyBulkValue();
     }
 
     function applyBulkValue() {
@@ -923,6 +1005,8 @@
         document.getElementById('printTitleMain').innerText = `${monthsTR[month-1].toUpperCase()} ${year} ANA NÖBET ÇİZELGESİ`;
         document.getElementById('printTitleWeekend').innerText = `${monthsTR[month-1].toUpperCase()} ${year} HAFTASONU GÜNDÜZ ÇİZELGESİ`;
         
+        const isDirectEdit = (adminMode && !touchSelectMode);
+
         let htmlMain = '<table id="cizelgeTablosu"><thead><tr><th rowspan="2">S.N</th><th rowspan="2">Apolet No</th><th rowspan="2">Personel Adı</th>';
         for(let d=1; d<=numDays; d++) { htmlMain += `<th>${d}</th>`; }
         htmlMain += '</tr><tr>';
@@ -941,10 +1025,10 @@
                 const isWeekend = (dateObj.getDay() === 0 || dateObj.getDay() === 6);
                 const rawVal = (currentDraftMain[name] && currentDraftMain[name][d-1] !== undefined) ? currentDraftMain[name][d-1] : "";
                 const val = rawVal || "";
-                let cellClass = adminMode ? 'editable-cell' : '';
+                let cellClass = isDirectEdit ? 'editable-cell' : (adminMode ? 'touch-selectable' : '');
                 if (isWeekend && !val) cellClass += ' empty-weekend';
                 else if (isWeekend && val) cellClass += ' weekend';
-                htmlMain += `<td class="${cellClass}" data-list="main" data-name="${name}" data-idx="${d-1}" onmousedown="onCellMouseDown(event, this)" onmouseenter="onCellMouseEnter(event, this)" contenteditable="${adminMode}" onblur="updateCellVal('main', '${name}', ${d-1}, this)"><span style="display:block; letter-spacing:-0.5px;">${val}</span></td>`;
+                htmlMain += `<td class="${cellClass}" data-list="main" data-row="${index}" data-name="${name}" data-idx="${d-1}" onclick="onCellTap(event, this)" onmousedown="onCellMouseDown(event, this)" onmouseenter="onCellMouseEnter(event, this)" contenteditable="${isDirectEdit}" onblur="updateCellVal('main', '${name}', ${d-1}, this)"><span style="display:block; letter-spacing:-0.5px;">${val}</span></td>`;
             }
             htmlMain += `</tr>`;
         });
@@ -966,7 +1050,8 @@
                 currentWeekendDays.forEach((dayNum, i) => {
                     const rawVal = (currentDraftGy[name] && currentDraftGy[name][i] !== undefined) ? currentDraftGy[name][i] : "";
                     const val = rawVal || "";
-                    htmlWk += `<td class="${adminMode ? 'editable-cell' : ''} weekend" data-list="gece" data-name="${name}" data-idx="${i}" onmousedown="onCellMouseDown(event, this)" onmouseenter="onCellMouseEnter(event, this)" contenteditable="${adminMode}" onblur="updateCellVal('gece', '${name}', ${i}, this)"><span style="display:block; letter-spacing:-0.5px;">${val}</span></td>`;
+                    let wkClass = isDirectEdit ? 'editable-cell weekend' : (adminMode ? 'touch-selectable weekend' : 'weekend');
+                    htmlWk += `<td class="${wkClass}" data-list="gece" data-row="${index}" data-name="${name}" data-idx="${i}" onclick="onCellTap(event, this)" onmousedown="onCellMouseDown(event, this)" onmouseenter="onCellMouseEnter(event, this)" contenteditable="${isDirectEdit}" onblur="updateCellVal('gece', '${name}', ${i}, this)"><span style="display:block; letter-spacing:-0.5px;">${val}</span></td>`;
                 });
                 htmlWk += `</tr>`;
             });
@@ -1022,7 +1107,6 @@
         const includePastCols = document.getElementById('includePastRecordsInCols').checked;
         const rangeMonths = getMonthsInRange(startM, endM);
 
-        // Kullanıcı modunda seçilen aralıkta yayınlanmış ay var mı kontrolü
         let validMonthsForView = rangeMonths.filter(m => adminMode || !!db.publishedMonths[m]);
         if(validMonthsForView.length === 0) {
             document.getElementById('adaletUnpublishedWarning').style.display = 'block';
@@ -1226,7 +1310,7 @@
         const input = document.getElementById('shiftsInput').value;
         const newShifts = input.split(',').map(s => s.trim()).filter(s => s.length > 0);
         if(newShifts.length === 0) return alert("En az bir saat dilimi girmelisiniz!");
-        db.shifts = newShifts; saveDB(); populateBulkPresetSelect(); alert("Saatler güncellendi!");
+        db.shifts = newShifts; saveDB(); populateQuickShiftButtons(); alert("Saatler güncellendi!");
     }
 
     function addPerson() {
@@ -1276,7 +1360,6 @@
         if(allNames.includes(currentVal)) search.value = currentVal;
     }
 
-    // ================= ÖN YÜZ (MODAL) BİLGİ KARTI VE TABLO GEÇİŞİ =================
     function onUserSearchSelect() {
         const selected = document.getElementById('userSearch').value;
         document.getElementById('clearHighlightBtn').style.display = selected ? 'inline-block' : 'none';
