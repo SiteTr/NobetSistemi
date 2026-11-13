@@ -6,8 +6,8 @@
     <title>Bölük Nöbet Sistemi</title>
     <style>
         :root { --primary: #002060; --secondary: #1F4E78; --bg: #f5f7fa; --evci-bg: #e5e7eb; --weekend-bg: #dbeafe; --empty-weekend: #fed7aa; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: var(--bg); color: #333; }
-        .app-container { padding: 10px; max-width: 100%; overflow-x: hidden; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: var(--bg); color: #333; user-select: none; }
+        .app-container { padding: 10px; max-width: 100%; overflow-x: hidden; padding-bottom: 80px; }
         
         .header { background-color: var(--primary); color: white; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); position: relative; }
         .login-btn { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.5); padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: bold; transition: 0.2s; }
@@ -29,10 +29,10 @@
         .btn-warning { background-color: #d97706; color: white; border: none; font-weight: bold; cursor: pointer; }
         .btn-print { background-color: #475569; color: white; border:none; font-weight: bold; cursor: pointer; }
         .btn-danger { background-color: #dc2626; color: white; border:none; font-size: 12px; cursor:pointer; padding: 6px 12px; font-weight:bold; }
-        .btn-icon { background: #cbd5e1; border: none; border-radius: 3px; cursor: pointer; font-size: 14px; padding: 2px 6px; }
+        .btn-icon { background: #cbd5e1; border: none; border-radius: 3px; cursor: pointer; font-size: 14px; padding: 4px 8px; }
         .btn-icon:hover { background: #94a3b8; }
         
-        /* Yeni Yönetici Panel Butonları */
+        /* Yönetici Panel Butonları */
         .btn-status { padding: 6px 12px; font-size: 13px; font-weight: bold; border-radius: 4px; cursor: pointer; border: 1px solid #ccc; width: 100%; white-space: nowrap; }
         .btn-status-evci { background-color: #fee2e2; color: #991b1b; border-color: #f87171; }
         .btn-status-normal { background-color: #f0fdf4; color: #166534; border-color: #4ade80; }
@@ -41,22 +41,34 @@
         .search-box { display: flex; align-items: center; background: #fff; border: 2px solid var(--secondary); border-radius: 5px; overflow: hidden; padding: 0 5px; }
         .search-box select { border: none; outline: none; font-weight: bold; color: var(--secondary); padding: 8px; background: transparent; cursor: pointer; }
 
-        .user-card { background: #fff; border: 2px solid var(--secondary); border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden; display: none; }
-        .card-header { background: var(--secondary); color: white; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; }
-        .card-header h3 { margin: 0; font-size: 16px; }
-        .card-badge { background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
-        .card-stats { display: flex; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
-        .card-stats > div { flex: 1; padding: 10px; text-align: center; border-right: 1px solid #e2e8f0; }
+        /* ÖN YÜZ (MODAL) BİLGİ KARTI TASARIMI */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(3px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 15px; box-sizing: border-box; }
+        .user-card { background: #fff; border: 2px solid var(--secondary); border-radius: 12px; width: 100%; max-width: 600px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); overflow: hidden; animation: modalPop 0.2s ease-out; }
+        @keyframes modalPop { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .card-header { background: var(--primary); color: white; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; }
+        .card-header h3 { margin: 0; font-size: 17px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .card-close-btn { background: #dc2626; color: white; border: none; width: 32px; height: 32px; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .card-close-btn:hover { background: #b91c1c; transform: scale(1.05); }
+        .card-badge { background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .card-stats { display: grid; grid-template-columns: repeat(3, 1fr); background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+        .card-stats > div { padding: 12px 8px; text-align: center; border-right: 1px solid #e2e8f0; }
         .card-stats > div:last-child { border-right: none; }
-        .card-stats span { display: block; font-size: 11px; color: #64748b; text-transform: uppercase; margin-bottom: 3px; font-weight:bold; }
+        .card-stats span { display: block; font-size: 11px; color: #64748b; text-transform: uppercase; margin-bottom: 4px; font-weight:bold; }
         .card-stats strong { font-size: 15px; color: var(--primary); }
         .card-stats .total { background: #d1fae5; }
         .card-stats .total strong { color: #047857; font-size:16px; }
-        .card-shifts-title { padding: 12px 15px 5px; font-size: 13px; font-weight: bold; color: #333; }
-        .card-shifts-list { padding: 10px 15px 15px; display: flex; flex-wrap: wrap; gap: 8px; }
+        .card-shifts-title { padding: 14px 18px 6px; font-size: 13px; font-weight: bold; color: #333; }
+        .card-shifts-list { padding: 8px 18px 18px; display: flex; flex-wrap: wrap; gap: 8px; max-height: 260px; overflow-y: auto; }
         .shift-badge { background: #e0f2fe; border: 1px solid #7dd3fc; color: #0369a1; padding: 6px 10px; border-radius: 6px; font-size: 13px; }
-        
-        .table-responsive { overflow-x: auto; max-height: 65vh; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 20px; }
+        .shift-badge.night { background: #ede9fe; border-color: #c4b5fd; color: #5b21b6; }
+        .card-footer { padding: 12px 18px; background: #f1f5f9; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px; }
+
+        /* TOPLU HÜCRE SEÇİM ÇUBUĞU */
+        .bulk-toolbar { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); background: #0f172a; color: white; padding: 10px 18px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.35); z-index: 950; display: none; align-items: center; gap: 10px; flex-wrap: wrap; border: 2px solid #38bdf8; }
+        .bulk-toolbar select, .bulk-toolbar input { padding: 6px 10px; font-size: 13px; border-radius: 5px; border: none; }
+        .selected-cell { background-color: #bae6fd !important; outline: 2px solid #0284c7 !important; color: #0c4a6e !important; font-weight: bold; }
+
+        .table-responsive { overflow-x: auto; max-height: 68vh; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 20px; }
         table { border-collapse: collapse; width: max-content; font-size: 12px; }
         th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: center; white-space: nowrap; }
         th { background-color: var(--secondary); color: white; position: sticky; top: 0; z-index: 10; }
@@ -70,7 +82,7 @@
         .evci-name { color: #C00000; }
         .weekend { background-color: var(--weekend-bg); }
         .empty-weekend { background-color: var(--empty-weekend); }
-        .editable-cell[contenteditable="true"] { background-color: #fffbdd !important; outline: 1px dashed #94a3b8; cursor: text; }
+        .editable-cell[contenteditable="true"] { background-color: #fffbdd; outline: 1px dashed #94a3b8; cursor: cell; }
         .highlight-mode tr:not(.highlighted-row) { opacity: 0.15; filter: grayscale(100%); transition: 0.3s; }
         .highlighted-row td { background-color: #fef08a !important; color: #b45309 !important; font-weight: 800 !important; border-top: 2px solid #ea580c !important; border-bottom: 2px solid #ea580c !important; font-size: 13px !important; transition: 0.3s; }
         .highlighted-row td:first-child { border-left: 2px solid #ea580c !important; }
@@ -85,12 +97,14 @@
         .file-upload-wrapper { position: relative; overflow: hidden; display: inline-block; width: 100%; margin-top: 5px; }
         .file-upload-wrapper input[type=file] { font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; }
         .btn-upload { background-color: #3b82f6; color: white; border: none; font-weight: bold; cursor: pointer; padding: 8px 12px; border-radius: 5px; width: 100%; }
+        .badge { padding: 3px 6px; background: #C00000; color: white; border-radius: 3px; font-size: 10px; font-weight: bold; }
+        .badge-blue { background: #0284c7; }
 
         @media print {
             @page { size: A4 landscape; margin: 5mm; }
             body { background: white; margin: 0; padding: 0; }
             .app-container { padding: 0; }
-            .header, .tabs, .toolbar, #panel, .login-btn, .admin-hint, .search-box, .user-card { display: none !important; }
+            .header, .tabs, .toolbar, #panel, .login-btn, .admin-hint, .search-box, .modal-overlay, .bulk-toolbar { display: none !important; }
             .tab-content.active { display: block !important; padding: 0; box-shadow: none; }
             .table-responsive { max-height: none !important; overflow: visible !important; border: none !important; margin-bottom: 20px !important; }
             h3.print-title { display: block !important; text-align: center; font-size: 12pt; font-weight: bold; margin: 5px 0 10px 0; color: black; }
@@ -118,14 +132,31 @@
 <div class="app-container">
     <div class="header">
         <h2 style="margin:0; font-size: 20px; text-transform: uppercase;">Bölük Nöbet Sistemi</h2>
-        <p style="margin:5px 0 0 0; font-size: 14px; opacity: 0.9;">Nöbet Otomasyonu V16 (Hücre Koruma & Gelişmiş UI)</p>
+        <p style="margin:5px 0 0 0; font-size: 14px; opacity: 0.9;">Nöbet Otomasyonu V17</p>
         <button id="loginBtn" class="login-btn" onclick="toggleAdmin()">🔒 Yönetici Girişi</button>
     </div>
 
     <div class="tabs">
         <button class="tab-btn active" onclick="openTab('cizelge')">📅 Nöbet Çizelgeleri</button>
-        <button class="tab-btn" onclick="openTab('adalet')">⚖️ Adalet Panosu (Saat Analizi)</button>
+        <button class="tab-btn" onclick="openTab('adalet')">⚖️ Adalet Panosu (Tarih Aralıklı Saat Analizi)</button>
         <button id="adminTabBtn" class="tab-btn" onclick="openTab('panel')">⚙️ Yönetici Paneli</button>
+    </div>
+
+    <!-- ÖN YÜZ (MODAL) KULLANICI BİLGİ KARTI -->
+    <div id="userModalOverlay" class="modal-overlay" onclick="if(event.target===this) closeUserCard(false)">
+        <div id="userCardContainer" class="user-card"></div>
+    </div>
+
+    <!-- YÖNETİCİ TOPLU HÜCRE SEÇİM VE DÜZENLEME ÇUBUĞU -->
+    <div id="bulkToolbar" class="bulk-toolbar">
+        <span id="bulkCountText" style="font-weight:bold; color:#38bdf8; font-size:13px;">0 Hücre Seçildi</span>
+        <select id="bulkPresetSelect" onchange="if(this.value) document.getElementById('bulkCustomInput').value=this.value;">
+            <option value="">Hızlı Değer Seç...</option>
+        </select>
+        <input type="text" id="bulkCustomInput" placeholder="Vardiya veya İzinli/Raporlu yaz..." style="width:170px;">
+        <button class="btn-success" style="padding:6px 12px; font-size:13px;" onclick="applyBulkValue()">✅ Seçililere Uygula</button>
+        <button class="btn-danger" style="padding:6px 12px; font-size:13px;" onclick="clearSelectedCells()">🗑️ Seçilileri Sil (Del)</button>
+        <button class="btn-icon" style="background:#475569; color:white; padding:6px 10px;" onclick="clearCellSelection()">✖ İptal</button>
     </div>
 
     <!-- 1. ÇİZELGE TABI -->
@@ -139,9 +170,10 @@
             
             <div class="search-box">
                 <span style="padding: 0 10px;">🔍</span>
-                <select id="userSearch" onchange="highlightUser()">
+                <select id="userSearch" onchange="onUserSearchSelect()">
                     <option value="">İsminizi Seçin (Nöbet Kartımı Göster)</option>
                 </select>
+                <button id="clearHighlightBtn" class="btn-icon" style="display:none; background:#ef4444; color:white; margin-left:4px;" onclick="closeUserCard(true)" title="Seçimi Temizle">✖</button>
             </div>
             <button id="btnGenerate" class="btn-action" style="display:none;" onclick="spinWheel()">🔄 Çarkı Döndür</button>
             <button id="btnClearDraft" class="btn-danger" style="display:none; background:#ef4444;" onclick="clearDraft()">🧹 Tabloyu Temizle</button>
@@ -150,10 +182,9 @@
             <button class="btn-print" onclick="window.print()">🖨️ A4 Yatay Yazdır</button>
         </div>
         <p class="admin-hint" id="adminHint" style="display:none; text-align:center; color:#059669; font-weight:bold; font-size:13px; margin:5px 0;">
-            ✏️ YÖNETİCİ: Düzenlemelerinizi yapın ve mutlaka "Kaydet / Güncelle" butonuna basın. Kaydedilmeyen aylar personelde gözükmez!
+            ✏️ YÖNETİCİ: Fareyle basılı tutup sürükleyerek birden fazla hücreyi topluca seçebilir, silebilir veya doldurabilirsiniz. İşlem bitince "Kaydet / Güncelle" butonuna basın!
         </p>
         
-        <div id="userCardContainer" class="user-card"></div>
         <div id="unpublishedWarning" class="unpublished-box" style="display: none;">
             ⚠️ Bu ay için nöbet çizelgesi henüz hazırlanmadı veya yönetici tarafından yayınlanmadı.
         </div>
@@ -169,16 +200,29 @@
 
     <!-- 2. ADALET PANOSU -->
     <div id="adalet" class="tab-content">
-        <div class="toolbar">
-            <p style="margin:0; font-size:14px; width:100%;">
-                <strong>Adalet Panosu:</strong> Önceki Kapanmış Aylar + Bu Ay birleştirilir. <strong style="color:#b45309;">(08-13 ve 13-18 vardiyaları haneye 5 saat değil, 2 saat olarak özel eklenir).</strong>
-            </p>
+        <div class="toolbar" style="justify-content: space-between;">
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                <strong>📅 Tarih Aralığı:</strong>
+                <input type="month" id="adaletStartMonth" onchange="renderAdaletPanosu()">
+                <span>ile</span>
+                <input type="month" id="adaletEndMonth" onchange="renderAdaletPanosu()">
+                <button class="btn-action" style="padding:6px 10px; font-size:12px;" onclick="setAdaletRangeCurrent()">Sadece Seçili Ay</button>
+                <button class="btn-warning" style="padding:6px 10px; font-size:12px;" onclick="setAdaletRangeAll()">Tüm Kayıtlı Aylar</button>
+                <label style="font-size:12px; display:flex; align-items:center; gap:4px; cursor:pointer; background:#fff; padding:5px 8px; border-radius:4px; border:1px solid #cbd5e1;">
+                    <input type="checkbox" id="includePastRecordsInCols" checked onchange="renderAdaletPanosu()">
+                    Panelden Eklenen Geçmiş Vardiyaları Sütunlara Dahil Et
+                </label>
+            </div>
             <button class="btn-print" onclick="window.print()">🖨️ Adalet Panosunu Yazdır</button>
         </div>
+        <p style="margin:0 0 10px 0; font-size:13px; text-align:center; color:#475569;">
+            <strong>Bilgi:</strong> Seçtiğiniz tarih aralığındaki tüm aylar toplanarak kimin hangi saati (Örn: 02-04) kaç kez tuttuğu aşağıda listelenir. <strong style="color:#b45309;">(08-13 ve 13-18 vardiyaları 2 saat sayılır).</strong>
+        </p>
         <div id="adaletUnpublishedWarning" class="unpublished-box" style="display: none;">
-            ⚠️ Bu ay henüz yayınlanmadığı için analiz yapılamıyor.
+            ⚠️ Seçilen tarih aralığında henüz yayınlanmış bir nöbet çizelgesi bulunmuyor.
         </div>
         <div id="adaletWrapper">
+            <h3 class="print-title" id="printTitleAdalet">ADALET PANOSU SAAT ANALİZİ</h3>
             <div class="table-responsive" id="adaletContainerMain"></div>
             <h3 style="text-align:center; color:#8b0000; margin-top:20px;">Gece Yatsı Listesi (Saat Analizi)</h3>
             <div class="table-responsive" id="adaletContainerWeekend"></div>
@@ -269,19 +313,27 @@
     const daysNameTR = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
     const monthsTR = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
     
-    // Apolet Default List is injected perfectly in python but for safety in pure HTML I will just set an empty baseline if omitted.
     const defaultApolet = {"İsmet Mutlu FAKİR": "1", "İlker ÖZTÜRK": "2", "Hakan ÇELİK": "3", "Salih Yiğit EVEZ": "4", "Resul KULAK": "5", "Ramazan DENİZ": "6", "Alper BAŞCI": "7", "İsmail GENÇ": "8", "Vefa DENİZHAN": "9", "Bekir İlker ERDEM": "10", "Azmi KOÇ": "11", "Hüseyin ÇAPRAZ": "12", "Köksal BAL": "13", "Yakup KILIÇ": "14", "Harun DENİZ": "15", "Aykut MUTLU": "16", "Muhammet İkbal DOĞAN": "17", "Ali KILIÇ": "18", "Sefa KARA": "19", "Adem TURAN": "20", "Mehmet SAKMAN": "21", "Muhammed İNCİR": "22", "Ali TÜRK": "23", "Melih AYDIN": "24", "Abdulgani AKBAŞ": "25", "Metin NESNE": "26", "Emir BESTEL": "27", "Hasan ÖZCAN": "28", "Mücahit DURDU": "29", "Enes AKSU": "30", "Yasin ŞERAS": "31", "Muhiddin GÜRSEL": "32", "Tayip ŞENYİĞİT": "33", "Mehmet Sadık OKTAY": "34", "Feridun ALBAKIR": "35", "Mücahit YÜKSEL": "36", "Sefa SAĞLAM": "37", "Mustafa SALCI": "38", "Kürşat CERRAH": "39", "Muhammet Gökhan BURAKLAR": "40", "Fuat TAT": "41", "Muhammed Kasım ÖZCAN": "42", "Uğur Ege ŞAHİN": "43", "Burak ÖZEL": "44", "Muhammet KARADENİZ": "45", "Berk ATAR": "46", "Burak DÜZENLİ": "47", "Emre BOLAT": "48", "Nazım ÇETİNEL": "49", "Bilal BOZKURT": "50", "Sezer ARSLAN": "51", "Fatih BALI": "52", "Muhammet Sait CAYMAZ": "53", "Hasan SARITEPE": "54", "Yusuf Ziya ÖZTÜRK": "55", "Halis Berk YILDIZ": "56", "Hasan Hüseyin SALMAN": "57", "Mert KAYA": "58", "Metin YILDIRIM": "59", "Yavuz YILMAZ": "60", "Gökhan ÖZDEMİR": "61", "Selahi KONAK": "62", "Cengiz CANYURT": "63", "Yusuf İzzet YILDIRIM": "64", "Samet YÜKSEL": "65", "Umut ÇEKİN": "66", "Arda ŞEN": "67", "Muhammet Furkan BOZGEYİK": "68", "Ekrem AYYILDIZ": "69", "Orhan KURT": "70", "Emre YİĞİT": "71", "Ahmet EĞİLMEZ": "72", "Faruk DERE": "73", "İlyas İÇEN": "74", "Abdulkadir SIĞIRCI": "75", "Ahmet TAŞHANLI": "76", "Halis ÇILDIR": "77", "Ali Osman KAYA": "78", "Davut BEGEÇ": "79", "Halil Nurullah GÜNGÖR": "80", "Tayfun BADURLUOĞLU": "81", "Ensar Gökbuğra ALEMDAR": "82", "Ömer Faruk BULUT": "83", "Samet TOPKARA": "84", "Muhammed Yusuf KOYUNCU": "85", "Ali Can MEMİŞOĞLU": "86", "Ahmet Turan ÇALÇİK": "87", "Tunahan KAYADELEN": "88", "Furkan GÖKSU": "89", "Ümit SOYLU": "90", "Rafet DEDE": "91", "Yasin AKŞAHİN": "92", "Mustafa AKGÜN": "93", "Mustafa KARABOĞAZ": "94", "Emre GEZER": "95", "Oğuzhan KARAÇAY": "96", "Mehmet YILDIRIM": "97", "Mustafa BİÇİCİ": "98", "Doğan DEMİR": "99", "Volkan YILMAZ": "100", "Muhammet ALTIAY": "101", "Serhat HIRACI": "102", "Vedat ÇİFTÇİ": "103", "Mehmet Zeki SERTDEMİR": "104", "Melih ALTAŞ": "105", "İsmet İslam BAYBURT": "106", "Atakan CEYHUN": "107", "Servet KAMACI": "108", "Alparslan YAYLACI": "109", "Aykut GÜLER": "110", "Burak KİŞİ": "111", "Volkan ÖZKAN": "112", "Sait Tunahan CENGİZ": "113", "Kerem ÖZTÜRK": "114", "Mehmet DEKTAŞ": "115", "Emre Can ÜSTÜN": "116", "İsmail Mert KARAGÖZOĞLU": "117", "Sezer YOLCU": "118", "Furkan KAYIKÇI": "119", "Mustafa ÇAKIR": "120", "Abdülbaki SERDAROĞLU": "121", "Tuncay KÜÇÜK": "122", "Ahmet ÖZBUNAR": "123", "Muhammed Yaşar BASTEM": "124", "Abdülkadir ERDURMUŞ": "125", "Buğrahan GÜLER": "126", "Barış BAŞ": "127", "Yunus BABİ": "128", "Talha TIĞCI": "129", "Hüseyin TANRIKULU": "130", "Eyüp KAYAALP": "131", "Burakcan ERGÜL": "132", "Emre ERDOĞAN": "133", "Ömer GÖKTÜRK": "134", "Ferhat AKSAKALLI": "135", "Burak CEYLAN": "136", "Yusuf BIYIKLI": "137", "İbrahim Enes ÜNLÜ": "138", "Mahmut TEK": "139", "Yusuf MERAL": "140", "Mutlucan IŞIK": "141", "Sabri ŞEN": "142", "Muhammed Enes DÖĞER": "143", "Hazar Eren YÜZÜAK": "144", "Mehmet TOPAL": "145", "Ahmet ŞEN": "146", "Samet ÖZBİÇİCİ": "147", "Emre ALPASLAN": "148", "Adem KARACA": "149", "Muhammed Talha PİSTİL": "150", "Hasan Bilgehan ÜN": "151", "Akif ÇOMULU": "152", "Serhat KAFA": "153", "Mete ATEŞ": "154", "Musa YILDIRIM": "155", "Murat KAYA": "156", "Salih TOSUN": "157", "Yunus ORDU": "158", "Güngör GÜNDİNÇ": "159", "Adem ÇOLAK": "160", "Turan YILDIRIM": "161", "Berat KAYA": "162", "Selçuk KAYIK": "163", "Okan Yasin GÖMLEKSİZ": "164", "Muharrem KABALAK": "165", "Ahmet KAZI": "166", "Semih HAYAL": "167", "Ömürhan Halil DENİZ": "168", "Haci Bekir DEMİREL": "169", "Abdullah İhsan TİYEK": "170", "Erkan PUL": "171", "Abdulkadir KAPLAN": "172", "Faruk GÜN": "173", "Hüseyin YAKAR": "174", "Sinan AÇIKGÖZ": "175", "Burak ŞAYIK": "176", "İrfan AĞDAĞ": "177", "Hüseyin AKSÜT": "178", "Furkan TEPELİ": "179", "Burak ÇİV": "180", "Serhat ARVAS": "181", "Enes ÇAVAŞ": "182", "Abdulkadir AY": "183", "Abdullah ARVAS": "184"};
     
     let db = { names: [], evciList: [], geceYatsiList: [], shifts: [], pastShiftsRecords: {}, manualHours: {}, apolet: {}, publishedMonths: {} };
+    
+    // Her ayın taslağını ayrı tutarak 30-31 gün geçişlerindeki 'undefined' hatasını önler
+    let draftMemory = {}; 
     let currentDraftMain = null;
     let currentDraftGy = null;
     let currentWeekendDays = [];
     let currentMonthInfo = {};
     let adminMode = false;
 
+    // Toplu Hücre Seçimi Değişkenleri
+    let isDraggingCells = false;
+    let dragStartCell = null;
+    let selectedCellsSet = new Set();
+
     window.onload = () => {
         loadDB();
         setInitialMonth();
+        setupBulkSelectionListeners();
         handleMonthChange();
     };
     
@@ -292,6 +344,9 @@
             const m = String(today.getMonth() + 1).padStart(2, '0');
             document.getElementById('monthPicker').value = `${y}-${m}`;
         }
+        const curM = document.getElementById('monthPicker').value;
+        document.getElementById('adaletStartMonth').value = curM;
+        document.getElementById('adaletEndMonth').value = curM;
     }
     
     function changeMonthBy(step) {
@@ -316,22 +371,35 @@
         
         if(!db.pastShiftsRecords) db.pastShiftsRecords = {};
         if(!db.apolet) db.apolet = {...defaultApolet};
+        if(!db.publishedMonths) db.publishedMonths = {};
         
         [...db.names, ...db.geceYatsiList].forEach(n => {
             if(db.manualHours[n] === undefined) db.manualHours[n] = 0;
             if(!db.pastShiftsRecords[n]) db.pastShiftsRecords[n] = [];
-            if(db.apolet[n] === undefined) db.apolet[n] = defaultApolet[n] || "";
+            if(db.apolet[n] === undefined || db.apolet[n] === "") db.apolet[n] = defaultApolet[n] || "";
         });
         document.getElementById('shiftsInput').value = db.shifts.join(', ');
+        populateBulkPresetSelect();
     }
 
     function saveDB() { localStorage.setItem('nobetDB_V16', JSON.stringify(db)); }
+
+    function populateBulkPresetSelect() {
+        const sel = document.getElementById('bulkPresetSelect');
+        if(!sel) return;
+        let html = '<option value="">Hızlı Değer Seç...</option>';
+        db.shifts.forEach(s => { html += `<option value="${s}">Vardiya: ${s}</option>`; });
+        html += '<option value="İzinli">Durum: İzinli</option>';
+        html += '<option value="Raporlu">Durum: Raporlu</option>';
+        html += '<option value="Görevli">Durum: Görevli</option>';
+        sel.innerHTML = html;
+    }
 
     function exportData() {
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
         const a = document.createElement('a');
         a.setAttribute("href", dataStr);
-        a.setAttribute("download", "nobet_sistemi_yedek_v16.json");
+        a.setAttribute("download", "nobet_sistemi_yedek_v17.json");
         document.body.appendChild(a); a.click(); a.remove();
     }
 
@@ -358,17 +426,29 @@
         }
     }
 
+    // DÜZELTME: Mühürlenmiş / Kaydedilmiş ayı da tamamen sıfırlayabilme
     function clearDraft() {
-        if(confirm("Ekranda yazdığınız tüm nöbetler silinecek (Geçmiş saatler silinmez). Yeniden boş bir şablon açılacak. Emin misiniz?")) {
-            currentDraftMain = null;
-            currentDraftGy = null;
+        const monthVal = document.getElementById('monthPicker').value;
+        if(!monthVal) return;
+        const isPub = !!db.publishedMonths[monthVal];
+        const msg = isPub 
+            ? `DİKKAT: ${monthVal} ayı daha önce kaydedilmiş/mühürlenmiş! Tabloyu temizlerseniz bu ayın tüm nöbetleri sıfırlanacaktır (Önceki ayların saatleri silinmez). Emin misiniz?`
+            : `${monthVal} ayı tablosundaki tüm nöbetler temizlenecek ve boş şablon açılacak. Emin misiniz?`;
+            
+        if(confirm(msg)) {
+            delete db.publishedMonths[monthVal];
+            delete draftMemory[monthVal];
+            saveDB();
+            clearCellSelection();
             handleMonthChange();
+            alert(monthVal + " ayı tablosu tamamen temizlendi!");
         }
     }
 
     function toggleAdmin() {
         if(adminMode) {
             adminMode = false;
+            clearCellSelection();
             document.getElementById('adminTabBtn').style.display = 'none';
             document.getElementById('adminHint').style.display = 'none';
             document.getElementById('btnGenerate').style.display = 'none'; 
@@ -390,12 +470,8 @@
                 document.getElementById('loginBtn').innerText = '🔓 Çıkış Yap';
                 document.getElementById('adminHint').style.display = 'block';
                 handleMonthChange(); openTab('panel');
-            } else if (pass !== null) { alert("Hatalı şifre! (İpucu: admin123)"); }
+            } else if (pass !== null) { alert("Hatalı şifre!"); }
         }
-    }
-
-    function setCellsEditable(state) {
-        document.querySelectorAll('.editable-cell').forEach(cell => { cell.setAttribute('contenteditable', state); });
     }
 
     function openTab(tabId) {
@@ -403,9 +479,25 @@
         document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         if(tabId === 'cizelge') document.querySelectorAll('.tab-btn')[0].classList.add('active');
-        if(tabId === 'adalet') document.querySelectorAll('.tab-btn')[1].classList.add('active');
-        if(tabId === 'panel') document.getElementById('adminTabBtn').classList.add('active');
-        if(tabId === 'panel') renderAdminPanel();
+        if(tabId === 'adalet') {
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            renderAdaletPanosu();
+        }
+        if(tabId === 'panel') {
+            document.getElementById('adminTabBtn').classList.add('active');
+            renderAdminPanel();
+        }
+        if(tabId !== 'cizelge') clearCellSelection();
+    }
+
+    // GECE NÖBETİ TESPİT FONKSİYONU (22-00, 00-02, 02-04, 04-06 = Gece)
+    function isNightShift(shift) {
+        if(!shift) return false;
+        let parts = shift.split('-');
+        if(parts.length !== 2) return false;
+        let s1 = parseInt(parts[0].replace(':', '').substring(0,2));
+        if(isNaN(s1)) return false;
+        return (s1 >= 22 || s1 < 6);
     }
 
     function getShiftHours(shift) {
@@ -446,6 +538,40 @@
         return total;
     }
 
+    // Personelin geçmişte hangi nöbet saatini kaç kez tuttuğunu ve en son hangi nöbeti tuttuğunu analiz eder
+    function getPersonShiftHistory(name, targetMonth, upToDayIndex = -1) {
+        let counts = {};
+        db.shifts.forEach(s => counts[s] = 0);
+        let lastShift = null;
+
+        if(db.pastShiftsRecords[name]) {
+            db.pastShiftsRecords[name].forEach(s => {
+                if(counts[s] !== undefined) counts[s]++;
+                if(getShiftHours(s) > 0) lastShift = s;
+            });
+        }
+
+        let sortedMonths = Object.keys(db.publishedMonths).filter(m => m < targetMonth).sort();
+        sortedMonths.forEach(m => {
+            let schedMain = db.publishedMonths[m].main[name];
+            if(schedMain) {
+                schedMain.forEach(s => {
+                    if(s && counts[s] !== undefined) counts[s]++;
+                    if(s && getShiftHours(s) > 0) lastShift = s;
+                });
+            }
+        });
+
+        if(currentDraftMain && currentDraftMain[name] && upToDayIndex >= 0) {
+            for(let d = 0; d <= upToDayIndex; d++) {
+                let s = currentDraftMain[name][d];
+                if(s && counts[s] !== undefined) counts[s]++;
+                if(s && getShiftHours(s) > 0) lastShift = s;
+            }
+        }
+        return { counts, lastShift };
+    }
+
     function isRestrictedForEvci(dateObj, shift) {
         const wd = dateObj.getDay(); 
         if (wd === 5 && ["18-20", "20-22", "22-00"].includes(shift)) return true;
@@ -454,25 +580,54 @@
         return false;
     }
 
+    // DÜZELTME: Ay geçişlerinde dizi boyutu (30 vs 31 gün / Haftasonu sayısı) tam uyumlu hale getirildi
+    function ensureDraftStructure(monthVal, numDays, wkCount) {
+        if (db.publishedMonths[monthVal]) {
+            currentDraftMain = JSON.parse(JSON.stringify(db.publishedMonths[monthVal].main));
+            currentDraftGy = JSON.parse(JSON.stringify(db.publishedMonths[monthVal].gy));
+        } else if (draftMemory[monthVal]) {
+            currentDraftMain = draftMemory[monthVal].main;
+            currentDraftGy = draftMemory[monthVal].gy;
+        } else {
+            currentDraftMain = {};
+            currentDraftGy = {};
+            draftMemory[monthVal] = { main: currentDraftMain, gy: currentDraftGy };
+        }
+
+        db.names.forEach(n => {
+            if (!Array.isArray(currentDraftMain[n])) {
+                currentDraftMain[n] = new Array(numDays).fill("");
+            } else {
+                while (currentDraftMain[n].length < numDays) currentDraftMain[n].push("");
+                if (currentDraftMain[n].length > numDays) currentDraftMain[n].length = numDays;
+            }
+        });
+
+        db.geceYatsiList.forEach(n => {
+            if (!Array.isArray(currentDraftGy[n])) {
+                currentDraftGy[n] = new Array(wkCount).fill("");
+            } else {
+                while (currentDraftGy[n].length < wkCount) currentDraftGy[n].push("");
+                if (currentDraftGy[n].length > wkCount) currentDraftGy[n].length = wkCount;
+            }
+        });
+    }
+
     function handleMonthChange() {
         const monthVal = document.getElementById('monthPicker').value;
         if(!monthVal) return;
+        clearCellSelection();
         
         const isPublished = !!db.publishedMonths[monthVal];
         
         if (!adminMode && !isPublished) {
             document.getElementById('unpublishedWarning').style.display = 'block';
             document.getElementById('tablesWrapper').style.display = 'none';
-            document.getElementById('adaletUnpublishedWarning').style.display = 'block';
-            document.getElementById('adaletWrapper').style.display = 'none';
-            document.getElementById('userCardContainer').style.display = 'none';
             return;
         }
         
         document.getElementById('unpublishedWarning').style.display = 'none';
         document.getElementById('tablesWrapper').style.display = 'block';
-        document.getElementById('adaletUnpublishedWarning').style.display = 'none';
-        document.getElementById('adaletWrapper').style.display = 'block';
         
         const [yearStr, monthStr] = monthVal.split('-');
         const year = parseInt(yearStr);
@@ -486,25 +641,18 @@
             if(wd === 0 || wd === 6) currentWeekendDays.push(d);
         }
         
-        if (isPublished) {
-            currentDraftMain = JSON.parse(JSON.stringify(db.publishedMonths[monthVal].main));
-            currentDraftGy = JSON.parse(JSON.stringify(db.publishedMonths[monthVal].gy));
-        } else {
-            // Sadece boşsa yeniden yarat, eğer zaten üzerinde çalışılıyorsa elleme
-            if (!currentDraftMain || Object.keys(currentDraftMain).length !== db.names.length) {
-                currentDraftMain = {}; db.names.forEach(n => currentDraftMain[n] = new Array(numDays).fill(""));
-            }
-            if (!currentDraftGy || Object.keys(currentDraftGy).length !== db.geceYatsiList.length) {
-                currentDraftGy = {}; db.geceYatsiList.forEach(n => currentDraftGy[n] = new Array(currentWeekendDays.length).fill(""));
-            }
-        }
+        ensureDraftStructure(monthVal, numDays, currentWeekendDays.length);
         
         renderCizelge(year, month, numDays);
-        renderAdaletPanosu(monthVal);
+        renderAdaletPanosu();
         populateSearch();
-        highlightUser();
+        applyRowHighlightOnly();
     }
 
+    // YENİ AKILLI ÇARK ALGORİTMASI:
+    // 1) Hücre Koruma (Elle yazılanlara dokunmaz)
+    // 2) Bir Gece - Bir Gündüz Kuralı (Gece tutana sonraki nöbette Gündüz verir)
+    // 3) Aynı Nöbet Saatinin Tekrar Etmemesi (Geçmişte aynı saati tutanlara ceza puanı vererek farklı saat atar)
     function spinWheel() {
         const monthVal = document.getElementById('monthPicker').value;
         if(!monthVal) return;
@@ -512,9 +660,14 @@
         const [yearStr, monthStr] = monthVal.split('-');
         const year = parseInt(yearStr); const month = parseInt(monthStr); const numDays = new Date(year, month, 0).getDate(); 
         
-        // V16: HÜCRE KORUMA - Mevcut taslağı SIFIRLAMIYORUZ. Boş ise yaratıyoruz.
-        if (!currentDraftMain) { currentDraftMain = {}; db.names.forEach(n => currentDraftMain[n] = new Array(numDays).fill("")); }
-        else { db.names.forEach(n => { if(!currentDraftMain[n]) currentDraftMain[n] = new Array(numDays).fill(""); }); }
+        currentWeekendDays = [];
+        for(let d=1; d<=numDays; d++) {
+            const wd = new Date(year, month-1, d).getDay();
+            if(wd === 0 || wd === 6) currentWeekendDays.push(d);
+        }
+
+        ensureDraftStructure(monthVal, numDays, currentWeekendDays.length);
+        draftMemory[monthVal] = { main: currentDraftMain, gy: currentDraftGy };
         
         let queueMain = [...db.names].sort((a, b) => calculatePriorHours(a, monthVal, true) - calculatePriorHours(b, monthVal, true));
         
@@ -525,42 +678,67 @@
             for(let shift of db.shifts) {
                 if (isWeekend && (shift.includes("08-13") || shift.includes("13-18"))) continue; 
                 
-                // HÜCRE KORUMA KONTROLÜ 1: Bu vardiya bugün başkasına elle yazılmış mı?
+                // HÜCRE KORUMA 1: Bu vardiya bugün başkasına elle yazılmış mı?
                 let shiftAssigned = false;
                 for(let n of db.names) {
                     if(currentDraftMain[n] && currentDraftMain[n][day-1] === shift) {
                         shiftAssigned = true; break;
                     }
                 }
-                if(shiftAssigned) continue; // Zaten yazılmış, es geç.
+                if(shiftAssigned) continue;
 
-                let validIdx = -1;
+                const targetIsNight = isNightShift(shift);
+                let bestIdx = -1;
+                let bestScore = Infinity;
+
                 for(let i=0; i<queueMain.length; i++) {
                     let candidate = queueMain[i];
-                    // HÜCRE KORUMA KONTROLÜ 2: Personelin bugün elden yazılmış bir vardiyası veya izni var mı?
+                    // HÜCRE KORUMA 2: Bugün zaten nöbeti/izni var mı?
                     if(currentDraftMain[candidate] && currentDraftMain[candidate][day-1] && currentDraftMain[candidate][day-1].trim() !== "") continue;
-                    
+                    // Evci kısıtlaması
                     if (db.evciList.includes(candidate) && isRestrictedForEvci(dateObj, shift)) continue;
                     
-                    validIdx = i; break;
+                    // Aday Puanlaması (Düşük puan = En uygun aday)
+                    let totalHrs = calculatePriorHours(candidate, monthVal, true);
+                    let hist = getPersonShiftHistory(candidate, monthVal, day - 2);
+                    let score = totalHrs * 100 + i; // Saat adaleti + sıra önceliği
+
+                    // KURAL 1: Dün nöbet tuttuysa üst üste gün yazmamak için ceza puanı
+                    if (day >= 2 && currentDraftMain[candidate][day-2] && getShiftHours(currentDraftMain[candidate][day-2]) > 0) {
+                        score += 50000;
+                    }
+
+                    // KURAL 2: Bir Gece - Bir Gündüz Kuralı
+                    if (hist.lastShift) {
+                        let lastWasNight = isNightShift(hist.lastShift);
+                        if (lastWasNight === targetIsNight) {
+                            score += 15000; // Son nöbeti geceyse tekrar gece verme (veya gündüzse tekrar gündüz verme)
+                        }
+                        // Son tuttuğu nöbet tam olarak aynı saat dilimiyse ekstra engelle
+                        if (hist.lastShift === shift) {
+                            score += 10000;
+                        }
+                    }
+
+                    // KURAL 3: Önceki aylarda veya bu ayda aynı nöbet saatini tutmuşsa farklı saat gelmesini sağla
+                    let sameShiftCount = hist.counts[shift] || 0;
+                    score += sameShiftCount * 800;
+
+                    if (score < bestScore) {
+                        bestScore = score;
+                        bestIdx = i;
+                    }
                 }
-                if (validIdx !== -1) {
-                    const person = queueMain.splice(validIdx, 1)[0];
+
+                if (bestIdx !== -1) {
+                    const person = queueMain.splice(bestIdx, 1)[0];
                     currentDraftMain[person][day-1] = shift;
                     queueMain.push(person);
                 }
             }
         }
 
-        currentWeekendDays = [];
-        for(let d=1; d<=numDays; d++) {
-            const wd = new Date(year, month-1, d).getDay();
-            if(wd === 0 || wd === 6) currentWeekendDays.push(d);
-        }
-        
-        if (!currentDraftGy) { currentDraftGy = {}; db.geceYatsiList.forEach(n => currentDraftGy[n] = new Array(currentWeekendDays.length).fill("")); }
-        else { db.geceYatsiList.forEach(n => { if(!currentDraftGy[n]) currentDraftGy[n] = new Array(currentWeekendDays.length).fill(""); }); }
-        
+        // Gece Yatsı (Haftasonu) Çarkı - Aynı vardiya tekrarını önleyerek dağıtır
         let queueGy = [...db.geceYatsiList].sort((a, b) => calculatePriorHours(a, monthVal, true) - calculatePriorHours(b, monthVal, true));
         const wShifts = ["08-13", "13-18"];
         
@@ -572,39 +750,57 @@
                 }
                 if(shiftAssigned) continue;
 
-                let validIdx = -1;
+                let bestIdx = -1;
+                let bestScore = Infinity;
+
                 for(let i=0; i<queueGy.length; i++) {
                     let candidate = queueGy[i];
                     if(currentDraftGy[candidate] && currentDraftGy[candidate][index] && currentDraftGy[candidate][index].trim() !== "") continue;
-                    validIdx = i; break;
+                    
+                    let totalHrs = calculatePriorHours(candidate, monthVal, true);
+                    let score = totalHrs * 100 + i;
+
+                    // Önceki haftasonu nöbetiyle aynı saat olmasın (08-13 tuttuysa 13-18 gelsin)
+                    let lastGyShift = null;
+                    for(let prev=0; prev<index; prev++) {
+                        if(currentDraftGy[candidate][prev]) lastGyShift = currentDraftGy[candidate][prev];
+                    }
+                    if(lastGyShift === shift) score += 5000;
+
+                    if(score < bestScore) {
+                        bestScore = score;
+                        bestIdx = i;
+                    }
                 }
-                if (validIdx !== -1) {
-                    let person = queueGy.splice(validIdx, 1)[0];
+                if (bestIdx !== -1) {
+                    let person = queueGy.splice(bestIdx, 1)[0];
                     currentDraftGy[person][index] = shift;
                     queueGy.push(person);
                 }
             }
         });
         
-        renderCizelge(year, month, numDays); renderAdaletPanosu(monthVal); populateSearch(); highlightUser(); 
-        alert("Yapay Zeka, tabloda elle yazdığınız hücreleri KORUYARAK sadece boşlukları adaletli şekilde doldurdu!");
+        renderCizelge(year, month, numDays); renderAdaletPanosu(); populateSearch(); applyRowHighlightOnly(); 
+        alert("Yapay Zeka; elle yazdığınız hücreleri koruyarak, 'Bir Gece - Bir Gündüz' kuralına ve 'Aynı Saatin Tekrar Etmemesi' ilkesine göre boşlukları doldurdu!");
     }
 
     function updateCellVal(listType, name, dayIndex, element) {
         if(!adminMode) return;
         const val = element.innerText.trim();
+        const monthVal = document.getElementById('monthPicker').value;
         if(listType === 'main') currentDraftMain[name][dayIndex] = val;
         else currentDraftGy[name][dayIndex] = val;
-        
-        renderAdaletPanosu(document.getElementById('monthPicker').value);
-        highlightUser(); 
+        draftMemory[monthVal] = { main: currentDraftMain, gy: currentDraftGy };
+        renderAdaletPanosu();
     }
 
     function saveCurrentMonth() {
         let month = document.getElementById('monthPicker').value;
         if(!currentDraftMain) return;
         db.publishedMonths[month] = { main: JSON.parse(JSON.stringify(currentDraftMain)), gy: JSON.parse(JSON.stringify(currentDraftGy)) };
-        saveDB(); alert(month + " ayı başarıyla KAYDEDİLDİ. Artık personel tarafından görüntülenebilir.");
+        saveDB();
+        renderAdaletPanosu();
+        alert(month + " ayı başarıyla KAYDEDİLDİ. Artık personel tarafından görüntülenebilir.");
     }
 
     function nextMonth() {
@@ -614,12 +810,113 @@
         }
         let [y, m] = month.split('-'); m = parseInt(m) + 1;
         if (m > 12) { m = 1; y++; }
-        document.getElementById('monthPicker').value = y + '-' + String(m).padStart(2, '0');
-        
-        // Yeni ayın şablonu tamamen boş açılır
-        currentDraftMain = null; currentDraftGy = null;
+        let nextM = y + '-' + String(m).padStart(2, '0');
+        document.getElementById('monthPicker').value = nextM;
         handleMonthChange(); 
-        alert("Eski ay mühürlendi. Yepyeni bir aya geçtiniz!");
+        alert("Eski ay mühürlendi. " + nextM + " ayına geçtiniz!");
+    }
+
+    // ================= FARE İLE SÜRÜKLEYEREK TOPLU HÜCRE SEÇİMİ =================
+    function setupBulkSelectionListeners() {
+        document.addEventListener('mouseup', () => { isDraggingCells = false; });
+        document.addEventListener('keydown', (e) => {
+            if(!adminMode || selectedCellsSet.size < 2) return;
+            if(e.key === 'Delete' || e.key === 'Backspace') {
+                const activeTag = document.activeElement ? document.activeElement.tagName : '';
+                if(activeTag === 'INPUT' || activeTag === 'SELECT') return;
+                e.preventDefault();
+                clearSelectedCells();
+            } else if(e.key === 'Escape') {
+                clearCellSelection();
+            }
+        });
+    }
+
+    function onCellMouseDown(e, td) {
+        if(!adminMode) return;
+        if(e.button !== 0) return; // Sadece sol tık
+        isDraggingCells = true;
+        dragStartCell = td;
+        if(!e.ctrlKey && !e.metaKey) {
+            clearCellSelection();
+        } else {
+            toggleCellSelect(td);
+            updateBulkToolbar();
+        }
+    }
+
+    function onCellMouseEnter(e, td) {
+        if(!adminMode || !isDraggingCells) return;
+        if(dragStartCell && !selectedCellsSet.has(dragStartCell)) {
+            selectCell(dragStartCell);
+        }
+        selectCell(td);
+        if(window.getSelection) window.getSelection().removeAllRanges();
+        updateBulkToolbar();
+    }
+
+    function selectCell(td) {
+        selectedCellsSet.add(td);
+        td.classList.add('selected-cell');
+    }
+
+    function toggleCellSelect(td) {
+        if(selectedCellsSet.has(td)) {
+            selectedCellsSet.delete(td);
+            td.classList.remove('selected-cell');
+        } else {
+            selectedCellsSet.add(td);
+            td.classList.add('selected-cell');
+        }
+    }
+
+    function clearCellSelection() {
+        selectedCellsSet.forEach(td => td.classList.remove('selected-cell'));
+        selectedCellsSet.clear();
+        dragStartCell = null;
+        updateBulkToolbar();
+    }
+
+    function updateBulkToolbar() {
+        const bar = document.getElementById('bulkToolbar');
+        const countTxt = document.getElementById('bulkCountText');
+        if(adminMode && selectedCellsSet.size >= 2) {
+            bar.style.display = 'flex';
+            countTxt.innerText = `${selectedCellsSet.size} Hücre Seçildi`;
+        } else {
+            bar.style.display = 'none';
+        }
+    }
+
+    function applyBulkValue() {
+        const val = document.getElementById('bulkCustomInput').value.trim();
+        const monthVal = document.getElementById('monthPicker').value;
+        selectedCellsSet.forEach(td => {
+            const listType = td.getAttribute('data-list');
+            const name = td.getAttribute('data-name');
+            const idx = parseInt(td.getAttribute('data-idx'));
+            td.innerHTML = `<span style="display:block; letter-spacing:-0.5px;">${val}</span>`;
+            if(listType === 'main') currentDraftMain[name][idx] = val;
+            else currentDraftGy[name][idx] = val;
+        });
+        draftMemory[monthVal] = { main: currentDraftMain, gy: currentDraftGy };
+        renderAdaletPanosu();
+        clearCellSelection();
+    }
+
+    function clearSelectedCells() {
+        const monthVal = document.getElementById('monthPicker').value;
+        selectedCellsSet.forEach(td => {
+            const listType = td.getAttribute('data-list');
+            const name = td.getAttribute('data-name');
+            const idx = parseInt(td.getAttribute('data-idx'));
+            td.innerHTML = `<span style="display:block; letter-spacing:-0.5px;"></span>`;
+            if(listType === 'main') currentDraftMain[name][idx] = "";
+            else currentDraftGy[name][idx] = "";
+        });
+        draftMemory[monthVal] = { main: currentDraftMain, gy: currentDraftGy };
+        renderAdaletPanosu();
+        clearCellSelection();
     }
 
     function renderCizelge(year, month, numDays) {
@@ -642,11 +939,12 @@
             for(let d=1; d<=numDays; d++) {
                 const dateObj = new Date(year, month-1, d);
                 const isWeekend = (dateObj.getDay() === 0 || dateObj.getDay() === 6);
-                const val = currentDraftMain[name] ? currentDraftMain[name][d-1] : "";
+                const rawVal = (currentDraftMain[name] && currentDraftMain[name][d-1] !== undefined) ? currentDraftMain[name][d-1] : "";
+                const val = rawVal || "";
                 let cellClass = adminMode ? 'editable-cell' : '';
                 if (isWeekend && !val) cellClass += ' empty-weekend';
                 else if (isWeekend && val) cellClass += ' weekend';
-                htmlMain += `<td class="${cellClass}" contenteditable="${adminMode}" onblur="updateCellVal('main', '${name}', ${d-1}, this)"><span style="display:block; letter-spacing:-0.5px;">${val}</span></td>`;
+                htmlMain += `<td class="${cellClass}" data-list="main" data-name="${name}" data-idx="${d-1}" onmousedown="onCellMouseDown(event, this)" onmouseenter="onCellMouseEnter(event, this)" contenteditable="${adminMode}" onblur="updateCellVal('main', '${name}', ${d-1}, this)"><span style="display:block; letter-spacing:-0.5px;">${val}</span></td>`;
             }
             htmlMain += `</tr>`;
         });
@@ -666,8 +964,9 @@
             db.geceYatsiList.forEach((name, index) => {
                 htmlWk += `<tr><td>${index + 1}</td><td>${db.apolet[name]||'-'}</td><td style="text-align:left; color:#0284c7; font-weight:bold;">${name}</td>`;
                 currentWeekendDays.forEach((dayNum, i) => {
-                    const val = currentDraftGy[name] ? currentDraftGy[name][i] : "";
-                    htmlWk += `<td class="${adminMode ? 'editable-cell' : ''} weekend" contenteditable="${adminMode}" onblur="updateCellVal('gece', '${name}', ${i}, this)">${val}</td>`;
+                    const rawVal = (currentDraftGy[name] && currentDraftGy[name][i] !== undefined) ? currentDraftGy[name][i] : "";
+                    const val = rawVal || "";
+                    htmlWk += `<td class="${adminMode ? 'editable-cell' : ''} weekend" data-list="gece" data-name="${name}" data-idx="${i}" onmousedown="onCellMouseDown(event, this)" onmouseenter="onCellMouseEnter(event, this)" contenteditable="${adminMode}" onblur="updateCellVal('gece', '${name}', ${i}, this)"><span style="display:block; letter-spacing:-0.5px;">${val}</span></td>`;
                 });
                 htmlWk += `</tr>`;
             });
@@ -677,58 +976,156 @@
         } else { document.getElementById('haftasonuTableWrapper').style.display = 'none'; }
     }
 
-    function renderAdaletPanosu(monthVal) {
-        if(!currentDraftMain) return;
-        let htmlMain = '<table id="adaletTablosu" style="width:100%; margin:auto;"><thead><tr><th rowspan="2">S.N</th><th rowspan="2">Apolet No</th><th rowspan="2" style="text-align:left;">Personel</th><th rowspan="2">Önceki Aylar Toplamı (Saat)</th>';
-        htmlMain += `<th colspan="${db.shifts.length}" style="background:#cbd5e1; color:#333;">SADECE SEÇİLİ AY KİM HANGİ SAATİ TUTTU?</th>`;
-        htmlMain += '<th rowspan="2">Bu Ayki Nöbetleri</th><th rowspan="2" style="background:#047857; color:white;">Genel Toplam (Saat)</th><th rowspan="2">Statü</th></tr><tr>';
+    // ================= TARİH ARALIKLI ADALET PANOSU =================
+    function setAdaletRangeCurrent() {
+        const curM = document.getElementById('monthPicker').value;
+        document.getElementById('adaletStartMonth').value = curM;
+        document.getElementById('adaletEndMonth').value = curM;
+        renderAdaletPanosu();
+    }
+
+    function setAdaletRangeAll() {
+        const pubKeys = Object.keys(db.publishedMonths).sort();
+        const curM = document.getElementById('monthPicker').value;
+        if(pubKeys.length > 0) {
+            let minM = pubKeys[0] < curM ? pubKeys[0] : curM;
+            let maxM = pubKeys[pubKeys.length - 1] > curM ? pubKeys[pubKeys.length - 1] : curM;
+            document.getElementById('adaletStartMonth').value = minM;
+            document.getElementById('adaletEndMonth').value = maxM;
+        } else {
+            document.getElementById('adaletStartMonth').value = curM;
+            document.getElementById('adaletEndMonth').value = curM;
+        }
+        renderAdaletPanosu();
+    }
+
+    function getMonthsInRange(startM, endM) {
+        if(!startM || !endM) return [];
+        if(startM > endM) { let t = startM; startM = endM; endM = t; }
+        let list = [];
+        let [y, m] = startM.split('-').map(Number);
+        let [endY, endMonth] = endM.split('-').map(Number);
+        while(y < endY || (y === endY && m <= endMonth)) {
+            list.push(`${y}-${String(m).padStart(2, '0')}`);
+            m++;
+            if(m > 12) { m = 1; y++; }
+        }
+        return list;
+    }
+
+    function renderAdaletPanosu() {
+        const curPickerMonth = document.getElementById('monthPicker').value;
+        let startM = document.getElementById('adaletStartMonth').value || curPickerMonth;
+        let endM = document.getElementById('adaletEndMonth').value || curPickerMonth;
+        if(startM > endM) { let tmp = startM; startM = endM; endM = tmp; }
+
+        const includePastCols = document.getElementById('includePastRecordsInCols').checked;
+        const rangeMonths = getMonthsInRange(startM, endM);
+
+        // Kullanıcı modunda seçilen aralıkta yayınlanmış ay var mı kontrolü
+        let validMonthsForView = rangeMonths.filter(m => adminMode || !!db.publishedMonths[m]);
+        if(validMonthsForView.length === 0) {
+            document.getElementById('adaletUnpublishedWarning').style.display = 'block';
+            document.getElementById('adaletWrapper').style.display = 'none';
+            return;
+        }
+        document.getElementById('adaletUnpublishedWarning').style.display = 'none';
+        document.getElementById('adaletWrapper').style.display = 'block';
+
+        const rangeLabel = (startM === endM) ? `${startM}` : `${startM} / ${endM}`;
+        document.getElementById('printTitleAdalet').innerText = `${rangeLabel} DÖNEMİ ADALET PANOSU SAAT ANALİZİ`;
+
+        let htmlMain = '<table id="adaletTablosu" style="width:100%; margin:auto;"><thead><tr><th rowspan="2">S.N</th><th rowspan="2">Apolet No</th><th rowspan="2" style="text-align:left;">Personel</th><th rowspan="2">Seçili Dönem Öncesi (Saat)</th>';
+        htmlMain += `<th colspan="${db.shifts.length}" style="background:#cbd5e1; color:#333;">SEÇİLİ TARİH ARALIĞI (${rangeLabel}) SAAT DAĞILIMI</th>`;
+        htmlMain += '<th rowspan="2">Seçili Dönem Toplamı</th><th rowspan="2" style="background:#047857; color:white;">Genel Toplam (Saat)</th><th rowspan="2">Statü</th></tr><tr>';
         db.shifts.forEach(s => { htmlMain += `<th class="shift-col">${s}</th>`; });
         htmlMain += '</tr></thead><tbody>';
         
         db.names.forEach((name, i) => {
             const isEvci = db.evciList.includes(name);
-            const pHours = calculatePriorHours(name, monthVal); 
-            let shiftCountsThisMonth = {}; db.shifts.forEach(s => shiftCountsThisMonth[s] = 0);
-            let monthShiftsCount = 0; let monthHoursTotal = 0;
-            
-            if(currentDraftMain[name]) {
-                currentDraftMain[name].forEach(s => {
-                    if(s && shiftCountsThisMonth[s] !== undefined) {
-                        shiftCountsThisMonth[s]++; monthShiftsCount++; monthHoursTotal += getShiftHours(s);
-                    }
+            const pHours = calculatePriorHours(name, startM, false); 
+            let shiftCountsInRange = {}; db.shifts.forEach(s => shiftCountsInRange[s] = 0);
+            let rangeShiftsCount = 0; let rangeHoursTotal = 0;
+
+            if(includePastCols && db.pastShiftsRecords[name]) {
+                db.pastShiftsRecords[name].forEach(s => {
+                    if(shiftCountsInRange[s] !== undefined) shiftCountsInRange[s]++;
                 });
             }
-            const generalTotalHours = pHours + monthHoursTotal;
+            
+            validMonthsForView.forEach(m => {
+                let sched = null;
+                if(m === curPickerMonth && currentDraftMain && currentDraftMain[name]) {
+                    sched = currentDraftMain[name];
+                } else if(db.publishedMonths[m] && db.publishedMonths[m].main && db.publishedMonths[m].main[name]) {
+                    sched = db.publishedMonths[m].main[name];
+                }
+                if(sched) {
+                    sched.forEach(s => {
+                        if(s && s.trim() !== '') {
+                            if(shiftCountsInRange[s] !== undefined) shiftCountsInRange[s]++;
+                            let h = getShiftHours(s);
+                            if(h > 0) { rangeShiftsCount++; rangeHoursTotal += h; }
+                        }
+                    });
+                }
+            });
+
+            const generalTotalHours = pHours + rangeHoursTotal;
             
             htmlMain += `<tr class="${isEvci ? 'evci-row' : ''}"><td>${i+1}</td><td>${db.apolet[name]||'-'}</td><td style="text-align:left; font-weight:bold;" class="${isEvci ? 'evci-name' : ''}">${name}</td><td style="color:#0284c7; font-weight:bold; font-size:13px;">${pHours} Saat</td>`;
             db.shifts.forEach(s => {
-                const c_month = shiftCountsThisMonth[s]; let st = "";
-                if(c_month > 0 && (s.includes("02-04") || s.includes("04-06"))) st = 'color:#b45309; font-weight:bold; background:#fef08a; border: 1px solid #ea580c;';
-                else if (c_month > 0) st = 'font-weight:bold; color:#1e293b;';
-                htmlMain += `<td style="${st}">${c_month > 0 ? c_month : '-'}</td>`;
+                const c_val = shiftCountsInRange[s]; let st = "";
+                if(c_val > 0 && (s.includes("02-04") || s.includes("04-06"))) st = 'color:#b45309; font-weight:bold; background:#fef08a; border: 1px solid #ea580c;';
+                else if (c_val > 0) st = 'font-weight:bold; color:#1e293b;';
+                htmlMain += `<td style="${st}">${c_val > 0 ? c_val : '-'}</td>`;
             });
-            htmlMain += `<td>${monthShiftsCount} Kez <strong style="color:#0284c7;">(${monthHoursTotal} Saat)</strong></td><td style="background:#d1fae5; font-size:14px;"><strong>${generalTotalHours}</strong></td><td>${isEvci ? '<span class="badge">DAİMİ EVCİ</span>' : 'Normal'}</td></tr>`;
+            htmlMain += `<td>${rangeShiftsCount} Kez <strong style="color:#0284c7;">(${rangeHoursTotal} Saat)</strong></td><td style="background:#d1fae5; font-size:14px;"><strong>${generalTotalHours}</strong></td><td>${isEvci ? '<span class="badge">DAİMİ EVCİ</span>' : 'Normal'}</td></tr>`;
         });
         htmlMain += '</tbody></table>'; document.getElementById('adaletContainerMain').innerHTML = htmlMain;
 
         if(db.geceYatsiList.length > 0) {
-            let htmlWk = '<table style="width:100%; max-width:800px; margin:auto;"><thead><tr><th>S.N</th><th>Apolet No</th><th style="text-align:left;">Personel</th><th>Önceki Aylar Toplamı (Saat)</th><th>Sadece Bu Ay</th><th style="background:#047857; color:white;">Genel Toplam (Saat)</th><th>Statü</th></tr></thead><tbody>';
+            let htmlWk = `<table style="width:100%; max-width:900px; margin:auto;"><thead><tr><th>S.N</th><th>Apolet No</th><th style="text-align:left;">Personel</th><th>Seçili Dönem Öncesi</th><th>08-13 Sayısı</th><th>13-18 Sayısı</th><th>Seçili Dönem (${rangeLabel})</th><th style="background:#047857; color:white;">Genel Toplam (Saat)</th><th>Statü</th></tr></thead><tbody>`;
             db.geceYatsiList.forEach((name, i) => {
-                const pHours = calculatePriorHours(name, monthVal);
-                let monthShiftsCount = 0; let monthHoursTotal = 0;
-                if(currentDraftGy[name]) {
-                    currentDraftGy[name].forEach(shift => { if(shift) { monthShiftsCount++; monthHoursTotal += getShiftHours(shift); } });
+                const pHours = calculatePriorHours(name, startM, false);
+                let rangeShiftsCount = 0; let rangeHoursTotal = 0;
+                let c0813 = 0; let c1318 = 0;
+
+                if(includePastCols && db.pastShiftsRecords[name]) {
+                    db.pastShiftsRecords[name].forEach(s => {
+                        if(s === "08-13") c0813++;
+                        if(s === "13-18") c1318++;
+                    });
                 }
-                const generalTotalHours = pHours + monthHoursTotal;
-                htmlWk += `<tr><td>${i+1}</td><td>${db.apolet[name]||'-'}</td><td style="text-align:left; font-weight:bold; color:#0284c7;">${name}</td><td style="color:#0284c7; font-weight:bold; font-size:13px;">${pHours} Saat</td><td>${monthShiftsCount} Kez <strong style="color:#0284c7;">(${monthHoursTotal} Saat)</strong></td><td style="background:#d1fae5; font-size:14px;"><strong>${generalTotalHours}</strong></td><td><span class="badge badge-blue">Gece Yatsı</span></td></tr>`;
+
+                validMonthsForView.forEach(m => {
+                    let sched = null;
+                    if(m === curPickerMonth && currentDraftGy && currentDraftGy[name]) {
+                        sched = currentDraftGy[name];
+                    } else if(db.publishedMonths[m] && db.publishedMonths[m].gy && db.publishedMonths[m].gy[name]) {
+                        sched = db.publishedMonths[m].gy[name];
+                    }
+                    if(sched) {
+                        sched.forEach(shift => {
+                            if(shift && shift.trim() !== '') {
+                                if(shift === "08-13") c0813++;
+                                if(shift === "13-18") c1318++;
+                                let h = getShiftHours(shift);
+                                if(h > 0) { rangeShiftsCount++; rangeHoursTotal += h; }
+                            }
+                        });
+                    }
+                });
+
+                const generalTotalHours = pHours + rangeHoursTotal;
+                htmlWk += `<tr><td>${i+1}</td><td>${db.apolet[name]||'-'}</td><td style="text-align:left; font-weight:bold; color:#0284c7;">${name}</td><td style="color:#0284c7; font-weight:bold; font-size:13px;">${pHours} Saat</td><td>${c0813 > 0 ? c0813 : '-'}</td><td>${c1318 > 0 ? c1318 : '-'}</td><td>${rangeShiftsCount} Kez <strong style="color:#0284c7;">(${rangeHoursTotal} Saat)</strong></td><td style="background:#d1fae5; font-size:14px;"><strong>${generalTotalHours}</strong></td><td><span class="badge badge-blue">Gece Yatsı</span></td></tr>`;
             });
             htmlWk += '</tbody></table>'; document.getElementById('adaletContainerWeekend').innerHTML = htmlWk;
         }
     }
 
     function updateManualHours(name, val) { db.manualHours[name] = parseInt(val) || 0; saveDB(); handleMonthChange(); }
-    
-    function updateApolet(name, val) { db.apolet[name] = val.trim(); saveDB(); }
+    function updateApolet(name, val) { db.apolet[name] = val.trim(); saveDB(); handleMonthChange(); }
     
     function addPastShift(name, selectId) {
         const sel = document.getElementById(selectId);
@@ -750,7 +1147,7 @@
 
             htmlMain += `<tr>
                 <td>${i+1}</td>
-                <td><input type="text" value="${db.apolet[name]||''}" style="width:40px; text-align:center; padding:4px; border:1px solid #ccc; border-radius:4px;" onchange="updateApolet('${name}', this.value)" placeholder="No"></td>
+                <td><input type="text" value="${db.apolet[name]||''}" style="width:45px; text-align:center; padding:4px; border:1px solid #ccc; border-radius:4px;" onchange="updateApolet('${name}', this.value)" placeholder="No"></td>
                 <td style="text-align:left; font-weight:bold; font-size:13px; white-space:nowrap;">${name}</td>
                 <td style="white-space:nowrap;">
                     <button class="btn-move" onclick="movePerson('main', ${i}, -1)" title="Yukarı Taşı">⬆️</button> 
@@ -782,7 +1179,7 @@
         db.geceYatsiList.forEach((name, i) => {
             htmlGy += `<tr>
                 <td>${i+1}</td>
-                <td><input type="text" value="${db.apolet[name]||''}" style="width:40px; text-align:center; padding:4px; border:1px solid #ccc; border-radius:4px;" onchange="updateApolet('${name}', this.value)" placeholder="No"></td>
+                <td><input type="text" value="${db.apolet[name]||''}" style="width:45px; text-align:center; padding:4px; border:1px solid #ccc; border-radius:4px;" onchange="updateApolet('${name}', this.value)" placeholder="No"></td>
                 <td style="text-align:left; font-weight:bold; font-size:13px; white-space:nowrap; color:#0284c7;">${name}</td>
                 <td style="white-space:nowrap;">
                     <button class="btn-move" onclick="movePerson('gece', ${i}, -1)" title="Yukarı Taşı">⬆️</button> 
@@ -829,7 +1226,7 @@
         const input = document.getElementById('shiftsInput').value;
         const newShifts = input.split(',').map(s => s.trim()).filter(s => s.length > 0);
         if(newShifts.length === 0) return alert("En az bir saat dilimi girmelisiniz!");
-        db.shifts = newShifts; saveDB(); alert("Saatler güncellendi!");
+        db.shifts = newShifts; saveDB(); populateBulkPresetSelect(); alert("Saatler güncellendi!");
     }
 
     function addPerson() {
@@ -843,7 +1240,7 @@
         else { db.geceYatsiList.push(newName); }
         db.manualHours[newName] = 0; db.apolet[newName] = ""; db.pastShiftsRecords[newName] = [];
         input.value = ''; document.getElementById('newEvci').checked = false;
-        saveDB(); renderAdminPanel();
+        saveDB(); renderAdminPanel(); handleMonthChange();
     }
 
     function removePerson(listType, index) {
@@ -855,18 +1252,18 @@
             if(!confirm(db.geceYatsiList[index] + " gece yatsı listesinden silinecek, emin misiniz?")) return;
             db.geceYatsiList.splice(index, 1);
         }
-        saveDB(); renderAdminPanel();
+        saveDB(); renderAdminPanel(); handleMonthChange();
     }
 
     function toggleEvci(name) {
         const idx = db.evciList.indexOf(name);
         if(idx > -1) db.evciList.splice(idx, 1); else db.evciList.push(name);
-        saveDB(); renderAdminPanel();
+        saveDB(); renderAdminPanel(); handleMonthChange();
     }
     
     function moveToList(fromList, index, toList) {
         if(fromList === 'gece' && toList === 'main') { db.names.push(db.geceYatsiList[index]); db.geceYatsiList.splice(index, 1); }
-        saveDB(); renderAdminPanel();
+        saveDB(); renderAdminPanel(); handleMonthChange();
     }
 
     function populateSearch() {
@@ -874,14 +1271,25 @@
         const currentVal = search.value;
         let html = '<option value="">🔍 İsminizi Seçin (Nöbet Kartımı Göster)</option>';
         const allNames = [...db.names, ...db.geceYatsiList].sort((a, b) => a.localeCompare(b, 'tr'));
-        allNames.forEach(n => { html += `<option value="${n}">${n}</option>`; });
+        allNames.forEach(n => { html += `<option value="${n}">${n} ${db.apolet[n] ? '('+db.apolet[n]+')' : ''}</option>`; });
         search.innerHTML = html;
         if(allNames.includes(currentVal)) search.value = currentVal;
     }
 
-    function highlightUser() {
+    // ================= ÖN YÜZ (MODAL) BİLGİ KARTI VE TABLO GEÇİŞİ =================
+    function onUserSearchSelect() {
         const selected = document.getElementById('userSearch').value;
-        const cardContainer = document.getElementById('userCardContainer');
+        document.getElementById('clearHighlightBtn').style.display = selected ? 'inline-block' : 'none';
+        applyRowHighlightOnly();
+        if(selected) {
+            openUserModal(selected);
+        } else {
+            closeUserCard(false);
+        }
+    }
+
+    function applyRowHighlightOnly() {
+        const selected = document.getElementById('userSearch').value;
         const tables = [];
         const mainTable = document.getElementById('cizelgeTablosu'); if(mainTable) tables.push(mainTable);
         const wkContainer = document.getElementById('cizelgeContainerWeekend');
@@ -899,15 +1307,17 @@
                 const nameCell = tr.cells[2]; 
                 if(nameCell && nameCell.textContent.includes(selected)) {
                     tr.classList.add('highlighted-row');
-                    tr.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
                 } else {
                     tr.classList.remove('highlighted-row');
                 }
             });
         });
+    }
 
-        if(!selected) { cardContainer.style.display = 'none'; return; }
-        if(!currentMonthInfo || !currentMonthInfo.year) return; 
+    function openUserModal(selected) {
+        if(!currentMonthInfo || !currentMonthInfo.year) return;
+        const modal = document.getElementById('userModalOverlay');
+        const cardContainer = document.getElementById('userCardContainer');
         
         const { year, month, numDays, monthVal } = currentMonthInfo;
         const isMain = db.names.includes(selected);
@@ -916,43 +1326,76 @@
         
         let statu = isGy ? "🌙 Gece Yatsı" : (isEvci ? "🏠 Daimi Evci" : "👤 Normal Personel");
         let pastH = calculatePriorHours(selected, monthVal);
-        let monthH = 0; let shiftCount = 0; let shiftsHtml = '';
+        let monthH = 0; let shiftCount = 0; let nightCount = 0; let dayCount = 0;
+        let shiftsHtml = '';
 
         if (isMain && currentDraftMain && currentDraftMain[selected]) {
             currentDraftMain[selected].forEach((shift, dayIdx) => {
                 if (shift && shift.trim() !== '') {
-                    shiftCount++; monthH += getShiftHours(shift);
+                    let h = getShiftHours(shift);
+                    if(h > 0) {
+                        shiftCount++; monthH += h;
+                        if(isNightShift(shift)) nightCount++; else dayCount++;
+                    }
                     let dayNum = dayIdx + 1;
                     let wd = new Date(year, month-1, dayNum).getDay();
-                    shiftsHtml += `<span class="shift-badge"><strong>${dayNum} ${monthsTR[month-1]} ${daysNameTR[wd]}:</strong> ${shift}</span>`;
+                    let nightCls = isNightShift(shift) ? 'night' : '';
+                    let typeIcon = isNightShift(shift) ? '🌙' : '☀️';
+                    shiftsHtml += `<span class="shift-badge ${nightCls}">${typeIcon} <strong>${dayNum} ${monthsTR[month-1]} ${daysNameTR[wd]}:</strong> ${shift}</span>`;
                 }
             });
         } else if (isGy && currentDraftGy && currentDraftGy[selected]) {
             currentDraftGy[selected].forEach((shift, i) => {
                 if(shift && shift.trim() !== '') {
-                    shiftCount++; monthH += getShiftHours(shift);
+                    let h = getShiftHours(shift);
+                    if(h > 0) { shiftCount++; monthH += h; dayCount++; }
                     let dayNum = currentWeekendDays[i];
                     let wd = new Date(year, month-1, dayNum).getDay();
-                    shiftsHtml += `<span class="shift-badge"><strong>${dayNum} ${monthsTR[month-1]} ${daysNameTR[wd]}:</strong> ${shift}</span>`;
+                    shiftsHtml += `<span class="shift-badge">☀️ <strong>${dayNum} ${monthsTR[month-1]} ${daysNameTR[wd]}:</strong> ${shift}</span>`;
                 }
             });
         }
-        if(shiftCount === 0) shiftsHtml = '<span style="color:#64748b; font-size:13px; padding:5px;">Bu ay hiç nöbet yazılmamış.</span>';
+        if(shiftCount === 0 && shiftsHtml === '') {
+            shiftsHtml = '<span style="color:#64748b; font-size:13px; padding:5px;">Bu ay hiç nöbet yazılmamış.</span>';
+        }
 
         cardContainer.innerHTML = `
             <div class="card-header">
-                <h3>${db.apolet[selected] ? `<span style="background: rgba(255,255,255,0.3); padding: 2px 6px; border-radius: 4px; margin-right: 8px;">Apolet: ${db.apolet[selected]}</span> ` : ''}${selected}</h3>
-                <span class="card-badge">${statu}</span>
+                <h3>
+                    ${db.apolet[selected] ? `<span style="background: #fde047; color:#002060; padding: 2px 8px; border-radius: 5px; font-weight:900;">Apolet: ${db.apolet[selected]}</span>` : ''}
+                    <span>${selected}</span>
+                    <span class="card-badge">${statu}</span>
+                </h3>
+                <button class="card-close-btn" onclick="closeUserCard(true)" title="Kapat ve Genel Listeye Dön">✖</button>
             </div>
             <div class="card-stats">
                 <div><span>Geçmiş Saat</span><strong>${pastH} Saat</strong></div>
-                <div><span>Bu Ay</span><strong>${shiftCount} Nöbet (${monthH} Saat)</strong></div>
+                <div><span>${monthsTR[month-1]} ${year}</span><strong>${shiftCount} Nöbet (${monthH} S.)</strong><span style="font-size:10px; margin-top:2px;">☀️ ${dayCount} Gündüz | 🌙 ${nightCount} Gece</span></div>
                 <div class="total"><span>Genel Toplam</span><strong>${pastH + monthH} Saat</strong></div>
             </div>
-            <div class="card-shifts-title">📅 Bu Ayki Nöbet Günleri ve Saatleri:</div>
+            <div class="card-shifts-title">📅 ${monthsTR[month-1]} ${year} Nöbet Günleri ve Saatleri:</div>
             <div class="card-shifts-list">${shiftsHtml}</div>
+            <div class="card-footer">
+                <button class="btn-action" style="padding:7px 14px; font-size:13px;" onclick="scrollToHighlightedRow()">📋 Tabloda Satırımı Göster</button>
+                <button class="btn-danger" style="padding:7px 14px; font-size:13px;" onclick="closeUserCard(true)">✖ Kapat (Genel Listeye Dön)</button>
+            </div>
         `;
-        cardContainer.style.display = 'block';
+        modal.style.display = 'flex';
+    }
+
+    function scrollToHighlightedRow() {
+        document.getElementById('userModalOverlay').style.display = 'none';
+        const row = document.querySelector('.highlighted-row');
+        if(row) row.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+    }
+
+    function closeUserCard(resetSearch = true) {
+        document.getElementById('userModalOverlay').style.display = 'none';
+        if(resetSearch) {
+            document.getElementById('userSearch').value = '';
+            document.getElementById('clearHighlightBtn').style.display = 'none';
+            applyRowHighlightOnly();
+        }
     }
 </script>
 </body>
