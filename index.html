@@ -156,7 +156,7 @@
             <div style="display:flex; gap:8px; align-items:center;">
                 <input type="text" id="bulkCustomInput" placeholder="Özel yazı veya saat..." style="width:160px; padding:7px 10px; font-size:14px;">
                 <button class="btn-success" style="padding:8px 14px; font-size:14px;" onclick="applyBulkValue()">✅ Yazıyı Uygula</button>
-                <button class="btn-danger" style="padding:8px 14px; font-size:14px;" onclick="clearSelectedCells()">🗑️ Seçilileri Sil</button>
+                <button class="btn-danger" style="padding:8px 14px; font-size:14px;" onclick="clearSelectedCells()">🗑️ Seçilen Hücreleri Sil</button>
                 <button class="btn-icon" style="background:#475569; color:white; padding:8px 12px; font-size:14px;" onclick="clearCellSelection()">✖ Seçimi Kapat</button>
             </div>
         </div>
@@ -182,9 +182,10 @@
                 <button id="clearHighlightBtn" class="btn-icon" style="display:none; background:#ef4444; color:white; margin-left:4px;" onclick="closeUserCard(true)" title="Seçimi Temizle">✖</button>
             </div>
 
-            <!-- MOBİL DOKUNMATİK SEÇİM BUTONLARI -->
+            <!-- MOBİL DOKUNMATİK SEÇİM VE SEÇİLEN HÜCRELERİ SİLME BUTONLARI -->
             <button id="btnTouchMode" class="btn-action" style="display:none; background:#0284c7;" onclick="toggleTouchSelectMode()">👆 Dokunarak Seç: AÇIK</button>
             <button id="btnRangeMode" class="btn-action" style="display:none; background:#64748b;" onclick="toggleRangeSelectMode()">📏 Aralık Seç: KAPALI</button>
+            <button id="btnDeleteSelectedToolbar" class="btn-danger" style="display:none; background:#dc2626;" onclick="clearSelectedCells()">🗑️ Seçilen Hücreleri Sil (0)</button>
 
             <button id="btnGenerate" class="btn-action" style="display:none;" onclick="spinWheel()">🔄 Çarkı Döndür</button>
             <button id="btnClearDraft" class="btn-danger" style="display:none; background:#ef4444;" onclick="clearDraft()">🧹 Tabloyu Temizle</button>
@@ -193,7 +194,7 @@
             <button class="btn-print" onclick="window.print()">🖨️ A4 Yatay Yazdır</button>
         </div>
         <p class="admin-hint" id="adminHint" style="display:none; text-align:center; color:#059669; font-weight:bold; font-size:14px; margin:6px 0;">
-            📱 MOBİL YÖNETİCİ MODU: Tablodaki kutucuklara parmağınızla dokunarak tek tek seçebilir veya "📏 Aralık Seç" butonunu açıp ilk ve son güne dokunarak (Örn: 1 Kasım -> 10 Kasım) topluca seçebilirsiniz!
+            📱 MOBİL YÖNETİCİ MODU: Tablodaki kutucuklara parmağınızla dokunarak tek tek seçebilir, "📏 Aralık Seç" ile blok seçebilir veya "🗑️ Seçilen Hücreleri Sil" butonuyla silebilirsiniz!
         </p>
         
         <div id="unpublishedWarning" class="unpublished-box" style="display: none;">
@@ -407,6 +408,7 @@
         html += `<button class="quick-shift-btn" style="border-color:#fbbf24; color:#fbbf24;" onclick="applyQuickShift('İzinli')">İzinli</button>`;
         html += `<button class="quick-shift-btn" style="border-color:#f87171; color:#f87171;" onclick="applyQuickShift('Raporlu')">Raporlu</button>`;
         html += `<button class="quick-shift-btn" style="border-color:#a78bfa; color:#a78bfa;" onclick="applyQuickShift('Görevli')">Görevli</button>`;
+        html += `<button class="quick-shift-btn" style="border-color:#ef4444; background:#dc2626; color:#fff;" onclick="clearSelectedCells()">🗑️ Seçilen Hücreleri Sil</button>`;
         container.innerHTML = html;
     }
 
@@ -467,6 +469,7 @@
             document.getElementById('adminHint').style.display = 'none';
             document.getElementById('btnTouchMode').style.display = 'none';
             document.getElementById('btnRangeMode').style.display = 'none';
+            document.getElementById('btnDeleteSelectedToolbar').style.display = 'none';
             document.getElementById('btnGenerate').style.display = 'none'; 
             document.getElementById('btnClearDraft').style.display = 'none'; 
             document.getElementById('btnSave').style.display = 'none'; 
@@ -482,6 +485,7 @@
                 document.getElementById('adminTabBtn').style.display = 'inline-block';
                 document.getElementById('btnTouchMode').style.display = 'inline-block';
                 document.getElementById('btnRangeMode').style.display = 'inline-block';
+                document.getElementById('btnDeleteSelectedToolbar').style.display = 'inline-block';
                 document.getElementById('btnGenerate').style.display = 'inline-block'; 
                 document.getElementById('btnClearDraft').style.display = 'inline-block'; 
                 document.getElementById('btnSave').style.display = 'inline-block'; 
@@ -497,14 +501,17 @@
         touchSelectMode = !touchSelectMode;
         const btn = document.getElementById('btnTouchMode');
         const rBtn = document.getElementById('btnRangeMode');
+        const dBtn = document.getElementById('btnDeleteSelectedToolbar');
         if(touchSelectMode) {
             btn.innerText = "👆 Dokunarak Seç: AÇIK";
             btn.style.background = "#0284c7";
             rBtn.style.display = "inline-block";
+            dBtn.style.display = "inline-block";
         } else {
             btn.innerText = "⌨️ Klavyeyle Direkt Yaz: AÇIK";
             btn.style.background = "#7c3aed";
             rBtn.style.display = "none";
+            dBtn.style.display = "none";
             clearCellSelection();
         }
         const { year, month, numDays } = currentMonthInfo;
@@ -956,6 +963,10 @@
     function updateBulkToolbar() {
         const bar = document.getElementById('bulkToolbar');
         const countTxt = document.getElementById('bulkCountText');
+        const topDelBtn = document.getElementById('btnDeleteSelectedToolbar');
+        if(topDelBtn) {
+            topDelBtn.innerText = `🗑️ Seçilen Hücreleri Sil (${selectedCellsSet.size})`;
+        }
         // Mobilde 1 kutucuk bile seçilse alt çubuk hemen açılır!
         if(adminMode && touchSelectMode && selectedCellsSet.size >= 1) {
             bar.style.display = 'flex';
@@ -971,6 +982,10 @@
     }
 
     function applyBulkValue() {
+        if(selectedCellsSet.size === 0) {
+            alert("Lütfen önce tablodan kutucuklara dokunarak seçim yapın!");
+            return;
+        }
         const val = document.getElementById('bulkCustomInput').value.trim();
         const monthVal = document.getElementById('monthPicker').value;
         selectedCellsSet.forEach(td => {
@@ -987,6 +1002,10 @@
     }
 
     function clearSelectedCells() {
+        if(selectedCellsSet.size === 0) {
+            alert("Lütfen önce tablodan silmek istediğiniz kutucuklara dokunarak seçin!");
+            return;
+        }
         const monthVal = document.getElementById('monthPicker').value;
         selectedCellsSet.forEach(td => {
             const listType = td.getAttribute('data-list');
