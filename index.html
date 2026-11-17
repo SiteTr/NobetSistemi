@@ -5,11 +5,6 @@
     <!-- MOBİLDE OTOMATİK MASAÜSTÜ (TAM TABLO) GÖRÜNÜMÜ SAĞLAR -->
     <meta name="viewport" content="width=1450, user-scalable=yes">
     <title>Bölük Nöbet Sistemi</title>
-
-    <!-- FIREBASE BULUT VERİTABANI BAĞLANTILARI -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
     <style>
         :root { --primary: #002060; --secondary: #1F4E78; --bg: #f5f7fa; --evci-bg: #e5e7eb; --weekend-bg: #dbeafe; --empty-weekend: #fed7aa; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: var(--bg); color: #333; user-select: none; min-width: 1450px; }
@@ -38,6 +33,7 @@
         .btn-icon { background: #cbd5e1; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; padding: 6px 10px; }
         .btn-icon:hover { background: #94a3b8; }
         
+        /* Yönetici Panel Butonları */
         .btn-status { padding: 6px 12px; font-size: 13px; font-weight: bold; border-radius: 4px; cursor: pointer; border: 1px solid #ccc; width: 100%; white-space: nowrap; }
         .btn-status-evci { background-color: #fee2e2; color: #991b1b; border-color: #f87171; }
         .btn-status-normal { background-color: #f0fdf4; color: #166534; border-color: #4ade80; }
@@ -46,6 +42,7 @@
         .search-box { display: flex; align-items: center; background: #fff; border: 2px solid var(--secondary); border-radius: 6px; overflow: hidden; padding: 0 5px; }
         .search-box select { border: none; outline: none; font-weight: bold; color: var(--secondary); padding: 8px; background: transparent; cursor: pointer; }
 
+        /* ÖN YÜZ (MODAL) BİLGİ KARTI TASARIMI */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(3px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 15px; box-sizing: border-box; }
         .user-card { background: #fff; border: 2px solid var(--secondary); border-radius: 12px; width: 100%; max-width: 650px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); overflow: hidden; animation: modalPop 0.2s ease-out; }
         @keyframes modalPop { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -66,6 +63,7 @@
         .shift-badge.night { background: #ede9fe; border-color: #c4b5fd; color: #5b21b6; }
         .card-footer { padding: 12px 20px; background: #f1f5f9; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px; }
 
+        /* MOBİL VE MASAÜSTÜ DOKUNMATİK SEÇİM ÇUBUĞU */
         .bulk-toolbar { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); background: #0f172a; color: white; padding: 14px 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 950; display: none; flex-direction: column; gap: 10px; border: 2px solid #38bdf8; min-width: 750px; max-width: 95vw; }
         .bulk-top-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
         .bulk-quick-btns { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
@@ -74,6 +72,7 @@
         .selected-cell { background-color: #38bdf8 !important; outline: 2px solid #0284c7 !important; color: #000 !important; font-weight: 900 !important; }
         .range-anchor-cell { outline: 3px dashed #f59e0b !important; background-color: #fef08a !important; }
 
+        /* TAM TABLO GÖRÜNÜMÜ (İç Kaydırma Kaldırıldı, Tam Ekran Açılır) */
         .table-responsive { width: 100%; overflow: visible; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 20px; }
         table { border-collapse: collapse; width: 100%; font-size: 12px; }
         th, td { border: 1px solid #ccc; padding: 7px 6px; text-align: center; white-space: nowrap; }
@@ -135,7 +134,7 @@
 <div class="app-container">
     <div class="header">
         <h2 style="margin:0; font-size: 22px; text-transform: uppercase;">Bölük Nöbet Sistemi</h2>
-        <p style="margin:5px 0 0 0; font-size: 14px; opacity: 0.9;">Nöbet Otomasyonu V19 (Mobil Tam Ekran, Canlı Veritabanı & Dokunmatik Seçim)</p>
+        <p style="margin:5px 0 0 0; font-size: 14px; opacity: 0.9;">Nöbet Otomasyonu V18 (Mobil Tam Ekran & Dokunmatik Seçim)</p>
         <button id="loginBtn" class="login-btn" onclick="toggleAdmin()">🔒 Yönetici Girişi</button>
     </div>
 
@@ -195,7 +194,7 @@
             <button class="btn-print" onclick="window.print()">🖨️ A4 Yatay Yazdır</button>
         </div>
         <p class="admin-hint" id="adminHint" style="display:none; text-align:center; color:#059669; font-weight:bold; font-size:14px; margin:6px 0;">
-            📱 MOBİL YÖNETİCİ MODU: Tablodaki kutucuklara parmağınızla dokunarak tek tek seçebilir, "📏 Aralık Seç" ile blok seçebilir veya "🗑️ Seçilen Hücreleri Sil" butonuyla silebilirsiniz! İşlem bitince buluta yüklemek için "Kaydet / Güncelle" butonuna basın.
+            📱 MOBİL YÖNETİCİ MODU: Tablodaki kutucuklara parmağınızla dokunarak tek tek seçebilir, "📏 Aralık Seç" ile blok seçebilir veya "🗑️ Seçilen Hücreleri Sil" butonuyla silebilirsiniz!
         </p>
         
         <div id="unpublishedWarning" class="unpublished-box" style="display: none;">
@@ -248,6 +247,7 @@
             <div style="flex: 1; min-width: 300px;">
                 <div class="admin-section" style="background:#fefce8; border-color:#fde047;">
                     <h4 style="margin-top:0; color:#b45309;">💾 Veritabanı Yedekleme Sistemi</h4>
+                    <p style="font-size:12px; color:#333;">Tarayıcı önbelleği silinirse verileriniz kaybolabilir. Ayda bir kez yedeği bilgisayara veya telefona indirmeyi unutmayın!</p>
                     <button class="btn-action" style="width:100%; background:#10b981; margin-bottom:5px;" onclick="exportData()">⬇️ Yedeği İndir (.json)</button>
                     <div class="file-upload-wrapper">
                         <button class="btn-upload">⬆️ Yedeği Geri Yükle Seç</button>
@@ -318,31 +318,6 @@
 </div>
 
 <script>
-    // =========================================================================
-    // FIREBASE AYARLARI (GİTHUB PAGES'TE CANLI YAYIN İÇİN)
-    // 1. firebase.google.com adresinden proje oluşturun.
-    // 2. Realtime Database ekleyin (Rules kısmında read:true, write:true yapın).
-    // 3. Size verilen config ayarlarını BURAYA YAPIŞTIRIN:
-    // =========================================================================
-    const firebaseConfig = {
-        apiKey: "AIzaSyA3FpMYHJyurBlG7yOo4jl1ee8raIwZXs4",
-        authDomain: "nobetsistem-912f2.firebaseapp.com",
-        databaseURL: "https://nobetsistem-912f2-default-rtdb.firebaseio.com",
-        projectId: "nobetsistem-912f2",
-        storageBucket: "nobetsistem-912f2.firebasestorage.app",
-        messagingSenderId: "731946974719",
-        appId: "1:731946974719:web:d964202922079cf155fbca"
-    };
-    
-    let useFirebase = false;
-    let database = null;
-    if(firebaseConfig.apiKey !== "BURAYA_YAPIŞTIRIN") {
-        firebase.initializeApp(firebaseConfig);
-        database = firebase.database();
-        useFirebase = true;
-    }
-    // =========================================================================
-
     const defaultNames = ["Alper BAŞCI", "Bekir İlker ERDEM", "Azmi KOÇ", "Sefa KARA", "Muhammet Gökhan BURAKLAR", "Emre BOLAT", "Sezer ARSLAN", "Metin YILDIRIM", "Umut ÇEKİN", "Ekrem AYYILDIZ", "Emre YİĞİT", "Ahmet EĞİLMEZ", "Abdulkadir SIĞIRCI", "Ali Osman KAYA", "Halil Nurullah GÜNGÖR", "Abdullah ARVAS", "Ali Can MEMİŞOĞLU", "Ahmet Turan ÇALÇİK", "Furkan GÖKSU", "Rafet DEDE", "Yasin AKŞAHİN", "Mustafa BİÇİCİ", "Volkan YILMAZ", "Vedat ÇİFTÇİ", "Alparslan YAYLACI", "Volkan ÖZKAN", "Sait Tunahan CENGİZ", "Muhammed Yaşar BASTEM", "Yunus BABİ", "Eyüp KAYAALP", "Ömer GÖKTÜRK", "Burak CEYLAN", "Mahmut TEK", "Mehmet TOPAL", "Emre ALPASLAN", "Hacı Bekir DEMİREL", "Abdulkadir KAPLAN", "Hakan ÇELİK", "Ramazan DENİZ", "Vefa DENİZHAN", "Hüseyin ÇAPRAZ", "Harun DENİZ", "Ali KILIÇ", "Mehmet SAKMAN", "Melih AYDIN", "Emir BESTEL", "Enes AKSU", "Tayip ŞENYİĞİT", "Mücahit YÜKSEL", "Kürşat CERRAH", "Muhammet KARADENİZ", "Nazım ÇETİNEL", "Fatih BALI", "Yusuf Ziya ÖZTÜRK", "Mert KAYA", "Gökhan ÖZDEMİR", "Arda ŞEN", "Faruk DERE", "Ahmet TAŞHANLI", "Davut BEGEÇ", "Ensar Gökbuğra ALEMDAR", "Muhammed Yusuf KOYUNCU", "Tunahan KAYADELEN", "Mustafa AKGÜN", "Oğuzhan KARAÇAY", "Doğan DEMİR", "Serhat HIRACI", "Melih ALTAŞ", "Servet KAMACI", "Burak KİŞİ", "Kerem ÖZTÜRK", "İsmail Mert KARAGÖZOĞLU", "Mustafa ÇAKIR", "Ahmet ÖZBUNAR", "Buğrahan GÜLER", "Talha TIĞCI", "Burakcan ERGÜL", "Ferhat AKSAKALLI", "İbrahim Enes ÜNLÜ", "Mutlucan IŞIK", "Hazar Eren YÜZÜAK", "Samet ÖZBİÇİCİ", "Muhammed Talha PİSTİL", "Musa YILDIRIM", "Güngör GÜNDİNÇ", "Selçuk KAYIK", "Semih HAYAL", "Erkan PUL", "Hüseyin YAKAR", "İrfan AĞDAĞ", "Burak ÇİV", "Enes ÇAVAŞ", "Abdulkadir AY"];
     const defaultEvciList = ["Muhammet Gökhan BURAKLAR", "Abdullah ARVAS", "Ali Can MEMİŞOĞLU", "Emre ALPASLAN", "Melih AYDIN", "Muhammet KARADENİZ", "Fatih BALI", "Gökhan ÖZDEMİR", "Doğan DEMİR", "İbrahim Enes ÜNLÜ", "Muhammed Talha PİSTİL", "Selçuk KAYIK", "İrfan AĞDAĞ", "Enes ÇAVAŞ", "Abdulkadir AY"];
     const defaultGeceYatsiList = ["İsmet Mutlu FAKİR", "İlker ÖZTÜRK", "Salih Yiğit EVEZ", "Resul KULAK", "İsmail GENÇ", "Köksal BAL", "Yakup KILIÇ", "Aykut MUTLU", "Muhammet İkbal DOĞAN", "Adem TURAN", "Muhammed İNCİR", "Ali TÜRK", "Abdulgani AKBAŞ", "Metin NESNE", "Hasan ÖZCAN", "Mücahit DURDU", "Yasin ŞERAS", "Muhiddin GÜRSEL", "Mehmet Sadık OKTAY", "Feridun ALBAKIR", "Sefa SAĞLAM", "Mustafa SALCI", "Fuat TAT", "Muhammed Kasım ÖZCAN", "Uğur Ege ŞAHİN", "Burak ÖZEL", "Berk ATAR", "Burak DÜZENLİ", "Bilal BOZKURT", "Muhammet Sait CAYMAZ", "Hasan SARITEPE", "Halis Berk YILDIZ", "Hasan Hüseyin SALMAN", "Yavuz YILMAZ", "Selahi KONAK", "Cengiz CANYURT", "Yusuf İzzet YILDIRIM", "Samet YÜKSEL", "Muhammet Furkan BOZGEYİK", "Orhan KURT", "İlyas İÇEN", "Halis ÇILDIR", "Tayfun BADURLUOĞLU", "Ömer Faruk BULUT", "Samet TOPKARA", "Ümit SOYLU", "Mustafa KARABOĞAZ", "Emre GEZER", "Mehmet YILDIRIM", "Muhammet ALTIAY", "Mehmet Zeki SERTDEMİR", "İsmet İslam BAYBURT", "Atakan CEYHUN", "Aykut GÜLER", "Mehmet DEKTAŞ", "Emre Can ÜSTÜN", "Sezer YOLCU", "Furkan KAYIKÇI", "Abdülbaki SERDAROĞLU", "Tuncay KÜÇÜK", "Abdülkadir ERDURMUŞ", "Barış BAŞ", "Hüseyin TANRIKULU", "Emre ERDOĞAN", "Yusuf BIYIKLI", "Yusuf MERAL", "Sabri ŞEN", "Muhammed Enes DÖĞER", "Ahmet ŞEN", "Adem KARACA", "Hasan Bilgehan ÜN", "Akif ÇOMULU", "Serhat KAFA", "Mete ATEŞ", "Murat KAYA", "Salih TOSUN", "Yunus ORDU", "Adem ÇOLAK", "Turan YILDIRIM", "Berat KAYA", "Okan Yasin GÖMLEKSİZ", "Muharrem KABALAK", "Ahmet KAZI", "Ömürhan Halil DENİZ", "Haci Bekir DEMİREL", "Abdullah İhsan TİYEK", "Faruk GÜN", "Sinan AÇIKGÖZ", "Burak ŞAYIK", "Hüseyin AKSÜT", "Furkan TEPELİ", "Serhat ARVAS"];
@@ -350,7 +325,7 @@
     const daysNameTR = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
     const monthsTR = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
     
-    const defaultApolet = {"İsmet Mutlu FAKİR": "1", "İlker ÖZTÜRK": "2", "Hakan ÇELİK": "3", "Salih Yiğit EVEZ": "4", "Resul KULAK": "5", "Ramazan DENİZ": "6", "Alper BAŞCI": "7", "İsmail GENÇ": "8", "Vefa DENİZHAN": "9", "Bekir İlker ERDEM": "10", "Azmi KOÇ": "11", "Hüseyin ÇAPRAZ": "12", "Köksal BAL": "13", "Yakup KILIÇ": "14", "Harun DENİZ": "15", "Aykut MUTLU": "16", "Muhammet İkbal DOĞAN": "17", "Ali KILIÇ": "18", "Sefa KARA": "19", "Adem TURAN": "20", "Mehmet SAKMAN": "21", "Muhammed İNCİR": "22", "Ali TÜRK": "23", "Melih AYDIN": "24", "Abdulgani AKBAŞ": "25", "Metin NESNE": "26", "Emir BESTEL": "27", "Hasan ÖZCAN": "28", "Mücahit DURDU": "29", "Enes AKSU": "30", "Yasin ŞERAS": "31", "Muhiddin GÜRSEL": "32", "Tayip ŞENYİĞİT": "33", "Mehmet Sadık OKTAY": "34", "Feridun ALBAKIR": "35", "Mücahit YÜKSEL": "36", "Sefa SAĞLAM": "37", "Mustafa SALCI": "38", "Kürşat CERRAH": "39", "Muhammet Gökhan BURAKLAR": "40", "Fuat TAT": "41", "Muhammed Kasım ÖZCAN": "42", "Uğur Ege ŞAHİN": "43", "Burak ÖZEL": "44", "Muhammet KARADENİZ": "45", "Berk ATAR": "46", "Burak DÜZENLİ": "47", "Emre BOLAT": "48", "Nazım ÇETİNEL": "49", "Bilal BOZKURT": "50", "Sezer ARSLAN": "51", "Fatih BALI": "52", "Muhammet Sait CAYMAZ": "53", "Hasan SARITEPE": "54", "Yusuf Ziya ÖZTÜRK": "55", "Halis Berk YILDIZ": "56", "Hasan Hüseyin SALMAN": "57", "Mert KAYA": "58", "Metin YILDIRIM": "59", "Yavuz YILMAZ": "60", "Gökhan ÖZDEMİR": "61", "Selahi KONAK": "62", "Cengiz CANYURT": "63", "Yusuf İzzet YILDIRIM": "64", "Samet YÜKSEL": "65", "Umut ÇEKİN": "66", "Arda ŞEN": "67", "Muhammet Furkan BOZGEYİK": "68", "Ekrem AYYILDIZ": "69", "Orhan KURT": "70", "Emre YİĞİT": "71", "Ahmet EĞİLMEZ": "72", "Faruk DERE": "73", "İlyas İÇEN": "74", "Abdulkadir SIĞIRCI": "75", "Ahmet TAŞHANLI": "76", "Halis ÇILDIR": "77", "Ali Osman KAYA": "78", "Davut BEGEÇ": "79", "Halil Nurullah GÜNGÖR": "80", "Tayfun BADURLUOĞLU": "81", "Ensar Gökbuğra ALEMDAR": "82", "Ömer Faruk BULUT": "83", "Samet TOPKARA": "84", "Muhammed Yusuf KOYUNCU": "85", "Ali Can MEMİŞOĞLU": "86", "Ahmet Turan ÇALÇİK": "87", "Tunahan KAYADELEN": "88", "Furkan GÖKSU": "89", "Ümit SOYLU": "90", "Rafet DEDE": "91", "Yasin AKŞAHİN": "92", "Mustafa AKGÜN": "93", "Mustafa KARABOĞAZ": "94", "Emre GEZER": "95", "Oğuzhan KARAÇAY": "96", "Mehmet YILDIRIM": "97", "Mustafa BİÇİCİ": "98", "Doğan DEMİR": "99", "Volkan YILMAZ": "100", "Muhammet ALTIAY": "101", "Serhat HIRACI": "102", "Vedat ÇİFTÇİ": "103", "Mehmet Zeki SERTDEMİR": "104", "Melih ALTAŞ": "105", "İsmet İslam BAYBURT": "106", "Atakan CEYHUN": "107", "Servet KAMACI": "108", "Alparslan YAYLACI": "109", "Aykut GÜLER": "110", "Burak KİŞİ": "111", "Volkan ÖZKAN": "112", "Sait Tunahan CENGİZ": "113", "Kerem ÖZTÜRK": "114", "Mehmet DEKTAŞ": "115", "Emre Can ÜSTÜN": "116", "İsmail Mert KARAGÖZOĞLU": "117", "Sezer YOLCU": "118", "Furkan KAYIKÇI": "119", "Mustafa ÇAKIR": "120", "Abdülbaki SERDAROĞLU": "121", "Tuncay KÜÇÜK": "122", "Ahmet ÖZBUNAR": "123", "Muhammed Yaşar BASTEM": "124", "Abdülkadir ERDURMUŞ": "125", "Buğrahan GÜLER": "126", "Barış BAŞ": "127", "Yunus BABİ": "128", "Talha TIĞCI": "129", "Hüseyin TANRIKULU": "130", "Eyüp KAYAALP": "131", "Burakcan ERGÜL": "132", "Emre ERDOĞAN": "133", "Ömer GÖKTÜRK": "134", "Ferhat AKSAKALLI": "135", "Burak CEYLAN": "136", "Yusuf BIYIKLI": "137", "İbrahim Enes ÜNLÜ": "138", "Mahmut TEK": "139", "Yusuf MERAL": "140", "Mutlucan IŞIK": "141", "Sabri ŞEN": "142", "Muhammed Enes DÖĞER": "143", "Hazar Eren YÜZÜAK": "144", "Mehmet TOPAL": "145", "Ahmet ŞEN": "146", "Samet ÖZBİÇİCİ": "147", "Emre ALPASLAN": "148", "Adem KARACA": "149", "Muhammed Talha PİSTİL": "150", "Hasan Bilgehan ÜN": "151", "Akif ÇOMULU": "152", "Serhat KAFA": "153", "Mete ATEŞ": "154", "Musa YILDIRIM": "155", "Murat KAYA": "156", "Salih TOSUN": "157", "Yunus ORDU": "158", "Güngör GÜNDİNÇ": "159", "Adem ÇOLAK": "160", "Turan YILDIRIM": "161", "Berat KAYA": "162", "Selçuk KAYIK": "163", "Okan Yasin GÖMLEKSİZ": "164", "Muharrem KABALAK": "165", "Ahmet KAZI": "166", "Semih HAYAL": "167", "Ömürhan Halil DENİZ": "168", "Haci Bekir DEMİREL": "169", "Abdullah İhsan TİYEK": "170", "Erkan PUL": "171", "Abdulkadir KAPLAN": "172", "Faruk GÜN": "173", "Hüseyin YAKAR": "174", "Sinan AÇIKGÖZ": "175", "Burak ŞAYIK": "176", "İrfan AĞDAĞ": "177", "Hüseyin AKSÜT": "178", "Furkan TEPELİ": "179", "Burak ÇİV": "180", "Serhat ARVAS": "181", "Enes ÇAVAŞ": "182", "Abdulkadir AY": "183", "Abdullah ARVAS": "184"];
+    const defaultApolet = {"İsmet Mutlu FAKİR": "1", "İlker ÖZTÜRK": "2", "Hakan ÇELİK": "3", "Salih Yiğit EVEZ": "4", "Resul KULAK": "5", "Ramazan DENİZ": "6", "Alper BAŞCI": "7", "İsmail GENÇ": "8", "Vefa DENİZHAN": "9", "Bekir İlker ERDEM": "10", "Azmi KOÇ": "11", "Hüseyin ÇAPRAZ": "12", "Köksal BAL": "13", "Yakup KILIÇ": "14", "Harun DENİZ": "15", "Aykut MUTLU": "16", "Muhammet İkbal DOĞAN": "17", "Ali KILIÇ": "18", "Sefa KARA": "19", "Adem TURAN": "20", "Mehmet SAKMAN": "21", "Muhammed İNCİR": "22", "Ali TÜRK": "23", "Melih AYDIN": "24", "Abdulgani AKBAŞ": "25", "Metin NESNE": "26", "Emir BESTEL": "27", "Hasan ÖZCAN": "28", "Mücahit DURDU": "29", "Enes AKSU": "30", "Yasin ŞERAS": "31", "Muhiddin GÜRSEL": "32", "Tayip ŞENYİĞİT": "33", "Mehmet Sadık OKTAY": "34", "Feridun ALBAKIR": "35", "Mücahit YÜKSEL": "36", "Sefa SAĞLAM": "37", "Mustafa SALCI": "38", "Kürşat CERRAH": "39", "Muhammet Gökhan BURAKLAR": "40", "Fuat TAT": "41", "Muhammed Kasım ÖZCAN": "42", "Uğur Ege ŞAHİN": "43", "Burak ÖZEL": "44", "Muhammet KARADENİZ": "45", "Berk ATAR": "46", "Burak DÜZENLİ": "47", "Emre BOLAT": "48", "Nazım ÇETİNEL": "49", "Bilal BOZKURT": "50", "Sezer ARSLAN": "51", "Fatih BALI": "52", "Muhammet Sait CAYMAZ": "53", "Hasan SARITEPE": "54", "Yusuf Ziya ÖZTÜRK": "55", "Halis Berk YILDIZ": "56", "Hasan Hüseyin SALMAN": "57", "Mert KAYA": "58", "Metin YILDIRIM": "59", "Yavuz YILMAZ": "60", "Gökhan ÖZDEMİR": "61", "Selahi KONAK": "62", "Cengiz CANYURT": "63", "Yusuf İzzet YILDIRIM": "64", "Samet YÜKSEL": "65", "Umut ÇEKİN": "66", "Arda ŞEN": "67", "Muhammet Furkan BOZGEYİK": "68", "Ekrem AYYILDIZ": "69", "Orhan KURT": "70", "Emre YİĞİT": "71", "Ahmet EĞİLMEZ": "72", "Faruk DERE": "73", "İlyas İÇEN": "74", "Abdulkadir SIĞIRCI": "75", "Ahmet TAŞHANLI": "76", "Halis ÇILDIR": "77", "Ali Osman KAYA": "78", "Davut BEGEÇ": "79", "Halil Nurullah GÜNGÖR": "80", "Tayfun BADURLUOĞLU": "81", "Ensar Gökbuğra ALEMDAR": "82", "Ömer Faruk BULUT": "83", "Samet TOPKARA": "84", "Muhammed Yusuf KOYUNCU": "85", "Ali Can MEMİŞOĞLU": "86", "Ahmet Turan ÇALÇİK": "87", "Tunahan KAYADELEN": "88", "Furkan GÖKSU": "89", "Ümit SOYLU": "90", "Rafet DEDE": "91", "Yasin AKŞAHİN": "92", "Mustafa AKGÜN": "93", "Mustafa KARABOĞAZ": "94", "Emre GEZER": "95", "Oğuzhan KARAÇAY": "96", "Mehmet YILDIRIM": "97", "Mustafa BİÇİCİ": "98", "Doğan DEMİR": "99", "Volkan YILMAZ": "100", "Muhammet ALTIAY": "101", "Serhat HIRACI": "102", "Vedat ÇİFTÇİ": "103", "Mehmet Zeki SERTDEMİR": "104", "Melih ALTAŞ": "105", "İsmet İslam BAYBURT": "106", "Atakan CEYHUN": "107", "Servet KAMACI": "108", "Alparslan YAYLACI": "109", "Aykut GÜLER": "110", "Burak KİŞİ": "111", "Volkan ÖZKAN": "112", "Sait Tunahan CENGİZ": "113", "Kerem ÖZTÜRK": "114", "Mehmet DEKTAŞ": "115", "Emre Can ÜSTÜN": "116", "İsmail Mert KARAGÖZOĞLU": "117", "Sezer YOLCU": "118", "Furkan KAYIKÇI": "119", "Mustafa ÇAKIR": "120", "Abdülbaki SERDAROĞLU": "121", "Tuncay KÜÇÜK": "122", "Ahmet ÖZBUNAR": "123", "Muhammed Yaşar BASTEM": "124", "Abdülkadir ERDURMUŞ": "125", "Buğrahan GÜLER": "126", "Barış BAŞ": "127", "Yunus BABİ": "128", "Talha TIĞCI": "129", "Hüseyin TANRIKULU": "130", "Eyüp KAYAALP": "131", "Burakcan ERGÜL": "132", "Emre ERDOĞAN": "133", "Ömer GÖKTÜRK": "134", "Ferhat AKSAKALLI": "135", "Burak CEYLAN": "136", "Yusuf BIYIKLI": "137", "İbrahim Enes ÜNLÜ": "138", "Mahmut TEK": "139", "Yusuf MERAL": "140", "Mutlucan IŞIK": "141", "Sabri ŞEN": "142", "Muhammed Enes DÖĞER": "143", "Hazar Eren YÜZÜAK": "144", "Mehmet TOPAL": "145", "Ahmet ŞEN": "146", "Samet ÖZBİÇİCİ": "147", "Emre ALPASLAN": "148", "Adem KARACA": "149", "Muhammed Talha PİSTİL": "150", "Hasan Bilgehan ÜN": "151", "Akif ÇOMULU": "152", "Serhat KAFA": "153", "Mete ATEŞ": "154", "Musa YILDIRIM": "155", "Murat KAYA": "156", "Salih TOSUN": "157", "Yunus ORDU": "158", "Güngör GÜNDİNÇ": "159", "Adem ÇOLAK": "160", "Turan YILDIRIM": "161", "Berat KAYA": "162", "Selçuk KAYIK": "163", "Okan Yasin GÖMLEKSİZ": "164", "Muharrem KABALAK": "165", "Ahmet KAZI": "166", "Semih HAYAL": "167", "Ömürhan Halil DENİZ": "168", "Haci Bekir DEMİREL": "169", "Abdullah İhsan TİYEK": "170", "Erkan PUL": "171", "Abdulkadir KAPLAN": "172", "Faruk GÜN": "173", "Hüseyin YAKAR": "174", "Sinan AÇIKGÖZ": "175", "Burak ŞAYIK": "176", "İrfan AĞDAĞ": "177", "Hüseyin AKSÜT": "178", "Furkan TEPELİ": "179", "Burak ÇİV": "180", "Serhat ARVAS": "181", "Enes ÇAVAŞ": "182", "Abdulkadir AY": "183", "Abdullah ARVAS": "184"};
     
     let db = { names: [], evciList: [], geceYatsiList: [], shifts: [], pastShiftsRecords: {}, manualHours: {}, apolet: {}, publishedMonths: {} };
     
@@ -361,17 +336,19 @@
     let currentMonthInfo = {};
     let adminMode = false;
 
-    let touchSelectMode = true; 
-    let rangeSelectMode = false; 
+    // Mobil Dokunmatik & Fare Seçim Değişkenleri
+    let touchSelectMode = true; // Yönetici modunda varsayılan olarak dokunarak kutucuk seçme açık
+    let rangeSelectMode = false; // İki kutucuk arasını blok olarak seçme
     let rangeAnchorCell = null;
     let isDraggingCells = false;
     let dragStartCell = null;
     let selectedCellsSet = new Set();
 
     window.onload = () => {
+        loadDB();
         setInitialMonth();
         setupBulkSelectionListeners();
-        loadDB();
+        handleMonthChange();
     };
     
     function setInitialMonth() {
@@ -397,9 +374,11 @@
         handleMonthChange();
     }
 
-    function syncDBStructure(data) {
-        if(data) db = data;
-        else {
+    function loadDB() {
+        const saved = localStorage.getItem('nobetDB_V16');
+        if(saved) {
+            db = JSON.parse(saved);
+        } else {
             db.names = [...defaultNames]; db.evciList = [...defaultEvciList]; db.geceYatsiList = [...defaultGeceYatsiList];
             db.shifts = [...defaultShifts]; db.pastShiftsRecords = {}; db.manualHours = {}; db.apolet = {...defaultApolet}; db.publishedMonths = {};
         }
@@ -413,30 +392,11 @@
             if(!db.pastShiftsRecords[n]) db.pastShiftsRecords[n] = [];
             if(db.apolet[n] === undefined || db.apolet[n] === "") db.apolet[n] = defaultApolet[n] || "";
         });
-        
         document.getElementById('shiftsInput').value = db.shifts.join(', ');
         populateQuickShiftButtons();
-        handleMonthChange();
     }
 
-    function loadDB() {
-        if(useFirebase) {
-            database.ref('BolukNobetV19').on('value', (snapshot) => {
-                syncDBStructure(snapshot.val());
-            });
-        } else {
-            const saved = localStorage.getItem('nobetDB_V16');
-            syncDBStructure(saved ? JSON.parse(saved) : null);
-        }
-    }
-
-    function saveDB() {
-        if(useFirebase) {
-            database.ref('BolukNobetV19').set(db);
-        } else {
-            localStorage.setItem('nobetDB_V16', JSON.stringify(db));
-        }
-    }
+    function saveDB() { localStorage.setItem('nobetDB_V16', JSON.stringify(db)); }
 
     function populateQuickShiftButtons() {
         const container = document.getElementById('bulkQuickBtns');
@@ -448,7 +408,7 @@
         html += `<button class="quick-shift-btn" style="border-color:#fbbf24; color:#fbbf24;" onclick="applyQuickShift('İzinli')">İzinli</button>`;
         html += `<button class="quick-shift-btn" style="border-color:#f87171; color:#f87171;" onclick="applyQuickShift('Raporlu')">Raporlu</button>`;
         html += `<button class="quick-shift-btn" style="border-color:#a78bfa; color:#a78bfa;" onclick="applyQuickShift('Görevli')">Görevli</button>`;
-        html += `<button class="quick-shift-btn" style="border-color:#ef4444; background:#dc2626; color:#fff;" onclick="clearSelectedCells()">🗑️ Boşalt / Sil</button>`;
+        html += `<button class="quick-shift-btn" style="border-color:#ef4444; background:#dc2626; color:#fff;" onclick="clearSelectedCells()">🗑️ Seçilen Hücreleri Sil</button>`;
         container.innerHTML = html;
     }
 
@@ -456,7 +416,7 @@
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
         const a = document.createElement('a');
         a.setAttribute("href", dataStr);
-        a.setAttribute("download", "nobet_sistemi_yedek_v19.json");
+        a.setAttribute("download", "nobet_sistemi_yedek_v18.json");
         document.body.appendChild(a); a.click(); a.remove();
     }
 
@@ -469,7 +429,8 @@
                 const importedDb = JSON.parse(e.target.result);
                 if (importedDb.names && importedDb.shifts) {
                     db = importedDb; saveDB();
-                    if(!useFirebase) location.reload();
+                    alert("Yedek başarıyla yüklendi! Sayfa yenileniyor...");
+                    location.reload();
                 } else { alert("Geçersiz yedek dosyası!"); }
             } catch (err) { alert("Dosya okuma hatası! Geçerli bir JSON seçin."); }
         };
@@ -478,8 +439,7 @@
 
     function resetAllData() {
         if(confirm("TÜM SİSTEM SIFIRLANACAK! Kaydettiğiniz bütün aylar, nöbetler ve isimler silinecek. Emin misiniz?")) {
-            db = null; saveDB();
-            if(!useFirebase) { localStorage.removeItem('nobetDB_V16'); location.reload(); }
+            localStorage.removeItem('nobetDB_V16'); location.reload();
         }
     }
 
@@ -899,6 +859,7 @@
         alert("Eski ay mühürlendi. " + nextM + " ayına geçtiniz!");
     }
 
+    // ================= MOBİL DOKUNARAK & FARE İLE SEÇİM SİSTEMİ =================
     function setupBulkSelectionListeners() {
         document.addEventListener('mouseup', () => { isDraggingCells = false; });
         document.addEventListener('keydown', (e) => {
@@ -914,10 +875,12 @@
         });
     }
 
+    // Telefonda veya bilgisayarda kutucuğa dokunulduğunda (tıklandığında) çalışır
     function onCellTap(e, td) {
         if(!adminMode || !touchSelectMode) return;
         e.preventDefault();
 
+        // Eğer "Aralık Seç" modu açıksa 1. kutu ile 2. kutu arasındaki tüm bloğu seçer
         if(rangeSelectMode) {
             if(!rangeAnchorCell || rangeAnchorCell.getAttribute('data-list') !== td.getAttribute('data-list')) {
                 if(rangeAnchorCell) rangeAnchorCell.classList.remove('range-anchor-cell');
@@ -949,6 +912,7 @@
             }
         }
 
+        // Normal Dokunarak Seçim: Dokunulan kutuyu mavi seçer, tekrar dokunulursa seçimi kaldırır
         toggleCellSelect(td);
         updateBulkToolbar();
     }
@@ -1003,6 +967,7 @@
         if(topDelBtn) {
             topDelBtn.innerText = `🗑️ Seçilen Hücreleri Sil (${selectedCellsSet.size})`;
         }
+        // Mobilde 1 kutucuk bile seçilse alt çubuk hemen açılır!
         if(adminMode && touchSelectMode && selectedCellsSet.size >= 1) {
             bar.style.display = 'flex';
             countTxt.innerText = `${selectedCellsSet.size} Kutucuk Seçildi`;
@@ -1115,6 +1080,7 @@
         } else { document.getElementById('haftasonuTableWrapper').style.display = 'none'; }
     }
 
+    // ================= TARİH ARALIKLI ADALET PANOSU =================
     function setAdaletRangeCurrent() {
         const curM = document.getElementById('monthPicker').value;
         document.getElementById('adaletStartMonth').value = curM;
