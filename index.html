@@ -5,6 +5,11 @@
     <!-- MOBİLDE OTOMATİK MASAÜSTÜ (TAM TABLO) GÖRÜNÜMÜ SAĞLAR -->
     <meta name="viewport" content="width=1450, user-scalable=yes">
     <title>Bölük Nöbet Sistemi</title>
+
+    <!-- FIREBASE BULUT VERİTABANI BAĞLANTILARI -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
     <style>
         :root { --primary: #002060; --secondary: #1F4E78; --bg: #f5f7fa; --evci-bg: #e5e7eb; --weekend-bg: #dbeafe; --empty-weekend: #fed7aa; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: var(--bg); color: #333; user-select: none; min-width: 1450px; }
@@ -33,7 +38,6 @@
         .btn-icon { background: #cbd5e1; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; padding: 6px 10px; }
         .btn-icon:hover { background: #94a3b8; }
         
-        /* Yönetici Panel Butonları */
         .btn-status { padding: 6px 12px; font-size: 13px; font-weight: bold; border-radius: 4px; cursor: pointer; border: 1px solid #ccc; width: 100%; white-space: nowrap; }
         .btn-status-evci { background-color: #fee2e2; color: #991b1b; border-color: #f87171; }
         .btn-status-normal { background-color: #f0fdf4; color: #166534; border-color: #4ade80; }
@@ -42,7 +46,6 @@
         .search-box { display: flex; align-items: center; background: #fff; border: 2px solid var(--secondary); border-radius: 6px; overflow: hidden; padding: 0 5px; }
         .search-box select { border: none; outline: none; font-weight: bold; color: var(--secondary); padding: 8px; background: transparent; cursor: pointer; }
 
-        /* ÖN YÜZ (MODAL) BİLGİ KARTI TASARIMI */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(3px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 15px; box-sizing: border-box; }
         .user-card { background: #fff; border: 2px solid var(--secondary); border-radius: 12px; width: 100%; max-width: 650px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); overflow: hidden; animation: modalPop 0.2s ease-out; }
         @keyframes modalPop { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -63,7 +66,6 @@
         .shift-badge.night { background: #ede9fe; border-color: #c4b5fd; color: #5b21b6; }
         .card-footer { padding: 12px 20px; background: #f1f5f9; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px; }
 
-        /* MOBİL VE MASAÜSTÜ DOKUNMATİK SEÇİM ÇUBUĞU */
         .bulk-toolbar { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); background: #0f172a; color: white; padding: 14px 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 950; display: none; flex-direction: column; gap: 10px; border: 2px solid #38bdf8; min-width: 750px; max-width: 95vw; }
         .bulk-top-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
         .bulk-quick-btns { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
@@ -72,7 +74,6 @@
         .selected-cell { background-color: #38bdf8 !important; outline: 2px solid #0284c7 !important; color: #000 !important; font-weight: 900 !important; }
         .range-anchor-cell { outline: 3px dashed #f59e0b !important; background-color: #fef08a !important; }
 
-        /* TAM TABLO GÖRÜNÜMÜ (İç Kaydırma Kaldırıldı, Tam Ekran Açılır) */
         .table-responsive { width: 100%; overflow: visible; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 20px; }
         table { border-collapse: collapse; width: 100%; font-size: 12px; }
         th, td { border: 1px solid #ccc; padding: 7px 6px; text-align: center; white-space: nowrap; }
@@ -134,7 +135,7 @@
 <div class="app-container">
     <div class="header">
         <h2 style="margin:0; font-size: 22px; text-transform: uppercase;">Bölük Nöbet Sistemi</h2>
-        <p style="margin:5px 0 0 0; font-size: 14px; opacity: 0.9;">Nöbet Otomasyonu V18 (Mobil Tam Ekran & Dokunmatik Seçim)</p>
+        <p style="margin:5px 0 0 0; font-size: 14px; opacity: 0.9;">Nöbet Otomasyonu V19 (Mobil Tam Ekran, Canlı Veritabanı & Dokunmatik Seçim)</p>
         <button id="loginBtn" class="login-btn" onclick="toggleAdmin()">🔒 Yönetici Girişi</button>
     </div>
 
@@ -144,12 +145,10 @@
         <button id="adminTabBtn" class="tab-btn" onclick="openTab('panel')">⚙️ Yönetici Paneli</button>
     </div>
 
-    <!-- ÖN YÜZ (MODAL) KULLANICI BİLGİ KARTI -->
     <div id="userModalOverlay" class="modal-overlay" onclick="if(event.target===this) closeUserCard(false)">
         <div id="userCardContainer" class="user-card"></div>
     </div>
 
-    <!-- DOKUNMATİK HIZLI SEÇİM VE DOLDURMA ÇUBUĞU -->
     <div id="bulkToolbar" class="bulk-toolbar">
         <div class="bulk-top-row">
             <span id="bulkCountText" style="font-weight:bold; color:#38bdf8; font-size:15px;">0 Kutucuk Seçildi</span>
@@ -160,12 +159,9 @@
                 <button class="btn-icon" style="background:#475569; color:white; padding:8px 12px; font-size:14px;" onclick="clearCellSelection()">✖ Seçimi Kapat</button>
             </div>
         </div>
-        <div class="bulk-quick-btns" id="bulkQuickBtns">
-            <!-- Vardiya butonları buraya dinamik yüklenir -->
-        </div>
+        <div class="bulk-quick-btns" id="bulkQuickBtns"></div>
     </div>
 
-    <!-- 1. ÇİZELGE TABI -->
     <div id="cizelge" class="tab-content active">
         <div class="toolbar">
             <div style="display: flex; align-items: center; gap: 5px;">
@@ -182,7 +178,6 @@
                 <button id="clearHighlightBtn" class="btn-icon" style="display:none; background:#ef4444; color:white; margin-left:4px;" onclick="closeUserCard(true)" title="Seçimi Temizle">✖</button>
             </div>
 
-            <!-- MOBİL DOKUNMATİK SEÇİM VE SEÇİLEN HÜCRELERİ SİLME BUTONLARI -->
             <button id="btnTouchMode" class="btn-action" style="display:none; background:#0284c7;" onclick="toggleTouchSelectMode()">👆 Dokunarak Seç: AÇIK</button>
             <button id="btnRangeMode" class="btn-action" style="display:none; background:#64748b;" onclick="toggleRangeSelectMode()">📏 Aralık Seç: KAPALI</button>
             <button id="btnDeleteSelectedToolbar" class="btn-danger" style="display:none; background:#dc2626;" onclick="clearSelectedCells()">🗑️ Seçilen Hücreleri Sil (0)</button>
@@ -194,7 +189,7 @@
             <button class="btn-print" onclick="window.print()">🖨️ A4 Yatay Yazdır</button>
         </div>
         <p class="admin-hint" id="adminHint" style="display:none; text-align:center; color:#059669; font-weight:bold; font-size:14px; margin:6px 0;">
-            📱 MOBİL YÖNETİCİ MODU: Tablodaki kutucuklara parmağınızla dokunarak tek tek seçebilir, "📏 Aralık Seç" ile blok seçebilir veya "🗑️ Seçilen Hücreleri Sil" butonuyla silebilirsiniz!
+            📱 MOBİL YÖNETİCİ MODU: Tablodaki kutucuklara parmağınızla dokunarak tek tek seçebilir, "📏 Aralık Seç" ile blok seçebilir veya "🗑️ Seçilen Hücreleri Sil" butonuyla silebilirsiniz! İşlem bitince buluta yüklemek için "Kaydet / Güncelle" butonuna basın.
         </p>
         
         <div id="unpublishedWarning" class="unpublished-box" style="display: none;">
@@ -210,7 +205,6 @@
         </div>
     </div>
 
-    <!-- 2. ADALET PANOSU -->
     <div id="adalet" class="tab-content">
         <div class="toolbar" style="justify-content: space-between;">
             <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
@@ -241,13 +235,11 @@
         </div>
     </div>
 
-    <!-- 3. YÖNETİCİ PANELİ -->
     <div id="panel" class="tab-content">
         <div style="display: flex; flex-wrap:wrap; gap: 20px;">
             <div style="flex: 1; min-width: 300px;">
                 <div class="admin-section" style="background:#fefce8; border-color:#fde047;">
                     <h4 style="margin-top:0; color:#b45309;">💾 Veritabanı Yedekleme Sistemi</h4>
-                    <p style="font-size:12px; color:#333;">Tarayıcı önbelleği silinirse verileriniz kaybolabilir. Ayda bir kez yedeği bilgisayara veya telefona indirmeyi unutmayın!</p>
                     <button class="btn-action" style="width:100%; background:#10b981; margin-bottom:5px;" onclick="exportData()">⬇️ Yedeği İndir (.json)</button>
                     <div class="file-upload-wrapper">
                         <button class="btn-upload">⬆️ Yedeği Geri Yükle Seç</button>
@@ -318,6 +310,31 @@
 </div>
 
 <script>
+    // =========================================================================
+    // FIREBASE AYARLARI (GİTHUB PAGES'TE CANLI YAYIN İÇİN)
+    // 1. firebase.google.com adresinden proje oluşturun.
+    // 2. Realtime Database ekleyin (Rules kısmında read:true, write:true yapın).
+    // 3. Size verilen config ayarlarını BURAYA YAPIŞTIRIN:
+    // =========================================================================
+    const firebaseConfig = {
+        apiKey: "AIzaSyA3FpMYHJyurBlG7yOo4jl1ee8raIwZXs4",
+        authDomain: "nobetsistem-912f2.firebaseapp.com",
+        databaseURL: "https://nobetsistem-912f2-default-rtdb.firebaseio.com",
+        projectId: "nobetsistem-912f2",
+        storageBucket: "nobetsistem-912f2.firebasestorage.app",
+        messagingSenderId: "731946974719",
+        appId: "1:731946974719:web:d964202922079cf155fbca"
+    };
+    
+    let useFirebase = false;
+    let database = null;
+    if(firebaseConfig.apiKey !== "AIzaSyA3FpMYHJyurBlG7yOo4jl1ee8raIwZXs4") {
+        firebase.initializeApp(firebaseConfig);
+        database = firebase.database();
+        useFirebase = true;
+    }
+    // =========================================================================
+
     const defaultNames = ["Alper BAŞCI", "Bekir İlker ERDEM", "Azmi KOÇ", "Sefa KARA", "Muhammet Gökhan BURAKLAR", "Emre BOLAT", "Sezer ARSLAN", "Metin YILDIRIM", "Umut ÇEKİN", "Ekrem AYYILDIZ", "Emre YİĞİT", "Ahmet EĞİLMEZ", "Abdulkadir SIĞIRCI", "Ali Osman KAYA", "Halil Nurullah GÜNGÖR", "Abdullah ARVAS", "Ali Can MEMİŞOĞLU", "Ahmet Turan ÇALÇİK", "Furkan GÖKSU", "Rafet DEDE", "Yasin AKŞAHİN", "Mustafa BİÇİCİ", "Volkan YILMAZ", "Vedat ÇİFTÇİ", "Alparslan YAYLACI", "Volkan ÖZKAN", "Sait Tunahan CENGİZ", "Muhammed Yaşar BASTEM", "Yunus BABİ", "Eyüp KAYAALP", "Ömer GÖKTÜRK", "Burak CEYLAN", "Mahmut TEK", "Mehmet TOPAL", "Emre ALPASLAN", "Hacı Bekir DEMİREL", "Abdulkadir KAPLAN", "Hakan ÇELİK", "Ramazan DENİZ", "Vefa DENİZHAN", "Hüseyin ÇAPRAZ", "Harun DENİZ", "Ali KILIÇ", "Mehmet SAKMAN", "Melih AYDIN", "Emir BESTEL", "Enes AKSU", "Tayip ŞENYİĞİT", "Mücahit YÜKSEL", "Kürşat CERRAH", "Muhammet KARADENİZ", "Nazım ÇETİNEL", "Fatih BALI", "Yusuf Ziya ÖZTÜRK", "Mert KAYA", "Gökhan ÖZDEMİR", "Arda ŞEN", "Faruk DERE", "Ahmet TAŞHANLI", "Davut BEGEÇ", "Ensar Gökbuğra ALEMDAR", "Muhammed Yusuf KOYUNCU", "Tunahan KAYADELEN", "Mustafa AKGÜN", "Oğuzhan KARAÇAY", "Doğan DEMİR", "Serhat HIRACI", "Melih ALTAŞ", "Servet KAMACI", "Burak KİŞİ", "Kerem ÖZTÜRK", "İsmail Mert KARAGÖZOĞLU", "Mustafa ÇAKIR", "Ahmet ÖZBUNAR", "Buğrahan GÜLER", "Talha TIĞCI", "Burakcan ERGÜL", "Ferhat AKSAKALLI", "İbrahim Enes ÜNLÜ", "Mutlucan IŞIK", "Hazar Eren YÜZÜAK", "Samet ÖZBİÇİCİ", "Muhammed Talha PİSTİL", "Musa YILDIRIM", "Güngör GÜNDİNÇ", "Selçuk KAYIK", "Semih HAYAL", "Erkan PUL", "Hüseyin YAKAR", "İrfan AĞDAĞ", "Burak ÇİV", "Enes ÇAVAŞ", "Abdulkadir AY"];
     const defaultEvciList = ["Muhammet Gökhan BURAKLAR", "Abdullah ARVAS", "Ali Can MEMİŞOĞLU", "Emre ALPASLAN", "Melih AYDIN", "Muhammet KARADENİZ", "Fatih BALI", "Gökhan ÖZDEMİR", "Doğan DEMİR", "İbrahim Enes ÜNLÜ", "Muhammed Talha PİSTİL", "Selçuk KAYIK", "İrfan AĞDAĞ", "Enes ÇAVAŞ", "Abdulkadir AY"];
     const defaultGeceYatsiList = ["İsmet Mutlu FAKİR", "İlker ÖZTÜRK", "Salih Yiğit EVEZ", "Resul KULAK", "İsmail GENÇ", "Köksal BAL", "Yakup KILIÇ", "Aykut MUTLU", "Muhammet İkbal DOĞAN", "Adem TURAN", "Muhammed İNCİR", "Ali TÜRK", "Abdulgani AKBAŞ", "Metin NESNE", "Hasan ÖZCAN", "Mücahit DURDU", "Yasin ŞERAS", "Muhiddin GÜRSEL", "Mehmet Sadık OKTAY", "Feridun ALBAKIR", "Sefa SAĞLAM", "Mustafa SALCI", "Fuat TAT", "Muhammed Kasım ÖZCAN", "Uğur Ege ŞAHİN", "Burak ÖZEL", "Berk ATAR", "Burak DÜZENLİ", "Bilal BOZKURT", "Muhammet Sait CAYMAZ", "Hasan SARITEPE", "Halis Berk YILDIZ", "Hasan Hüseyin SALMAN", "Yavuz YILMAZ", "Selahi KONAK", "Cengiz CANYURT", "Yusuf İzzet YILDIRIM", "Samet YÜKSEL", "Muhammet Furkan BOZGEYİK", "Orhan KURT", "İlyas İÇEN", "Halis ÇILDIR", "Tayfun BADURLUOĞLU", "Ömer Faruk BULUT", "Samet TOPKARA", "Ümit SOYLU", "Mustafa KARABOĞAZ", "Emre GEZER", "Mehmet YILDIRIM", "Muhammet ALTIAY", "Mehmet Zeki SERTDEMİR", "İsmet İslam BAYBURT", "Atakan CEYHUN", "Aykut GÜLER", "Mehmet DEKTAŞ", "Emre Can ÜSTÜN", "Sezer YOLCU", "Furkan KAYIKÇI", "Abdülbaki SERDAROĞLU", "Tuncay KÜÇÜK", "Abdülkadir ERDURMUŞ", "Barış BAŞ", "Hüseyin TANRIKULU", "Emre ERDOĞAN", "Yusuf BIYIKLI", "Yusuf MERAL", "Sabri ŞEN", "Muhammed Enes DÖĞER", "Ahmet ŞEN", "Adem KARACA", "Hasan Bilgehan ÜN", "Akif ÇOMULU", "Serhat KAFA", "Mete ATEŞ", "Murat KAYA", "Salih TOSUN", "Yunus ORDU", "Adem ÇOLAK", "Turan YILDIRIM", "Berat KAYA", "Okan Yasin GÖMLEKSİZ", "Muharrem KABALAK", "Ahmet KAZI", "Ömürhan Halil DENİZ", "Haci Bekir DEMİREL", "Abdullah İhsan TİYEK", "Faruk GÜN", "Sinan AÇIKGÖZ", "Burak ŞAYIK", "Hüseyin AKSÜT", "Furkan TEPELİ", "Serhat ARVAS"];
@@ -336,19 +353,17 @@
     let currentMonthInfo = {};
     let adminMode = false;
 
-    // Mobil Dokunmatik & Fare Seçim Değişkenleri
-    let touchSelectMode = true; // Yönetici modunda varsayılan olarak dokunarak kutucuk seçme açık
-    let rangeSelectMode = false; // İki kutucuk arasını blok olarak seçme
+    let touchSelectMode = true; 
+    let rangeSelectMode = false; 
     let rangeAnchorCell = null;
     let isDraggingCells = false;
     let dragStartCell = null;
     let selectedCellsSet = new Set();
 
     window.onload = () => {
-        loadDB();
         setInitialMonth();
         setupBulkSelectionListeners();
-        handleMonthChange();
+        loadDB();
     };
     
     function setInitialMonth() {
@@ -374,11 +389,9 @@
         handleMonthChange();
     }
 
-    function loadDB() {
-        const saved = localStorage.getItem('nobetDB_V16');
-        if(saved) {
-            db = JSON.parse(saved);
-        } else {
+    function syncDBStructure(data) {
+        if(data) db = data;
+        else {
             db.names = [...defaultNames]; db.evciList = [...defaultEvciList]; db.geceYatsiList = [...defaultGeceYatsiList];
             db.shifts = [...defaultShifts]; db.pastShiftsRecords = {}; db.manualHours = {}; db.apolet = {...defaultApolet}; db.publishedMonths = {};
         }
@@ -392,11 +405,30 @@
             if(!db.pastShiftsRecords[n]) db.pastShiftsRecords[n] = [];
             if(db.apolet[n] === undefined || db.apolet[n] === "") db.apolet[n] = defaultApolet[n] || "";
         });
+        
         document.getElementById('shiftsInput').value = db.shifts.join(', ');
         populateQuickShiftButtons();
+        handleMonthChange();
     }
 
-    function saveDB() { localStorage.setItem('nobetDB_V16', JSON.stringify(db)); }
+    function loadDB() {
+        if(useFirebase) {
+            database.ref('BolukNobetV19').on('value', (snapshot) => {
+                syncDBStructure(snapshot.val());
+            });
+        } else {
+            const saved = localStorage.getItem('nobetDB_V16');
+            syncDBStructure(saved ? JSON.parse(saved) : null);
+        }
+    }
+
+    function saveDB() {
+        if(useFirebase) {
+            database.ref('BolukNobetV19').set(db);
+        } else {
+            localStorage.setItem('nobetDB_V16', JSON.stringify(db));
+        }
+    }
 
     function populateQuickShiftButtons() {
         const container = document.getElementById('bulkQuickBtns');
@@ -408,7 +440,7 @@
         html += `<button class="quick-shift-btn" style="border-color:#fbbf24; color:#fbbf24;" onclick="applyQuickShift('İzinli')">İzinli</button>`;
         html += `<button class="quick-shift-btn" style="border-color:#f87171; color:#f87171;" onclick="applyQuickShift('Raporlu')">Raporlu</button>`;
         html += `<button class="quick-shift-btn" style="border-color:#a78bfa; color:#a78bfa;" onclick="applyQuickShift('Görevli')">Görevli</button>`;
-        html += `<button class="quick-shift-btn" style="border-color:#ef4444; background:#dc2626; color:#fff;" onclick="clearSelectedCells()">🗑️ Seçilen Hücreleri Sil</button>`;
+        html += `<button class="quick-shift-btn" style="border-color:#ef4444; background:#dc2626; color:#fff;" onclick="clearSelectedCells()">🗑️ Boşalt / Sil</button>`;
         container.innerHTML = html;
     }
 
@@ -416,7 +448,7 @@
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
         const a = document.createElement('a');
         a.setAttribute("href", dataStr);
-        a.setAttribute("download", "nobet_sistemi_yedek_v18.json");
+        a.setAttribute("download", "nobet_sistemi_yedek_v19.json");
         document.body.appendChild(a); a.click(); a.remove();
     }
 
@@ -429,8 +461,7 @@
                 const importedDb = JSON.parse(e.target.result);
                 if (importedDb.names && importedDb.shifts) {
                     db = importedDb; saveDB();
-                    alert("Yedek başarıyla yüklendi! Sayfa yenileniyor...");
-                    location.reload();
+                    if(!useFirebase) location.reload();
                 } else { alert("Geçersiz yedek dosyası!"); }
             } catch (err) { alert("Dosya okuma hatası! Geçerli bir JSON seçin."); }
         };
@@ -439,7 +470,8 @@
 
     function resetAllData() {
         if(confirm("TÜM SİSTEM SIFIRLANACAK! Kaydettiğiniz bütün aylar, nöbetler ve isimler silinecek. Emin misiniz?")) {
-            localStorage.removeItem('nobetDB_V16'); location.reload();
+            db = null; saveDB();
+            if(!useFirebase) { localStorage.removeItem('nobetDB_V16'); location.reload(); }
         }
     }
 
@@ -859,7 +891,6 @@
         alert("Eski ay mühürlendi. " + nextM + " ayına geçtiniz!");
     }
 
-    // ================= MOBİL DOKUNARAK & FARE İLE SEÇİM SİSTEMİ =================
     function setupBulkSelectionListeners() {
         document.addEventListener('mouseup', () => { isDraggingCells = false; });
         document.addEventListener('keydown', (e) => {
@@ -875,12 +906,10 @@
         });
     }
 
-    // Telefonda veya bilgisayarda kutucuğa dokunulduğunda (tıklandığında) çalışır
     function onCellTap(e, td) {
         if(!adminMode || !touchSelectMode) return;
         e.preventDefault();
 
-        // Eğer "Aralık Seç" modu açıksa 1. kutu ile 2. kutu arasındaki tüm bloğu seçer
         if(rangeSelectMode) {
             if(!rangeAnchorCell || rangeAnchorCell.getAttribute('data-list') !== td.getAttribute('data-list')) {
                 if(rangeAnchorCell) rangeAnchorCell.classList.remove('range-anchor-cell');
@@ -912,7 +941,6 @@
             }
         }
 
-        // Normal Dokunarak Seçim: Dokunulan kutuyu mavi seçer, tekrar dokunulursa seçimi kaldırır
         toggleCellSelect(td);
         updateBulkToolbar();
     }
@@ -967,7 +995,6 @@
         if(topDelBtn) {
             topDelBtn.innerText = `🗑️ Seçilen Hücreleri Sil (${selectedCellsSet.size})`;
         }
-        // Mobilde 1 kutucuk bile seçilse alt çubuk hemen açılır!
         if(adminMode && touchSelectMode && selectedCellsSet.size >= 1) {
             bar.style.display = 'flex';
             countTxt.innerText = `${selectedCellsSet.size} Kutucuk Seçildi`;
@@ -1080,7 +1107,6 @@
         } else { document.getElementById('haftasonuTableWrapper').style.display = 'none'; }
     }
 
-    // ================= TARİH ARALIKLI ADALET PANOSU =================
     function setAdaletRangeCurrent() {
         const curM = document.getElementById('monthPicker').value;
         document.getElementById('adaletStartMonth').value = curM;
