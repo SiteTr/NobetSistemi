@@ -2,7 +2,6 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <!-- MOBİLDE OTOMATİK MASAÜSTÜ (TAM TABLO) GÖRÜNÜMÜ SAĞLAR -->
     <meta name="viewport" content="width=1450, user-scalable=yes">
     <title>Bölük Nöbet Sistemi</title>
 
@@ -248,6 +247,7 @@
             <div style="flex: 1; min-width: 300px;">
                 <div class="admin-section" style="background:#fefce8; border-color:#fde047;">
                     <h4 style="margin-top:0; color:#b45309;">💾 Veritabanı Yedekleme Sistemi</h4>
+                    <p style="font-size:12px; color:#333;">Tarayıcı önbelleği silinirse verileriniz kaybolabilir. Ayda bir kez yedeği bilgisayara veya telefona indirmeyi unutmayın!</p>
                     <button class="btn-action" style="width:100%; background:#10b981; margin-bottom:5px;" onclick="exportData()">⬇️ Yedeği İndir (.json)</button>
                     <div class="file-upload-wrapper">
                         <button class="btn-upload">⬆️ Yedeği Geri Yükle Seç</button>
@@ -319,10 +319,7 @@
 
 <script>
     // =========================================================================
-    // FIREBASE AYARLARI (GİTHUB PAGES'TE CANLI YAYIN İÇİN)
-    // 1. firebase.google.com adresinden proje oluşturun.
-    // 2. Realtime Database ekleyin (Rules kısmında read:true, write:true yapın).
-    // 3. Size verilen config ayarlarını BURAYA YAPIŞTIRIN:
+    // FIREBASE AYARLARI
     // =========================================================================
     const firebaseConfig = {
         apiKey: "AIzaSyA3FpMYHJyurBlG7yOo4jl1ee8raIwZXs4",
@@ -419,10 +416,27 @@
         handleMonthChange();
     }
 
+    // =========================================================================
+    // OTOMATİK GÖÇ (AUTO-MIGRATION) EKLENDİ
+    // =========================================================================
     function loadDB() {
         if(useFirebase) {
             database.ref('BolukNobetV19').on('value', (snapshot) => {
-                syncDBStructure(snapshot.val());
+                const data = snapshot.val();
+                if (data) {
+                    syncDBStructure(data);
+                } else {
+                    // Firebase bomboşsa (yeni açıldıysa), yerel hafızadaki eski dolu yedeği kontrol et
+                    const localData = localStorage.getItem('nobetDB_V16');
+                    if (localData) {
+                        const parsed = JSON.parse(localData);
+                        syncDBStructure(parsed);
+                        // Yereldeki eski dolu verileri anında buluta (Firebase'e) fırlat!
+                        database.ref('BolukNobetV19').set(parsed); 
+                    } else {
+                        syncDBStructure(null);
+                    }
+                }
             });
         } else {
             const saved = localStorage.getItem('nobetDB_V16');
